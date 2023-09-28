@@ -3,6 +3,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import ErrorBoundary from "../shared/components/error-boundary/ErrorBoundary";
 import { LoadingEllipsis } from "../shared/components/loading/Loading";
 import { useAppContext } from "../shared/functions/Context";
+import { useState, FormEvent } from "react";
 // import { FormEvent, useState } from "react";
 
 export const title = "Electronic Performance Management System";
@@ -39,25 +40,21 @@ const LoggedOut = observer(() => {
   const { api, store } = useAppContext();
   const location = useLocation();
 
-  // const [loading, setLoading] = useState(false);
-  // const [signInForm, setSignInForm] = useState({
-  //   email: "",
-  //   password: "",
-  // });
-  // const onSignIn = async (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   const { email, password = "" } = signInForm;
-  //   const $user = await api.auth.signIn(email, password);
+  const [loading, setLoading] = useState(false);
+  const [signInForm, setSignInForm] = useState({
+    email: "",
+    password: "",
+  });
+  const onSignIn = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    const { email, password = "" } = signInForm;
+    const $user = await api.auth.signIn(email, password);
 
-  //   if (!$user) {
-  //     setLoading(false);
-  //     return;
-  //   }
-  // };
-
-  const redirectSignIn = () => {
-    api.auth.logInWithPopup();
+    if (!$user) {
+      setLoading(false);
+      return;
+    }
   };
 
   if (store.auth.loading) return <Loader />;
@@ -88,10 +85,7 @@ const LoggedOut = observer(() => {
                 ))}
               </ul>
             </div>
-            <button className="uk-button uk-margin loggin-button" onClick={redirectSignIn} >
-              Login
-            </button>
-            {/* <form className="uk-form-stacked" onSubmit={onSignIn}>
+            <form className="uk-form-stacked" onSubmit={onSignIn}>
               <div className="uk-margin">
                 <label className="uk-form-label" htmlFor="user-login-email">
                   Email
@@ -145,7 +139,7 @@ const LoggedOut = observer(() => {
                   )}
                 </button>
               </div>
-            </form> */}
+            </form>
           </div>
           <div
             className=" uk-child-width-1-3@s uk-grid-match uk-text-center"

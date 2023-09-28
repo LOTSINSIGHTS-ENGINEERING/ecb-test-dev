@@ -110,8 +110,6 @@ export default class MeasureApi {
     });
   }
 
-
-
   async getById(id: string) {
     const path = this.getPath();
     if (!path) return;
@@ -159,7 +157,6 @@ export default class MeasureApi {
       // console.log(error);
     }
   }
-
 
   // update item
   async update(item: IMeasure, fieldsUpdated?: (keyof IMeasure)[]) {

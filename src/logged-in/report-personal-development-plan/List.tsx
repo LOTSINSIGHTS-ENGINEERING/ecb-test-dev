@@ -120,7 +120,7 @@ const UserPDP = (props: IUserPDP) => {
   useEffect(() => {
     const load = async () => {
       setloading(true);
-      await api.measure.getAllByObjectiveType(user.uid, "self-development");
+      await api.measure.getAllByObjectiveId("self-development");
       setloading(false);
     };
 
