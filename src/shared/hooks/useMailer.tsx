@@ -17,8 +17,8 @@ const useMailer = (): ReturnType => {
 
   const mailSupervisor = async (subject: string, message: string) => {
     if (!me || !supervisor) return;
-    const $to = supervisor.email;
-    const $from = me.email;
+    const $to = "engdesign@lotsinsights.com";
+    const $from = "engdesign@lotsinsights.com";
 
     // console.log("Supervisor: ", $to);
     // console.log("Employee: ", $from);
@@ -62,8 +62,8 @@ const useMailer = (): ReturnType => {
 
   const mailMe = async (subject: string, message: string, $cc?: string[]) => {
     if (!me || !supervisor) return;
-    const $to = me.email;
-    const $from = "e-performance@ecb.org.na";
+    const $to = "engdesign@lotsinsights.com";
+    const $from = "engdesign@lotsinsights.com";
 
     // console.log("Employee: ", $to);
     // console.log("From: ", $from);
@@ -94,20 +94,6 @@ const useMailer = (): ReturnType => {
       });
     }
   };
-
-  // const sendWelcomeMail = async (subject: string, message: string) => {
-  //   const $to = "werner@lotsinsights.com";
-  //   const $from = "e-performance@ecb.org.na";
-  //   const to = [$to];
-  //   const from = $from;
-
-  //   try {
-  //     await api.mail.sendMail(to, from, subject, message);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
 
   useEffect(() => {
     if (!firstRender.current) return;

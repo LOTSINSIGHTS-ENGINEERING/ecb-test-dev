@@ -1,12 +1,6 @@
-// import nodemailer from 'nodemailer';
-
-// export const mailApiEndpoint =
-//   process.env.REACT_APP_MAIL_API_ENDPOINT ||
-//   "http://nafau.org.na/php/mail.php?";
-
 export const mailApiEndpoint =
   process.env.REACT_APP_MAIL_API_ENDPOINT ||
-"http://ecb.unicomms.app/mail/mail.php?";
+"https://dinapama.unicomms.app/mail/mail.php?";
 
 export const mailerConfig = {
   transport: {
@@ -14,12 +8,13 @@ export const mailerConfig = {
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: "e-performance@ecb.org.na", // generated ethereal user
+      user: "no-reply@unicomms.app", // generated ethereal user
       pass: "FOxCa1P!ge0n", // generated ethereal password
     }
   },
   defaults: {
-    from: { name: 'E Performance', address: 'e-performance@ecb.org.na' },
+    from: { name: 'ECB PMS - Test Dev System', address: 'no-reply@ecb-test-pms.app' },
   },
 }
+
 
