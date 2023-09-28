@@ -1,0 +1,56 @@
+.measure-files-modal {
+  .file-uploader {
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    label {
+      input[type="file"] {
+        display: none;
+      }
+      .icon {
+        transition: 0.3s all ease;
+      }
+      &:hover {
+        .icon {
+          margin-right: 15px !important;
+        }
+      }
+    }
+  }
+
+  .measure__file {
+    display: grid;
+    grid-template-columns: 40px 1fr 30px 30px;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: $muted-color;
+
+    &__icon {
+      height: 30px;
+      width: 30px;
+      .icon {
+        height: 30px;
+        width: 30px;
+        color: $primary-color;
+      }
+    }
+
+    &__name {
+      font-size: $font-size;
+      margin: 0;
+      transition: 0.3s all ease;
+    }
+
+    &__download {
+      .icon {
+        color: $primary-color;
+      }
+    }
+    &__delete {
+      .icon {
+        color: $danger-color;
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+.dashboard {
+  &--tabs {
+    border-radius: 4px;
+    position: sticky;
+    top: 60px;
+    margin-bottom: 10px;
+    padding: 10px;
+    z-index: 10;
+
+    ul {
+      margin: 0;
+
+      li {
+        padding: 0;
+      }
+    }
+  }
+
+  &--company--tab {
+    border-radius: 4px;
+    position: sticky;
+    top: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+    z-index: 10;
+    display: flex;
+    justify-content: flex-end;
+
+    .tab-button {
+      text-transform: none;
+      font-size: $font-size;
+      font-weight: $font-weight-semibold;
+      background-color: $primary-color ;
+      color: $white-color;
+      border-radius: 4px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+
+    }
+
+    .uk-dropdown {
+      border-radius: 4px;
+    }
+
+    ul {
+      margin: 0;
+
+      li {
+        padding: 0;
+      }
+    }
+
+
+
+
+  }
+}

@@ -1,0 +1,105 @@
+.objective-page {
+  .objective-measures {
+    .measures {
+      position: relative;
+      background-color: $white-color !important;
+      transition: 0.3s;
+      border-radius: 7px;
+      border: 1px solid rgba(119, 119, 119, 0.438);
+
+      &:hover {
+        border: 1px solid $primary-color;
+        box-shadow: 0 0 30px 0 rgba(119, 119, 119, 0.418);
+      }
+
+      .measure-table {
+        overflow-y: auto;
+
+        .header {
+          th {
+            font-weight: $font-weight-semibold;
+            text-transform: none;
+            white-space: nowrap;
+            font-size: 11px !important;
+          }
+        }
+
+        .measure-sub-weight {
+          font-size: $font-size-xs;
+          font-weight: $font-weight-semibold;
+          white-space: nowrap;
+          color: $secondary-color;
+          background-color: $muted-color;
+          padding: 2px 8px;
+          line-height: 1;
+          width: -moz-fit-content;
+          width: fit-content;
+        }
+
+        .row {
+          cursor: pointer;
+
+          .comments-btn {
+            background-color: transparent;
+            padding: 0;
+            color: $grey-color;
+            transition: all 0.3s ease;
+          }
+
+          &:hover {
+            .comments-btn {
+              color: $black-color;
+            }
+          }
+
+          td {
+            font-size: 11px !important;
+          }
+
+          .controls {
+            white-space: nowrap;
+          }
+
+          .status {
+            height: 10px;
+            width: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+          }
+
+          .red {
+            background-color: $danger-color;
+          }
+
+          .warning {
+            background-color: $warning-color;
+          }
+
+          .green {
+            background-color: $success-color;
+          }
+
+          .actual-value {
+            color: #fff;
+            text-align: center;
+          }
+        }
+      }
+
+      .no-measures {
+        padding: 1em;
+
+        p {
+          font-size: 1rem;
+          line-height: 0.5em;
+          margin: 0;
+          color: $grey-color;
+
+          span {
+            font-style: normal;
+          }
+        }
+      }
+    }
+  }
+}

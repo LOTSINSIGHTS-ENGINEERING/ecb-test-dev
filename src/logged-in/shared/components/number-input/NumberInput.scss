@@ -1,0 +1,12 @@
+@import "../../../../shared/styles/Variables.scss";
+
+.number-input {
+  position: relative;
+
+  .input-error {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.8;
+    color: $danger-color;
+  }
+}

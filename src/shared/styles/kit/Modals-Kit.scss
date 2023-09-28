@@ -1,0 +1,19 @@
+.custom-modal-style {
+
+  .uk-modal-title {
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+  }
+
+  .sub-heading {
+    margin-bottom: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0;
+  }
+}

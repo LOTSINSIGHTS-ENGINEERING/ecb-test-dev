@@ -1,0 +1,20 @@
+.error-boundary {
+  .title {
+    display: inline;
+    font-size: $font-size-lg;
+  }
+
+  button {
+    display: inline;
+    color: $primary-color;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    padding: 5px 10px;
+    margin-left: 20px;
+    transition: 0.3s all ease;
+    &:hover {
+      background-color: $primary-color;
+      color: $white-color;
+    }
+  }
+}

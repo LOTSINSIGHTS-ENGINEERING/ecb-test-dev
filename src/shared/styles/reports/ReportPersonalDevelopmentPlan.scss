@@ -1,0 +1,123 @@
+.personal-development-page {
+  label.date-picker {
+    position: relative;
+
+    input {
+      position: relative;
+      font-weight: $font-weight-semibold;
+      text-align: center;
+      width: 100%;
+      height: 100%;
+      border: 0 !important;
+      color: $white-color;
+      background-color: transparent;
+      padding: 0;
+      margin: 0;
+
+      &[type="date"]::-webkit-calendar-picker-indicator {
+        position: absolute;
+        background: transparent;
+        bottom: 0;
+        color: $white-color;
+        cursor: pointer;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: auto;
+        width: auto;
+      }
+    }
+  }
+
+  .username {
+    position: relative;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    line-height: 1;
+    margin: 0;
+    margin-bottom: 10px;
+
+    .type {
+      font-size: $font-size-xs;
+      padding: 3px 5px;
+      line-height: 1;
+      width: -moz-fit-content;
+      width: fit-content;
+      background-color: $warning-color;
+      color: $primary-color;
+    }
+  }
+
+  .measure-table {
+    overflow-y: auto;
+
+    .header th {
+      font-weight: $font-weight-semibold;
+      text-transform: none;
+      white-space: nowrap;
+    }
+
+    .row {
+      cursor: pointer;
+
+      td {
+        font-size: $font-size;
+      }
+
+      .controls {
+        white-space: nowrap;
+      }
+
+      .status {
+        height: 10px;
+        width: 10px;
+        background-color: #fff;
+        border-radius: 10px;
+      }
+
+      .red {
+        background-color: $danger-color;
+      }
+
+      .warning {
+        background-color: $warning-color;
+      }
+
+      .green {
+        background-color: $success-color;
+      }
+
+      .actual-value {
+        color: #fff;
+        text-align: center;
+      }
+    }
+
+    .measure-sub-weight {
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+      white-space: nowrap;
+      color: $secondary-color;
+      background-color: $muted-color;
+      padding: 2px 8px;
+      line-height: 1;
+      width: -moz-fit-content;
+      width: fit-content;
+    }
+  }
+
+  .no-measures {
+    padding: 1em;
+
+    p {
+      font-size: 1rem;
+      line-height: 0.5em;
+      margin: 0;
+      color: $grey-color;
+
+      span {
+        font-style: normal;
+      }
+    }
+  }
+}

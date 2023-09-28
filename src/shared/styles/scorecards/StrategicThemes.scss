@@ -1,0 +1,48 @@
+.strategy-theme-page {
+  .themes-grid {
+    div:not(:last-child) {
+      .theme {
+        border-right: 1px solid $dark-muted-color;
+      }
+    }
+  }
+
+  .theme {
+    border-radius: 0;
+    border: 0;
+    margin: 0;
+    border-top: 1px solid $dark-muted-color;
+    background-color: $white-color;
+    overflow: hidden;
+    transition: 0.3s ease-in-out all;
+
+    &:hover {
+      background-color: $hover-color;
+    }
+
+    .span-label {
+      display: block;
+      font-size: $font-size-xs;
+      color: $secondary-color;
+      text-transform: uppercase;
+      margin: 0;
+      line-height: 1;
+      transition: 0.3s ease-in-out all;
+    }
+
+    h6,
+    p {
+      font-weight: $font-weight-semibold;
+      color: $dark-grey-color;
+      margin: 0;
+      font-size: $font-size-sm;
+      text-transform: none
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

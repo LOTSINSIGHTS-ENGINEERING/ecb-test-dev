@@ -1,0 +1,41 @@
+.reports {
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .people-tab-content {
+    // overflow-x: auto;
+  }
+
+  .fy-sector {
+    margin-bottom: 5px;
+
+    .fy-button {
+      text-transform: none;
+      border-radius: $border-radius;
+      background-color: $white-color;
+    }
+
+    .fy-report-item {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      margin: 3px;
+      font-weight: $font-weight-semibold;
+      color: $dark-grey-color;
+
+      &:hover {
+        background-color: $primary-color;
+      }
+
+      &.active {
+        border: 2px solid $primary-color;
+      }
+    }
+
+    .description {
+      margin: 12px;
+    }
+  }
+}

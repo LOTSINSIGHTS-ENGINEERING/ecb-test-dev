@@ -1,0 +1,99 @@
+.logged-out {
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  background-image: url("../../../../public/images/ecb-bg.png");
+  background-size: cover;
+
+  .card1 {
+    .uk-card-title {
+      color: $white-color;
+      font-weight: 800;
+      font-size: 1.6rem;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    p {
+      color: $white-color;
+    }
+
+    ul li {
+      color: $white-color;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .loggin-button {
+      padding: 0px 50px !important;
+      border-radius: 3px;
+      background-color: #88ca82;
+      color: $white-color;
+      font-weight: 700;
+
+      &:hover {
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px,
+          rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
+          rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+      }
+    }
+  }
+
+  .cards {
+    border-radius: 5px;
+    cursor: pointer;
+
+    .uk-card-title {
+      color: black;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 1.2rem;
+    }
+
+    &:hover {
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px,
+        rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
+        rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+    }
+  }
+
+  .technical {
+    margin: 10px auto;
+
+    .card2 {
+      margin-bottom: 0;
+
+      h3 {
+        color: $white-color;
+        font-size: 15px;
+        font-weight: 800;
+        margin: 0;
+        text-transform: uppercase;
+      }
+
+      p {
+        margin: 0;
+        color: $white-color;
+        font-size: 15px;
+
+        a {
+          color: $white-color;
+          font-size: 15px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 632px),
+screen and (max-height: 600px) {
+  .logged-out {
+    height: 100%;
+  }
+
+  .technical {
+    .card2 {
+      display: inline-flex;
+    }
+  }
+}

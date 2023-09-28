@@ -1,0 +1,33 @@
+import { runInAction } from "mobx";
+// import DepartmentMeasureApi from "./DepartmentMeasureApi";
+// import DepartmentMeasureAuditApi from "./DepartmentMeasureAuditApi";
+// import DepartmentObjectiveApi from "./DepartmentObjectiveApi";
+// import DepartmentScorecardReviewApi from "./DepartmentScorecardReviewApi";
+// import DepartmentScorecardMetadataApi from "./DepartmentScorecardMetadataApi";
+// import DivisionMeasureApi from "./DivisionMeasureApi";
+// import DivisionMeasureAuditApi from "./DivisionMeasureAuditApi";
+// import DivisionObjectiveApi from "./DivisionObjectiveApi";
+// import DivisionScorecardMetadataApi from "./DivisionScorecardMetadataApi";
+// import DivisionScorecardReviewApi from "./DivisionScorecardReviewApi";
+  // departmentObjective: DepartmentObjectiveApi;
+  // departmentMeasure: DepartmentMeasureApi;
+  // departmentMeasureAudit: DepartmentMeasureAuditApi;
+  // departmentScorecardMetadata: DepartmentScorecardMetadataApi;
+  // departmentScorecardReview: DepartmentScorecardReviewApi;
+  // divisionObjective: DivisionObjectiveApi;
+  // divisionMeasure: DivisionMeasureApi;
+  // divisionMeasureAudit: DivisionMeasureAuditApi;
+  // divisionScorecardMetadata: DivisionScorecardMetadataApi;
+  // divisionScorecardReview: DivisionScorecardReviewApi;
+      // // Department APIs
+    // this.departmentObjective = new DepartmentObjectiveApi(this, store);
+    // this.departmentMeasure = new DepartmentMeasureApi(this, store);
+    // this.departmentMeasureAudit = new DepartmentMeasureAuditApi(this, store);
+    // this.departmentScorecardMetadata = new DepartmentScorecardMetadataApi(this, store );
+    // this.departmentScorecardReview = new DepartmentScorecardReviewApi(this,store);
+    // // Divsion APIs
+    // this.divisionObjective = new DivisionObjectiveApi(this, store);
+    // this.divisionMeasure = new DivisionMeasureApi(this, store);
+    // this.divisionMeasureAudit = new DivisionMeasureAuditApi(this, store);
+    // this.divisionScorecardMetadata = new DivisionScorecardMetadataApi(this,store);
+    // this.divisionScorecardReview = new DivisionScorecardReviewApi(this, store);

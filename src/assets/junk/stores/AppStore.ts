@@ -1,0 +1,22 @@
+import { runInAction } from "mobx";
+// import DepartmentScorecardMetadataStore from "./DepartmentScorecardMetadataStore";
+// import DepartmentScorecardReviewStore from "./DepartmentScorecardReviewStore";
+// import DivisionMeasureStore from "./DivisionMeasureStore";
+// import DivisionObjectiveStore from "./DivisionObjectiveStore";
+// import DivisionScorecardMetadataStore from "./DivisionScorecardMetadataStore";
+// import DivisionScorecardReviewStore from "./DivisionScorecardReviewStore";
+// import DivisionMeasureAuditStore from "./DivisionMeasureAuditStore";
+// import DepartmentMeasureAuditStore from "../../assets/junk/stores/DepartmentMeasureAuditStore";
+// import DepartmentMeasureStore from "./DepartmentMeasureStore";
+// import DepartmentObjectiveStore from "./DepartmentObjectiveStore";
+  // departmentObjective = new DepartmentObjectiveStore(this);
+  // departmentMeasure = new DepartmentMeasureStore(this);
+  // departmentMeasureAudit = new DepartmentMeasureAuditStore(this);
+  // departmentScorecardMetadata = new DepartmentScorecardMetadataStore(this);
+  // departmentScorecardReview = new DepartmentScorecardReviewStore(this);
+
+  // divisionObjective = new DivisionObjectiveStore(this);
+  // divisionMeasure = new DivisionMeasureStore(this);
+  // divisionMeasureAudit = new DivisionMeasureAuditStore(this);
+  // divisionScorecardMetadata = new DivisionScorecardMetadataStore(this);
+  // divisionScorecardReview = new DivisionScorecardReviewStore(this);

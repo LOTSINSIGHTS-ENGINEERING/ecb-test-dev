@@ -1,0 +1,44 @@
+.kit-accordion {
+  .kit-accordion-item {
+    border-radius: 0;
+    background-color: $white-color;
+    border-bottom: 1px solid $muted-color;
+    margin: 0;
+    overflow: hidden;
+
+    box-shadow: 0px 0px 5px rgba($color: $black-color, $alpha: 0.1);
+
+    &.expanded {
+      margin-top: 10px;
+      margin-bottom: 10px;
+
+      .content {
+        margin-top: 5px !important;
+      }
+    }
+
+    .title {
+      position: relative;
+      font-size: $font-size;
+      font-weight: $font-weight-semibold;
+      line-height: 1;
+
+      .title-label {
+        display: block;
+        font-size: 0.7em;
+        text-transform: uppercase;
+        color: $secondary-color;
+        line-height: 1;
+        margin-bottom: 2px;
+      }
+    }
+
+    .content {
+      transition: 0.3s ease-in-out all;
+    }
+
+    .controls {
+      white-space: nowrap;
+    }
+  }
+}

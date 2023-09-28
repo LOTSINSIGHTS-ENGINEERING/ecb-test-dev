@@ -1,0 +1,114 @@
+.app {
+  .delete-project-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5em 1em;
+    font-size: 11.5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border-radius: 4px;
+    color: red;
+    background-color: #ff000013;
+
+    &:hover {
+      background-color: #ff000018;
+    }
+  }
+
+  .save-project-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5em 1em;
+    font-size: 11.5px;
+    color: #fff;
+    background-color: $primary-color;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border-radius: 3px;
+    font-weight: 400;
+
+    &:hover {
+      background-color: $primary-color;
+    }
+  }
+
+
+  .section-toolbar {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+    &>* {
+      margin-bottom: 0;
+    }
+
+    .section-heading {
+      font-weight: $font-weight-bold;
+    }
+
+    .controls {
+      &>* {
+        border-radius: $border-radius;
+        margin-bottom: 0;
+      }
+    }
+
+    @media only screen and (min-width: 640px) {
+      flex-direction: row;
+      align-items: center;
+
+      * {
+        margin-bottom: 0.5em !important;
+      }
+
+      .controls {
+
+        &>*,
+        button {
+          margin-bottom: 0.5em;
+        }
+      }
+    }
+  }
+}
+
+.uk-card {
+  border-radius: 6px !important;
+}
+
+
+.uk-modal-dialog {
+  border-radius: 6px !important;
+}
+
+.grey {
+  background-color: $grey-color !important;
+  color: $white-color;
+}
+
+.purple {
+  background-color: $purple-color !important;
+  color: $white-color;
+}
+
+.blue {
+  background-color: $blue-color !important;
+  color: $white-color;
+}
+
+.green {
+  background-color: $green-color !important;
+  color: $white-color;
+}
+
+.red {
+  background-color: $red-color !important;
+  color: $white-color;
+}
+
+.warning {
+  background-color: $warning-color !important;
+  color: $white-color;
+}

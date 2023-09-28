@@ -1,0 +1,45 @@
+.folder-file-uploader-modal {
+  .drag-zone {
+    padding: 20px;
+    border: 2px dashed $grey-color;
+    text-align: center;
+    outline: none;
+    transition: 0.3s all ease;
+    background-color: $muted-color;
+    // border-radius: 10px;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      background-color: $white-color;
+    }
+  }
+
+  .selected-files-title {
+    font-size: $font-size-md;
+    margin-top: 20px;
+    font-weight: $font-weight-semibold;
+  }
+
+  .selected-file {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    align-items: center;
+    background-color: $muted-color;
+    padding: 10px;
+    img {
+      height: 30px;
+      width: 30px;
+      object-fit: contain;
+      -o-object-fit: contain;
+      object-position: center;
+      -o-object-position: center;
+    }
+
+    p.file-name {
+      font-weight: $font-weight-semibold;
+      margin: 0;
+      margin-left: 10px;
+    }
+  }
+}

@@ -1,0 +1,116 @@
+.fixed-drawer {
+  overflow: auto; //scrollable drawer
+  height: 100%;
+  padding-top: 15px;
+  background: $ecb-blue-color;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.01), 0 3px 6px rgba(0, 0, 0, 0.1);
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.drawer-content {
+  .account-settings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 100%;
+    padding: 5px;
+    border-radius: $border-radius;
+    margin-bottom: 10px;
+
+    img {
+      height: 150px;
+      width: 100%;
+      object-fit: contain;
+      -o-object-fit: contain;
+      object-position: center center;
+      -o-object-position: center center;
+    }
+  }
+
+  .drawer-list {
+    ul.main-list {
+      list-style: none;
+      margin: 0;
+
+      .list-item {
+        margin-bottom: 4px;
+        overflow: hidden;
+        .navlink {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        &.uk-parent {
+          margin: 1px 20px;
+          //
+          background-color: $ecb-yellow-color;
+        }
+        &:hover {
+          background-color: $light-grey-color;
+          color: $ecb-white-color;
+        }
+
+        &.uk-parent.uk-open {
+          background-color: $light-grey-color;
+        }
+
+        .navlink {
+          position: relative;
+          padding: 0.4em 0.5em;
+          transition: 0.3s ease-in-out all;
+          color: $ecb-white-color;
+          font-weight: $font-weight-semibold;
+          font-size: 13px;
+          p {
+            display: flex;
+            margin: 0px;
+            font-size: 13px;
+          }
+          .down-arrow {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            transition: transform 0.3s ease-in-out;
+          }
+        }
+
+        .active {
+          color: $ecb-white-color;
+          background-color: inherit;
+          .triangle {
+            width: 0;
+            height: 0;
+            border-top: 25px solid transparent;
+            border-right: 18px solid $ecb-blue-color;
+            border-bottom: 25px solid transparent;
+            position: absolute;
+            right: 0;
+          }
+        }
+        .uk-nav-sub {
+          padding: 5px 0 5px 0px;
+          .navlink {
+            border-left: 4px solid transparent;
+            font-size: 12px;
+            align-items: baseline;
+            display: flex;
+            align-items: center;
+          }
+          .active {
+            border-left: 4px solid $ecb-yellow-color;
+            border-right: 4px solid $ecb-yellow-color;
+            color: $ecb-yellow-color;
+            background-color: $ecb-white-color;
+          }
+        }
+      }
+    }
+  }
+}

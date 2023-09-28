@@ -1,0 +1,53 @@
+{/*
+<Route path="strategy/department" element={<DepartmentScorecards />} />
+<Route path="strategy/department/:fyid/:departmentId" element={<DepartmentScorecardView />} /> */}
+{/*
+<Route path="strategy/department/:fyid/:departmentId" element={<DepartmentScorecard />}
+/> */}
+{/*
+<Route path="strategy/department/:fyid/:departmentId/:objectiveId" element={<DepartmentScorecardObjective />}
+/> */}
+
+{/*
+<Route path="strategy/sections" element={<DivisionScorecards />} />
+<Route path="strategy/sections/:fyid/:divisionId" element={<DivisionScorecardView />} /> */}
+{/*
+<Route path="strategy/section/:fyid/:divisionId" element={<DivisionScorecard />}
+/> */}
+
+{/*
+<Route path="strategy/sections/:fyid/:divisionId/:objectiveId" element={<DivisionScorecardObjective />}
+/> */}
+
+{/* For the new implementation of approval start */}
+{/*
+<Route path="supervision/company" element={<CompanyScorecards />} />
+<Route path="supervision/department" element={<DepartmentScorecards />} />
+<Route path="supervision/department/:fyid/:departmentId" element={<SupervisionDepartmentScorecard />}
+/>
+<Route path="supervision/section" element={<DivisionScorecards />} /> */}
+{/*added for the new implementation of approval end*/}
+
+{/*
+<Route path="scorecards/people" element={<People />} />
+<Route path="scorecards/people/:uid" element={<PeopleView />} /> */}
+
+{/*
+<Route path="strategy/department" element={<DepartmentScorecards />}/>
+<Route path="strategy/department/:fyid/:departmentId" element={<DepartmentScorecardView />}/>
+<Route path="strategy/sections" element={<DivisionScorecards />} />
+<Route path="strategy/sections/:fyid/:divisionId" element={<DivisionScorecardView />} /> */}
+{/*
+<Route path="strategy/department" element={<DepartmentScorecards />} />
+<Route path="strategy/department/:fyid/:departmentId" element={<DepartmentScorecardView />} />
+<Route path="strategy/sections" element={<DivisionScorecards />} />
+<Route path="strategy/sections/:fyid/:divisionId" element={<DivisionScorecardView />} /> */}
+
+{/*
+<Route path="strategy/department" element={<DepartmentScorecards />} />
+<Route path="strategy/department/:fyid/:departmentId" element={<DepartmentScorecardView />}/>
+<Route path="strategy/sections" element={<DivisionScorecards />} />
+<Route path="strategy/sections/:fyid/:divisionId" element={<DivisionScorecardView />}/>*/}
+{/*
+<Route path="scorecards/my" element={<IndividualScorecard />} />
+<Route path="scorecards/my/:id" element={<IndividualScorecardDraftObjective />}/> */}

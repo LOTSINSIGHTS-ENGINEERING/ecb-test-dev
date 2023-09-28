@@ -1,0 +1,45 @@
+.perspective-objective-modal {
+  .objective {
+    &--item {
+      display: block;
+      margin-bottom: 10px;
+      border: 1px solid $muted-color;
+
+      &:hover {
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      &__content {
+        width: 100%;
+      }
+
+      &__controls {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+
+        button {
+          line-height: 30px;
+          color: $danger-color;
+          margin: 0;
+          cursor: pointer;
+        }
+      }
+    }
+
+    &--toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h6 {
+        font-size: $font-size;
+        font-weight: $font-weight-semibold;
+        margin: 0;
+      }
+    }
+  }
+}
