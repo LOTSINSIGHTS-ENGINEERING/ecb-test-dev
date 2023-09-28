@@ -24,6 +24,7 @@ import DivisionApi from "./DivisionApi";
 import ProjectManagementApi from "./ProjectManagementApi";
 import FeedbackApi from "./FeedbackApi";
 import GeneralTaskApi from "./GeneralTaskApi";
+import ScorecardArchiveApi from "./ScorecardArchiveApi";
 
 export const apiPathCompanyLevel = (
   category:
@@ -62,6 +63,7 @@ export const apiPathScorecardLevel = (
     | "divisionObjectives"
     | "divisionMeasures"
     | "divisionMeasuresAudit"
+    | "scorecardArchives"
 ): string => {
   return `${apiPathCompanyLevel("scorecards")}/${scorecardId}/${category}`;
 };
@@ -100,6 +102,10 @@ export default class AppApi {
   department: DepartmentApi;
   businessUnit: BusinessUnitApi;
 
+  // scorecard archive implementation
+  scorecardaArchive: ScorecardArchiveApi;
+
+
   folder: FolderApi;
   folderFile: FolderFileApi;
 
@@ -132,6 +138,7 @@ export default class AppApi {
     this.measure = new MeasureApi(this, store);
     this.measureAudit = new MeasureAuditApi(this, store);
     this.strategicTheme = new StrategicThemeApi(this, store);
+    this.scorecardaArchive = new ScorecardArchiveApi(this, store);
 
     // Company APIs
     this.companyObjective = new CompanyObjectiveApi(this, store);

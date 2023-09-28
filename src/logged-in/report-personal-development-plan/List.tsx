@@ -6,7 +6,7 @@ import { USER_ROLES } from "../../shared/functions/CONSTANTS";
 import { useAppContext } from "../../shared/functions/Context";
 import { dataFormat } from "../../shared/functions/Directives";
 import showModalFromId from "../../shared/functions/ModalShow";
-import Measure, { IMeasure } from "../../shared/models/Measure";
+import Measure from "../../shared/models/Measure";
 import User from "../../shared/models/User";
 import MODAL_NAMES from "../dialogs/ModalName";
 import NoMeasures from "../execution-scorecard/NoMeasures";

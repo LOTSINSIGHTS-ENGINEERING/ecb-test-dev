@@ -550,6 +550,6 @@ const EmployeeQ2ReviewCycle = observer((props: IQ2Props) => {
       </div>
     </ErrorBoundary>
   );
-}); 
+});
 
 export default EmployeeQ2ReviewCycle;

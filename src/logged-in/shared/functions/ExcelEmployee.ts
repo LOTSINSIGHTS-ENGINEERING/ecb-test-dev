@@ -494,7 +494,7 @@ export const exportEmployeeScorecardExcel = async (
       formatColumn({ value: row.supervisorRating, type: "Number" }), // S
       formatColumn({ value: row.finalRating, type: "Number" }), // F
       formatColumn({ value: row.autoRating2, type: "Number" }), // E
-      formatColumn({ value: row.supervisorRating2, type: "Automatic" }), // S
+      formatColumn({ value: row.supervisorRating2, type: "Number" }), // S
       formatColumn({ value: row.finalRating2, type: "Number" }), // F
     ];
   });

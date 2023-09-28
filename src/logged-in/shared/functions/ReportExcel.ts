@@ -1,5 +1,5 @@
 import writeXlsxFile from "write-excel-file";
-import UserPerformanceData, { IUserPerformanceData } from "../../../shared/models/Report";
+import UserPerformanceData from "../../../shared/models/Report";
 
 export interface IEmployeeTableRowItem {
   userName: string;

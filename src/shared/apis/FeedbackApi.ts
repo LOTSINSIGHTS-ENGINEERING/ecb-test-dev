@@ -2,7 +2,6 @@ import {
   query,
   collection,
   onSnapshot,
-  setDoc,
   deleteDoc,
   doc,
   Unsubscribe,

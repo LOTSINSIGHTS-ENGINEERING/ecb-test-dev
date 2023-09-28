@@ -7,9 +7,9 @@ import {
   deleteDoc,
   doc,
 } from "@firebase/firestore";
-import { Unsubscribe, writeBatch } from "firebase/firestore";
+import { Unsubscribe } from "firebase/firestore";
 import { db } from "../config/firebase-config";
-import MeasureCompany, { IMeasureCompany } from "../models/MeasureCompany";
+import { IMeasureCompany } from "../models/MeasureCompany";
 import AppStore from "../stores/AppStore";
 import AppApi, { apiPathScorecardLevel } from "./AppApi";
 

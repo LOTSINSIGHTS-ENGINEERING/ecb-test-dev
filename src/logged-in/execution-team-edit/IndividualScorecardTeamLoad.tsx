@@ -18,6 +18,7 @@ import { LoadingEllipsis } from "../../shared/components/loading/Loading";
 import { generateIndividualPerformanceAgreementPDF } from "../../shared/functions/scorecard-pdf/GeneratePerformaneAgreementPDF";
 import { exportEmployeeExcelScorecard } from "../shared/functions/Excel";
 import { IScorecardMetadata } from "../../shared/models/ScorecardMetadata";
+import { IScorecardArchive } from "../../shared/models/ScorecardArchive";
 
 interface IStepStageProps {
   open?: boolean;
@@ -177,24 +178,87 @@ const IndividualScorecardTeamLoad = observer(() => {
   const { store, api, ui } = useAppContext();
   const { uid } = useParams();
 
+  const me = store.auth.meJson;
+  const user = store.user.selected;
+  const scorecard = store.scorecard.active;
+
+  const [archiving, setArchiving] = useState(false);
   const [loading, setLoading] = useState(false);
   const [docTitle, setTitle] = useTitle("People");
 
-
   const navigate = useNavigate();
-  useBackButton("/c/scorecards/people/");
-
-  const user = store.user.selected;
-  const scorecard = store.scorecard.active;
   const agreement = useIndividualScorecard(uid);
+
+  useBackButton("/c/scorecards/people/");
 
   const objectives = store.objective.getByUid(uid!);
   const measures = store.measure.getByUid(uid!);
+  const measureAudits = store.measureAudit.getByUid(uid!);
 
   const title = `${user?.displayName} ${scorecard?.description} Scorecard`;
   const strategicObjectives = [...store.companyObjective.all.map((o) => o.asJson),] || [];
   const contributoryObjectives = objectives.map((o) => o.asJson) || [];
   const allmeasures = measures.map((o) => o.asJson) || [];
+
+  const deleteObjectives = async () => {
+    for (const objective of objectives) {
+      await api.objective.delete(objective.asJson);
+    }
+  };
+
+  const deleteMeasures = async () => {
+    for (const measure of measures) {
+      await api.measure.delete(measure.asJson);
+    }
+  };
+
+  const deleteMeasuresAudits = async () => {
+    for (const measureAudit of measureAudits) {
+      await api.measureAudit.delete(measureAudit.asJson);
+    }
+  };
+
+  const onArchive = async (archive: IScorecardArchive) => {
+    try {
+      await api.scorecardaArchive.create(archive);
+      await deleteObjectives();
+      await deleteMeasures();
+      await deleteMeasuresAudits();
+      await api.individualScorecard.delete(agreement);
+      ui.snackbar.load({
+        id: Date.now(),
+        message: "Scorecard Archived.",
+        type: "success",
+      });
+    } catch (error) {
+      ui.snackbar.load({
+        id: Date.now(),
+        message: "Error! Failed to archive scorecard.",
+        type: "danger",
+      });
+    }
+  };
+
+  const onArchiveScorecard = async () => {
+    if (!window.confirm("This action cannot be undone, the data will be moved to the archive folder.")) return;
+    setArchiving(true)
+    const _objectives = objectives.map((o) => o.asJson);
+    const _measures = measures.map((m) => m.asJson);
+    const _measureAudits = measureAudits.map((m) => m.asJson);
+
+    const $archive: IScorecardArchive = {
+      uid: user!.uid,
+      displayName: user!.displayName,
+      archiverUid: me!.uid,
+      archiverDisplayName: me!.displayName,
+      objectives: _objectives,
+      measures: _measures,
+      measureAudits: _measureAudits,
+      isLocked: false
+    };
+    await onArchive($archive)
+    setArchiving(false)
+  };
 
   const enableEditing = useMemo(() => {
     const isEditing = agreement.agreementDraft.status === "pending" || agreement.agreementDraft.status === "in-progress"
@@ -276,6 +340,8 @@ const IndividualScorecardTeamLoad = observer(() => {
               objectives={objectives}
               handleExportExcel={handleExportExcel}
               handleExportPDF={handleExportPDF}
+              onArchiveScorecard={onArchiveScorecard}
+              archiving={archiving}
             />
           )}
           {cycle === QUARTER2_TAB.name && (

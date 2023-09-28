@@ -3,12 +3,17 @@ import { Component, FC } from "react";
 // import * as am5xy from "@amcharts/amcharts5/xy";
 // import * as am5percent from "@amcharts/amcharts5/percent";
 // import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
-import { Chart as ChartJS, registerables } from "chart.js";
+import { Chart as ChartJS, BarElement, CategoryScale, Legend, LinearScale, Title, Tooltip } from "chart.js";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 import { IProject } from "../../../shared/models/Project.model";
 
 ChartJS.register(
-    ...registerables
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
 );
 
 // export interface IChart {

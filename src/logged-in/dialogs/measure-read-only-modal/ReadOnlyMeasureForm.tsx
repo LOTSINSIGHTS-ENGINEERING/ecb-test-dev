@@ -11,7 +11,7 @@ interface IProps {
   setMeasure: React.Dispatch<React.SetStateAction<IMeasure>>;
 }
 export const MeasureCommentsForm = (props: IProps) => {
-  const { measure, setMeasure } = props;
+  const { measure } = props;
 
   return (
     <div className="uk-width-1-1">
@@ -36,7 +36,7 @@ export const MeasureCommentsForm = (props: IProps) => {
 };
 
 const ReadOnlyMeasureForm = observer((props: IProps) => {
-  const { measure, setMeasure } = props;
+  const { measure } = props;
   const dataType = measure.dataType;
   const symbols = [
     {
@@ -67,8 +67,6 @@ const ReadOnlyMeasureForm = observer((props: IProps) => {
       ],
     },
   ];
-  const dataSymbols = symbols.find((s) => s.dataType === dataType);
-
 
 
   return (

@@ -16,7 +16,7 @@ import Toolbar from "../shared/components/toolbar/Toolbar";
 import WeightError from "../shared/components/weight-error/WeightError";
 import NoMeasures from "./NoMeasures";
 import { dataFormat } from "../../shared/functions/Directives";
-import { faPencilAlt, faArrowRightLong, faFileExcel, faFilePdf, faHistory } from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt, faArrowRightLong, faFileExcel, faFilePdf, faHistory, faArchive } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "../../shared/components/Modal";
 import ScorecardModal from "../dialogs/view-past-scorecards/ScorecardModal";
@@ -351,10 +351,12 @@ interface IUserProps {
   enableEditing: boolean;
   handleExportPDF: () => Promise<void>;
   handleExportExcel: () => Promise<void>;
+  onArchiveScorecard: () => Promise<void>
+  archiving: boolean;
 }
 
 const IndividualScorecardTeamDraftCycle = observer((props: IUserProps) => {
-  const { agreement, objectives, enableEditing, handleExportExcel, handleExportPDF, uid } = props;
+  const { agreement, objectives, enableEditing, handleExportExcel, handleExportPDF, uid, archiving, onArchiveScorecard } = props;
   const { store } = useAppContext();
   const [tab, setTab] = useState(ALL_TAB.id);
 
@@ -418,7 +420,6 @@ const IndividualScorecardTeamDraftCycle = observer((props: IUserProps) => {
                     />
                     Export PDF
                   </button>
-
                   <button
                     className="btn btn-primary uk-margin-small-right"
                     onClick={handleExportExcel}
@@ -431,7 +432,6 @@ const IndividualScorecardTeamDraftCycle = observer((props: IUserProps) => {
                     />
                     Export Excel
                   </button>
-
                   <button
                     className="btn btn-primary uk-margin-small-right"
                     onClick={handleNewObjective}
@@ -440,6 +440,18 @@ const IndividualScorecardTeamDraftCycle = observer((props: IUserProps) => {
                   >
                     <span data-uk-icon="icon: plus-circle; ratio:.8"></span> New
                     Objective
+                  </button>
+                  <button
+                    className="btn btn-danger uk-margin-small-right"
+                    title="Do you want to archive the scorecard."
+                    onClick={onArchiveScorecard} >
+                    <FontAwesomeIcon
+                      icon={faArchive}
+                      size="lg"
+                      className="icon uk-margin-small-right"
+                    />
+                    Archive
+                    {archiving && <div data-uk-spinner="ratio: .5"></div>}
                   </button>
                 </ErrorBoundary>
               }

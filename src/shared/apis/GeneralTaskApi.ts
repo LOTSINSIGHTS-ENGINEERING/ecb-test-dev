@@ -226,7 +226,7 @@ export default class GeneralTaskApi {
         const path = this.gerenalTaskPath();
         if (!path) return;
 
-        const [name, link] = item.files;
+        const [link] = item.files;
 
         try {
             // Delete the file

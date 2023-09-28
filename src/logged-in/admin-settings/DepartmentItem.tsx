@@ -1,4 +1,3 @@
-import React from "react";
 import { useAppContext } from "../../shared/functions/Context";
 import showModalFromId from "../../shared/functions/ModalShow";
 import { IDepartment } from "../../shared/models/Department";

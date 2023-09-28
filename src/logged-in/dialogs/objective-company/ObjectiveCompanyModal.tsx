@@ -63,7 +63,7 @@ const ObjectiveCompanyModal = observer(() => {
       store.strategicTheme.load();
     };
     loadThemes();
-  }, [api.strategicTheme, store.strategicTheme]);
+  }, [api.strategicTheme, store.strategicTheme, scorecardId]);
 
   useEffect(() => {
     // if selected objective, set form values

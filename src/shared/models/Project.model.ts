@@ -1,5 +1,4 @@
 import { makeAutoObservable, toJS } from "mobx";
-import { type } from "os";
 import AppStore from "../stores/AppStore";
 
 export type IProjectStatus = "active" | "on-hold" | "at-risk" | "completed";

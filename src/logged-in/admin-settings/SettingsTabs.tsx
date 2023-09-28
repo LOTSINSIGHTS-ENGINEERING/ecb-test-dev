@@ -70,6 +70,12 @@ const SettingsTabs = (props: IProps) => {
           activeTab={activeTab}
           onClickTab={onClickTab}
         />
+        <TabItem
+          label="archive-tab"
+          name="Scorecard Archives"
+          activeTab={activeTab}
+          onClickTab={onClickTab}
+        />
       </ul>
     </div>
   );

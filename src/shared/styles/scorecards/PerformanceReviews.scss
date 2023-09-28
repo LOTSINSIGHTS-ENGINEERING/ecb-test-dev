@@ -23,6 +23,7 @@
       &:not(:first-child) {
         margin-left: 10px;
       }
+
       &:not(:last-child) {
         &::after {
           content: "";
@@ -73,6 +74,7 @@
           margin-top: 20px;
           margin-bottom: 10px;
         }
+
         .title {
           font-size: $font-size-md;
           font-weight: $font-weight-semibold;
@@ -80,6 +82,7 @@
           margin-bottom: 10px;
           color: $black-color;
         }
+
         .status {
           font-size: $font-size-sm;
           font-weight: $font-weight-semibold;
@@ -95,14 +98,17 @@
         &::after {
           background-color: $grey-color !important;
         }
+
         .step--stage__bubble {
           color: $white-color;
+
           // border: 4px solid $primary-color !important;
           // background-color: $primary-color !important;
           &::before {
             border-color: #65a1f2;
           }
         }
+
         .status {
           color: $primary-color;
           background-color: #e4eefd;
@@ -113,11 +119,13 @@
         &::after {
           background-color: $success-color !important;
         }
+
         .step--stage__bubble {
           color: $white-color;
           border: 4px solid $success-color;
           background-color: $success-color;
         }
+
         .status {
           color: $success-color;
           background-color: #e9fbeb;
@@ -128,11 +136,13 @@
         &::after {
           background-color: $warning_color !important;
         }
+
         .step--stage__bubble {
           color: $white-color;
           border: 4px solid $primary-color;
           background-color: $primary-color;
         }
+
         .status {
           color: $primary-color;
           background-color: #e4eefd;
@@ -143,11 +153,13 @@
         &::after {
           background-color: $grey-color !important;
         }
+
         .step--stage__bubble {
           color: $white-color;
           border: 4px solid $grey-color;
           background-color: $grey-color;
         }
+
         .status {
           color: $grey-color;
           background-color: #f8f8f9;
@@ -158,11 +170,13 @@
         &::after {
           background-color: $danger-color !important;
         }
+
         .step--stage__bubble {
           color: $white-color;
           border: 4px solid $danger-color;
           background-color: $danger-color;
         }
+
         .status {
           color: $danger-color;
           background-color: #fcedee;
@@ -191,12 +205,14 @@
       align-items: center;
       flex-wrap: wrap;
       background-color: $white-color;
+
       .title {
         font-size: $font-size-lg;
         font-weight: $font-weight-semibold;
         white-space: nowrap;
         margin: 0;
       }
+
       select {
         width: 200px;
       }
@@ -207,6 +223,7 @@
 
       thead {
         padding: 10px;
+
         th {
           position: sticky;
           top: 36px;
@@ -224,6 +241,7 @@
           background: $white-color;
           transition: 0.3s ease all;
           cursor: pointer;
+
           &:hover {
             background-color: $hover-color;
           }
@@ -231,6 +249,7 @@
           td {
             font-size: $font-size-sm;
             white-space: nowrap;
+
             .status {
               padding: 5px 10px;
               border-radius: 20px;
@@ -244,10 +263,17 @@
                 color: $success-color;
                 background-color: #e9fbeb;
               }
+
               &__submitted {
                 color: $primary-color;
                 background-color: #e4eefd;
               }
+
+              &__in-progress {
+                color: $warning-color;
+                background-color: #e4eefd;
+              }
+
               &__draft,
               &__pending {
                 color: $grey-color;
@@ -292,6 +318,7 @@
         [data-progress-status="danger"] {
           background-color: $danger-color !important;
         }
+
         [data-progress-status="success"] {
           background-color: $success-color !important;
         }

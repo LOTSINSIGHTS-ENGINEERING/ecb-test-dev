@@ -8,7 +8,7 @@ import useBackButton from "../../shared/hooks/useBack";
 import ErrorBoundary from "../../shared/components/error-boundary/ErrorBoundary";
 import { LoadingEllipsis } from "../../shared/components/loading/Loading";
 import { generateIndividualPerformanceAgreementPDF } from "../../shared/functions/scorecard-pdf/GeneratePerformaneAgreementPDF";
-import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
+import { faArchive, faFileExcel } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { exportEmployeeExcelScorecard } from "../shared/functions/Excel";
 import { dataFormat } from "../../shared/functions/Directives";
@@ -17,16 +17,18 @@ import Measure from "../../shared/models/Measure";
 import Objective from "../../shared/models/Objective";
 import EmptyError from "../admin-settings/EmptyError";
 import NoMeasures from "../execution-scorecard/NoMeasures";
+import { IScorecardArchive } from "../../shared/models/ScorecardArchive";
+import useIndividualScorecard from "../../shared/hooks/useIndividualScorecard";
+
 interface IMeasureTableItemProps {
   measure: Measure;
 }
+
 const MeasureTableItem = observer((props: IMeasureTableItemProps) => {
   const measure = props.measure.asJson;
 
   const dataType = measure.dataType;
   const dataSymbol = measure.dataSymbol;
-
-  // const rateCss = rateColor(Number(measure.finalRating2 || measure.autoRating2), measure.isUpdated);
 
   return (
     <tr className="row uk-card">
@@ -57,6 +59,7 @@ const MeasureTableItem = observer((props: IMeasureTableItemProps) => {
     </tr>
   );
 });
+
 interface IPerformanceAgreementDraftProps {
   measures: Measure[];
 }
@@ -97,6 +100,7 @@ interface IObjectiveItemProps {
   objective: Objective;
   children?: React.ReactNode;
 }
+
 const ObjectiveItem = observer((props: IObjectiveItemProps) => {
   const { objective, children } = props;
   const { perspective, description } = objective.asJson;
@@ -145,21 +149,87 @@ const StrategicList = observer((props: IStrategicListProps) => {
 const PeopleView = observer(() => {
   const { api, store, ui } = useAppContext();
   const { uid } = useParams<string>();
+
+  const me = store.auth.meJson;
   const user = store.user.selected;
   const scorecard = store.scorecard.active;
 
+  const [archiving, setArchiving] = useState(false);
   const [loading, setLoading] = useState(false);
   const [_, setTitle] = useTitle("People"); // set page title
 
   const navigate = useNavigate();
   useBackButton("/c/scorecards/people/");
+  const agreement = useIndividualScorecard(uid);
 
   const objectives = store.objective.getByUid(uid!);
   const measures = store.measure.getByUid(uid!);
+  const measureAudits = store.measureAudit.getByUid(uid!);
 
   const strategicObjectives = [...store.companyObjective.all.map((o) => o.asJson),] || [];
   const contributoryObjectives = objectives.map((o) => o.asJson) || [];
   const allMeasures = measures.map((o) => o.asJson) || [];
+
+  const deleteObjectives = async () => {
+    for (const objective of objectives) {
+      await api.objective.delete(objective.asJson);
+    }
+  };
+
+  const deleteMeasures = async () => {
+    for (const measure of measures) {
+      await api.measure.delete(measure.asJson);
+    }
+  };
+
+  const deleteMeasuresAudits = async () => {
+    for (const measureAudit of measureAudits) {
+      await api.measureAudit.delete(measureAudit.asJson);
+    }
+  };
+
+  const onArchive = async (archive: IScorecardArchive) => {
+    try {
+      await api.scorecardaArchive.create(archive);
+      await deleteObjectives();
+      await deleteMeasures();
+      await deleteMeasuresAudits();
+      await api.individualScorecard.delete(agreement);
+      ui.snackbar.load({
+        id: Date.now(),
+        message: "Scorecard Archived.",
+        type: "success",
+      });
+    } catch (error) {
+      ui.snackbar.load({
+        id: Date.now(),
+        message: "Error! Failed to archive scorecard.",
+        type: "danger",
+      });
+    }
+  };
+
+  const onArchiveScorecard = async () => {
+    if (!window.confirm("This action cannot be undone, the data will be moved to the archive folder.")) return;
+    setArchiving(true)
+    const _objectives = objectives.map((o) => o.asJson);
+    const _measures = measures.map((m) => m.asJson);
+    const _measureAudits = measureAudits.map((m) => m.asJson);
+
+    const $archive: IScorecardArchive = {
+      uid: user!.uid,
+      displayName: user!.displayName,
+      archiverUid: me!.uid,
+      archiverDisplayName: me!.displayName,
+      objectives: _objectives,
+      measures: _measures,
+      measureAudits: _measureAudits,
+      isLocked: false
+    };
+    await onArchive($archive)
+    setArchiving(false)
+  };
+
 
   const handleExportPDF = async () => {
     if (!scorecard || !user) return;
@@ -234,6 +304,18 @@ const PeopleView = observer(() => {
                       className="icon uk-margin-small-right"
                     />
                     Export Excel
+                  </button>
+                  <button
+                    className="btn btn-danger uk-margin-small-right"
+                    title="Do you want to archive the scorecard."
+                    onClick={onArchiveScorecard} >
+                    <FontAwesomeIcon
+                      icon={faArchive}
+                      size="lg"
+                      className="icon uk-margin-small-right"
+                    />
+                    Archive
+                    {archiving && <div data-uk-spinner="ratio: .5"></div>}
                   </button>
                 </ErrorBoundary>
               }

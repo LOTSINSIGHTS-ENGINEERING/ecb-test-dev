@@ -23,6 +23,7 @@ import DivisionModal from "../dialogs/division/DivisionModal";
 import DivisionList from "./DivisionList";
 import StrategicThemeModal from "../dialogs/strategic-theme/StrategicThemeModal";
 import StrategicThemeList from "./StrategicThemeList";
+import ArchiveList from "./ArchiveList";
 
 const AdminSettings = observer(() => {
   const { api, store } = useAppContext();
@@ -69,6 +70,7 @@ const AdminSettings = observer(() => {
         await api.scorecard.getAll();
         await api.businessUnit.getAll();
         await api.strategicTheme.getAll(scorecardId!);
+        await api.scorecardaArchive.getAll();
       } catch (error) {
         // console.log("Error: ", error);
       }
@@ -76,7 +78,7 @@ const AdminSettings = observer(() => {
     };
     loadAll();
     // console.log("ScorecardId: ", scorecardId);
-  }, [api.businessUnit, api.department, api.division, api.scorecard, api.strategicTheme, api.user, scorecardId]);
+  }, [api.businessUnit, api.department, api.division, api.scorecardaArchive, api.scorecard, api.strategicTheme, api.user, scorecardId]);
 
   return (
     <ErrorBoundary>
@@ -157,11 +159,9 @@ const AdminSettings = observer(() => {
                 {selectedTab === "scorecard-tab" && <ScorecardList />}
                 {selectedTab === "division-tab" && <DivisionList />}
                 {selectedTab === "department-tab" && <DepartmentList />}
-
                 {selectedTab === "business-unit-tab" && <BusinessUnitList />}
-                {selectedTab === "strategic-theme-tab" && (
-                  <StrategicThemeList />
-                )}
+                {selectedTab === "strategic-theme-tab" && (<StrategicThemeList />)}
+                {selectedTab === "archive-tab" && <ArchiveList />}
               </div>
             )}
           </ErrorBoundary>

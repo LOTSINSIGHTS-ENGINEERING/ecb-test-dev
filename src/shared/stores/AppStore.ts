@@ -28,6 +28,7 @@ import ProjectStatusStore from "./ProjectStatusStore";
 import FeedbackStore from "./FeedbackStore";
 import ProjectLogsStore from "./ProjectLogsStore";
 import GeneralTaskStore from "./GeneralTaskStore";
+import ScorecardArchiveStore from "./ScorecardArchiveStore";
 
 export default class AppStore {
   app: MainApp;
@@ -50,6 +51,8 @@ export default class AppStore {
   companyScorecardMetadata = new CompanyScorecardMetadataStore(this);
   companyScorecardReview = new CompanyScorecardReviewStore(this);
 
+  // scorecard arechive impletmentation
+  scorecardArchiveStore = new ScorecardArchiveStore(this);
 
   division = new DivisionStore(this);
   department = new DepartmentStore(this);
