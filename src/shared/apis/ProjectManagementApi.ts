@@ -533,7 +533,7 @@ export default class ProjectManagementApi {
         const path = this.taskPath(projectId);
         if (!path) return;
 
-        // const taskRef = doc(db, path, task.id);
+        const taskRef = doc(db, path, task.id);
         try {
             await updateDoc(doc(db, path, task.id), {
                 ...task,

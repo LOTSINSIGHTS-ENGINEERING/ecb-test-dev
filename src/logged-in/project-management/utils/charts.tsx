@@ -1,13 +1,15 @@
 // import * as am5 from "@amcharts/amcharts5";
-import { Component, FC } from "react";
+import { FC } from "react";
 // import * as am5xy from "@amcharts/amcharts5/xy";
 // import * as am5percent from "@amcharts/amcharts5/percent";
 // import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
-import { Chart as ChartJS, BarElement, CategoryScale, Legend, LinearScale, Title, Tooltip } from "chart.js";
+import { Chart as ChartJS, BarElement, CategoryScale, Legend, LinearScale, Title, Tooltip, ArcElement } from "chart.js";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 import { IProject } from "../../../shared/models/Project.model";
+import React from "react";
 
 ChartJS.register(
+    ArcElement,
     CategoryScale,
     LinearScale,
     BarElement,
@@ -16,117 +18,12 @@ ChartJS.register(
     Legend
 );
 
-// export interface IChart {
-//     values: [
-//         {
-//             category: string;
-//             value: number;
-//         }
-//     ] | any[]
-// }
-
-// export class PieChart extends Component<IChart> {
-//     root: any;
-//     // constructor(private chartValues: IChart[]) {
-//     //     super(chartValues);
-//     // }
-//     componentDidMount() {
-//         let root = am5.Root.new("pieChart");
-//         root.setThemes([
-//             am5themes_Animated.new(root)
-//         ]);
-
-//         // Set themes
-//         // https://www.amcharts.com/docs/v5/concepts/themes/
-
-
-
-//         // Create chart
-//         // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
-//         let chart = root.container.children.push(am5percent.PieChart.new(root, {
-//             layout: root.verticalLayout
-//         }));
-
-
-//         // Create series
-//         // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
-//         let series = chart.series.push(am5percent.PieSeries.new(root, {
-//             alignLabels: true,
-//             calculateAggregates: true,
-//             valueField: "value",
-//             categoryField: "category"
-//         }));
-
-//         series.slices.template.setAll({
-//             strokeWidth: 2,
-//             stroke: am5.color(0xffffff)
-//         });
-
-//         series?.get("colors")?.set("colors", [
-//             am5.color(0xFF0000),
-//             am5.color(0xFFA500),
-//             am5.color(0xA020F0),
-//             am5.color(0x00FF00)
-//         ]);
-
-//         series.labelsContainer.set("paddingTop", 30);
-
-//         // Set up adapters for variable slice radius
-//         // https://www.amcharts.com/docs/v5/concepts/settings/adapters/
-//         series.slices.template.adapters.add("radius", function (radius: number | any, target: any) {
-//             let dataItem = target.dataItem;
-//             let high: any = series.getPrivate("valueHigh");
-
-//             if (dataItem) {
-//                 let value = target.dataItem.get("valueWorking", 0);
-//                 return radius * value / high;
-//             }
-//             return radius;
-//         });
-
-
-//         // Set data
-//         // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
-//         series.data.setAll(this.props.values);
-
-//         // Create legend
-//         // https://www.amcharts.com/docs/v5/charts/percent-charts/legend-percent-series/
-//         let legend = chart.children.push(am5.Legend.new(root, {
-//             centerX: am5.p50,
-//             x: am5.p50,
-//             marginTop: 15,
-//             marginBottom: 15
-//         }));
-
-//         legend.data.setAll(series.dataItems);
-
-
-//         // Play initial series animation
-//         // https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
-//         series.appear(1000, 100);
-
-//         this.root = root;
-//     }
-
-//     componentWillUnmount() {
-//         if (this.root) {
-//             this.root.dispose();
-//         }
-//     }
-//     render() {
-//         return (
-//             <div style={{ width: "35rem", height: "30rem", padding: "4rem" }} className="pieChart" id="pieChart" ></div>
-//         )
-//     }
-// }
-
 export interface IBarChartProps {
     data: {
         milestones: any;
         tasks: any;
     }
 }
-
 
 export const ProgressBarChart: FC<IBarChartProps> = ({ data }) => {
 
@@ -183,6 +80,7 @@ interface IBarChartHorizontalProps {
         values: number[];
     }
 }
+
 export const ProgressHorizontalBarChart: FC<IBarChartHorizontalProps> = ({ data }) => {
     const options = {
         indexAxis: 'y' as const,
@@ -233,6 +131,7 @@ interface IBarChartHorizontalStakedProps {
         };
     }
 }
+
 export const ProgressHorizontalStackedBarChart: FC<IBarChartHorizontalStakedProps> = ({ data }) => {
     const options = {
         indexAxis: 'y' as const,
@@ -313,6 +212,7 @@ export const ProgressHorizontalStackedBarChart: FC<IBarChartHorizontalStakedProp
 type ProjectProps = {
     projects: IProject[];
 }
+
 export const ProjectBudgetChart: FC<ProjectProps> = ({ projects }) => {
 
     const options = {
@@ -350,6 +250,7 @@ export const ProjectBudgetChart: FC<ProjectProps> = ({ projects }) => {
 type StatusProps = {
     status: { active: number, onHold: number, atRisk: number, completed: number };
 }
+
 export const ProjectStatusChart: FC<StatusProps> = ({ status }) => {
 
     const options = {

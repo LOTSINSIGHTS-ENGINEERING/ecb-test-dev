@@ -217,7 +217,8 @@ const MetricsAnalytics = observer(() => {
                         <span>✓</span>
                     </div>
                     <div className="info-body uk-card-body">
-                        <p className="value">{rating.toFixed(2)}</p>
+                        <p className="value">{(!isNaN(rating) ? rating.toFixed(2) : "0.00")}</p>
+                        {/* <p className="value">{rating.toFixed(2)}</p> */}
                         <p className="label">Midterm Score</p>
                     </div>
                 </div>
@@ -228,7 +229,7 @@ const MetricsAnalytics = observer(() => {
                         <span>✓</span>
                     </div>
                     <div className="info-body uk-card-body">
-                        <p className="value">{rating2.toFixed(2)}</p>
+                        <p className="value">{(!isNaN(rating2) ? rating2.toFixed(2) : "0.00")}</p>
                         <p className="label">Final Score</p>
                     </div>
                 </div>

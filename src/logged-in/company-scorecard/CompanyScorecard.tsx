@@ -125,14 +125,14 @@ const ReviewCycleTabs = observer((props: IReviewCyleProps) => {
         setReviewCycle={setReviewCycle}
       />
       <StepStage
-        index={3}
+        index={2}
         title={QUARTER2_TAB.name}
         status={quarter2Review.status}
         open={reviewCycle === QUARTER2_TAB.name}
         setReviewCycle={setReviewCycle}
       />
       <StepStage
-        index={5}
+        index={3}
         title={QUARTER4_TAB.name}
         status={quarter4Review.status}
         open={reviewCycle === QUARTER4_TAB.name}

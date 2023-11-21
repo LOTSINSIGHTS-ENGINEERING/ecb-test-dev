@@ -1,5 +1,5 @@
 import { marginTopBottom, header, sectionHeader } from "./DocDefition";
-import {  charts } from "./ImageDefinition";
+import { brandLogo, charts } from "./ImageDefinition";
 
 
 export const CompanyDashboardPDF = async (
@@ -8,7 +8,7 @@ export const CompanyDashboardPDF = async (
     chartsimage: HTMLAnchorElement,
 
 ) => {
-    // const logo = await brandLogo();
+    const logo = await brandLogo();
     const _charts = await charts(chartsimage)
 
     return {

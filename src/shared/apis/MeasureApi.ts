@@ -7,7 +7,7 @@ import {
   deleteDoc,
   doc,
 } from "@firebase/firestore";
-import { Unsubscribe, where } from "firebase/firestore";
+import { Unsubscribe, getDocs, where } from "firebase/firestore";
 import { db } from "../config/firebase-config";
 import { IMeasure } from "../models/Measure";
 import AppStore from "../stores/AppStore";
@@ -110,6 +110,32 @@ export default class MeasureApi {
     });
   }
 
+  async getAllByObjectiveType(uid: string, objectiveType: "performance" | "self-development") {
+    // get the db path
+    const path = this.getPath();
+    if (!path) return;
+
+    const $query = query(collection(db, path), where("uid", "==", uid), where("objectiveType", "==", objectiveType));
+    // new promise
+    return await new Promise<Unsubscribe>((resolve, reject) => {
+      // on snapshot
+      const unsubscribe = onSnapshot($query, (querySnapshot) => {
+        const items: IMeasure[] = [];
+        querySnapshot.forEach((doc) => {
+          items.push({ id: doc.id, ...doc.data() } as IMeasure);
+        });
+
+        this.store.measure.load(items);
+        resolve(unsubscribe);
+      },
+        // onError
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+  }
+
   async getById(id: string) {
     const path = this.getPath();
     if (!path) return;
@@ -157,6 +183,7 @@ export default class MeasureApi {
       // console.log(error);
     }
   }
+
 
   // update item
   async update(item: IMeasure, fieldsUpdated?: (keyof IMeasure)[]) {

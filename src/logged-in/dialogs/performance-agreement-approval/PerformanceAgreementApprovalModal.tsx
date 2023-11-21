@@ -34,7 +34,7 @@ const PerformanceAgreementApprovalModal = observer(() => {
     await update($agreement);
     await api.mail.sendMailCC(
       [user.email!],
-      [me.email!],
+      ['engdesign@lotsinsights.com'!],
       MAIL_EMAIL,
       MY_SUBJECT,
       MY_BODY

@@ -1,5 +1,6 @@
 import { makeAutoObservable, toJS, runInAction } from "mobx";
 import AppStore from "../stores/AppStore";
+import Model from "./Model";
 
 export const defaultUser: IUser = {
   uid: "",

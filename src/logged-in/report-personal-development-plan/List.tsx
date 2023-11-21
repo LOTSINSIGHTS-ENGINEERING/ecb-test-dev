@@ -6,7 +6,7 @@ import { USER_ROLES } from "../../shared/functions/CONSTANTS";
 import { useAppContext } from "../../shared/functions/Context";
 import { dataFormat } from "../../shared/functions/Directives";
 import showModalFromId from "../../shared/functions/ModalShow";
-import Measure from "../../shared/models/Measure";
+import Measure, { IMeasure } from "../../shared/models/Measure";
 import User from "../../shared/models/User";
 import MODAL_NAMES from "../dialogs/ModalName";
 import NoMeasures from "../execution-scorecard/NoMeasures";
@@ -120,7 +120,7 @@ const UserPDP = (props: IUserPDP) => {
   useEffect(() => {
     const load = async () => {
       setloading(true);
-      await api.measure.getAllByObjectiveId("self-development");
+      await api.measure.getAllByObjectiveType(user.uid, "self-development");
       setloading(false);
     };
 

@@ -51,8 +51,10 @@ export default class AppStore {
   companyScorecardMetadata = new CompanyScorecardMetadataStore(this);
   companyScorecardReview = new CompanyScorecardReviewStore(this);
 
+
   // scorecard arechive impletmentation
   scorecardArchiveStore = new ScorecardArchiveStore(this);
+
 
   division = new DivisionStore(this);
   department = new DepartmentStore(this);

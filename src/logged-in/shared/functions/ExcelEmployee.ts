@@ -4,7 +4,6 @@ import { IEmployeeTableRowItem } from "../../../shared/functions/scorecard-pdf/I
 import { fullPerspectiveName } from "../../../shared/interfaces/IPerspectiveTabs";
 import { IMeasure } from "../../../shared/models/Measure";
 import { IObjective } from "../../../shared/models/Objective";
-import { semester1EmpRating, semester1SuperRating, semester1FinalRating, q4EmpRating, q4FinalRating, q4SuperRating, rateColor } from "./Scorecard";
 
 const EMPLOYEE_HEADER_ROW: any = [
   {
@@ -124,49 +123,6 @@ const EMPLOYEE_HEADER_ROW: any = [
     wrap: true,
   },
 ];
-
-const EMPLOYEE_FOOTER = (r1: string, r2: string, r3: string) => {
-  const EMPLOYEE_FOOTER_ROW = [
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {
-      value: r1,
-      fontWeight: "bold",
-      backgroundColor: "",
-      wrap: true,
-    },
-    {
-      value: r2,
-      fontWeight: "bold",
-      backgroundColor: "",
-      wrap: true,
-    },
-    {
-      value: r3,
-      fontWeight: "bold",
-      backgroundColor: "",
-      wrap: true,
-    },
-  ];
-
-  return EMPLOYEE_FOOTER_ROW
-}
 
 const SCORECARD_COLUMNS = [
   { width: 10 }, // Perspectives
@@ -402,22 +358,6 @@ export const exportEmployeeScorecardExcel = async (
   let objective = "";
   let cObjective = "";
 
-  // const rating1 = semester1EmpRating(measures);
-  // const rating2 = semester1SuperRating(measures);
-  // const rating3 = semester1FinalRating(measures);
-
-  const rating1 = q4EmpRating(measures).toFixed(2);
-  const rating2 = q4SuperRating(measures).toFixed(2);
-  const rating3 = q4FinalRating(measures).toFixed(2);
-
-  const _rating1 = q4EmpRating(measures);
-  const _rating2 = q4SuperRating(measures);
-  const _rating3 = q4FinalRating(measures);
-
-  const q2_e_css = rateColor(_rating1, true);
-  const q2_s_css = rateColor(_rating2, true);
-  const q2_f_css = rateColor(_rating3, true);
-
   const dataRows = rows.map((row, _, data) => {
     let perspectiveRowSpan = undefined;
     let objectiveRowSpan = undefined;
@@ -499,7 +439,7 @@ export const exportEmployeeScorecardExcel = async (
     ];
   });
 
-  const data = [EMPLOYEE_HEADER_ROW, ...dataRows, EMPLOYEE_FOOTER(rating1, rating2, rating3)];
+  const data = [EMPLOYEE_HEADER_ROW, ...dataRows];
 
   await writeXlsxFile(data, {
     columns: SCORECARD_COLUMNS, // (optional) column widths, etc.

@@ -389,7 +389,7 @@ const EmployeeQ2ReviewCycle = observer((props: IQ2Props) => {
 
   const isDisabled = useMemo(() => !(agreement.quarter2Review.status === "submitted"), [agreement.quarter2Review.status]);
 
-  const canUpdate = useMemo(() => agreement.quarter2Review.status === "submitted", [agreement]);
+  const canUpdate = useMemo(() => !(agreement.quarter2Review.status === "submitted"), [agreement]);
 
   const incompleteReviewError = measures.some((m) => m.asJson.supervisorRating === null);
 

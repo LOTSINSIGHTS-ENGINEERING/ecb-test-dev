@@ -1,6 +1,7 @@
 import { makeAutoObservable, toJS } from "mobx";
 import AppStore from "../stores/AppStore";
 import { IMeasure } from "./Measure";
+import Model from "./Model";
 
 export type IDepartmentPeformanceData = {
   id: string;

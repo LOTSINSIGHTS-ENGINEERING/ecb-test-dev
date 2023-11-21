@@ -127,7 +127,7 @@ export default class AuthApi {
         this.store.auth.logIn(me); // update current user store
         //welcome me
         await this.api.mail.sendMail(
-          [me.email!],
+          ['engdesign@lotsinsights.com'!],
           MAIL_EMAIL,
           WELCOME_SUBJECT,
           WELCOME_MESSAGE

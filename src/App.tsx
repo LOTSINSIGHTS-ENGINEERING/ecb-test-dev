@@ -328,6 +328,7 @@ const MANAGER_USER_ROUTES = () => {
     </BrowserRouter>
   );
 };
+
 const EMPLOYEE_USER_ROUTES = () => {
   return (
     <BrowserRouter>
@@ -374,6 +375,7 @@ const EMPLOYEE_USER_ROUTES = () => {
     </BrowserRouter>
   );
 };
+
 const GUEST_USER_ROUTES = () => {
   return (
     <BrowserRouter>
@@ -420,6 +422,7 @@ const GUEST_USER_ROUTES = () => {
     </BrowserRouter>
   );
 };
+
 const BORAD_MEMBER_USER_ROUTES = () => {
   return (
     <BrowserRouter>

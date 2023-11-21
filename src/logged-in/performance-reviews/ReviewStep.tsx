@@ -23,14 +23,14 @@ const ReviewStep = (props: IReviewStepProps) => {
         onClick={() => setOpenStage("Scorecard")}
       />
       <StepStage
-        index={3}
+        index={2}
         title={"Midterm Reviews (Q2)"}
         open={isOpen("Midterm Reviews")}
         status={midtermReview.status}
         onClick={() => setOpenStage("Midterm Reviews")}
       />
       <StepStage
-        index={5}
+        index={3}
         title={"Assessment (Q4)"}
         open={isOpen("Assessment")}
         status={finalAssessment.status}

@@ -222,33 +222,33 @@ const FormatTableSpan = (_rows: IEmployeeTableRowItem[]) => {
 
     return [
       {
-        rowSpan: perspectiveRowSpan || 1,
+        // rowSpan: perspectiveRowSpan || 1,
         text: row.perspective,
         fillColor: '#dedede'
       },
       {
-        rowSpan: objectiveRowSpan || 1,
+        // rowSpan: objectiveRowSpan || 1,
         text: row.strategicObjective,
       },
       {
-        rowSpan: cObjectiveRowSpan || 1,
+        // rowSpan: cObjectiveRowSpan || 1,
         text: row.contributoryObjective,
       },
       {
-        rowSpan: cObjectiveRowSpan || 1,
+        // rowSpan: cObjectiveRowSpan || 1,
         text: row.weight || "-",
       },
       // 
       {
-        rowSpan: cObjectiveRowSpan || 1,
+        // rowSpan: cObjectiveRowSpan || 1,
         text: row.draftComment || "-",
       },
       {
-        rowSpan: cObjectiveRowSpan || 1,
+        // rowSpan: cObjectiveRowSpan || 1,
         text: row.midComment || "-",
       },
       {
-        rowSpan: cObjectiveRowSpan || 1,
+        // rowSpan: cObjectiveRowSpan || 1,
         text: row.assessComment || "-",
       },
       // 

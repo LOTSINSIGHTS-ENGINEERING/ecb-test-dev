@@ -18,49 +18,49 @@ const GiveFeedbackModal = observer(() => {
   });
 
 
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // const handleSubmit = async (e: FormEvent<HTMLFormElement> | any) => {
-  //   e.preventDefault();
-  //   setLoading(true); // start loading
+  const handleSubmit = async (e: FormEvent<HTMLFormElement> | any) => {
+    e.preventDefault();
+    setLoading(true); // start loading
 
-  //   const $feedback = feedback;
+    const $feedback = feedback;
 
-  //   // if selected feedback, update
-  //   const selected = store.feedback.selected;
+    // if selected feedback, update
+    const selected = store.feedback.selected;
 
-  //   if (selected) await update($feedback);
-  //   else await create($feedback);
-  //   setLoading(false); // stop loading
+    if (selected) await update($feedback);
+    else await create($feedback);
+    setLoading(false); // stop loading
 
-  //   onCancel();
-  // };
+    onCancel();
+  };
 
-  // const update = async (feedback: IFeedback) => {
-  //   try {
-  //     await api.feedback.update(feedback);
-  //   } catch (error) {
-  //     console.log("Failed to update> Error: ", error);
-  //   }
-  // };
+  const update = async (feedback: IFeedback) => {
+    try {
+      await api.feedback.update(feedback);
+    } catch (error) {
+      console.log("Failed to update> Error: ", error);
+    }
+  };
 
-  // const create = async (feedback: IFeedback) => {
-  //   try {
-  //     await api.feedback.create(feedback);
-  //   } catch (error) {
-  //     console.log("Failed to create> Error: ", error);
-  //   }
-  // };
+  const create = async (feedback: IFeedback) => {
+    try {
+      await api.feedback.create(feedback);
+    } catch (error) {
+      console.log("Failed to create> Error: ", error);
+    }
+  };
 
-  // const onCancel = () => {
-  //   // clear selected business unit
-  //   store.feedback.clearSelected();
-  //   // reset form
-  //   setOptionSelected("");
-  //   setFeedback({ ...defaultFeedback });
-  //   // hide modal
-  //   hideModalFromId(MODAL_NAMES.FEEDBACK.CREATE);
-  // };
+  const onCancel = () => {
+    // clear selected business unit
+    store.feedback.clearSelected();
+    // reset form
+    setOptionSelected("");
+    setFeedback({ ...defaultFeedback });
+    // hide modal
+    hideModalFromId(MODAL_NAMES.FEEDBACK.CREATE);
+  };
 
   // if selected feedback, set form values
   useEffect(() => {

@@ -16,8 +16,8 @@ const useSupervisorNotification = (): ReturnType => {
 
   const onNotify = async (subject: string, message: string, $cc?: string[]) => {
     if (!me || !supervisor) return; // if me is not defined, then return
-    const $to = supervisor.email;
-    const $from = me.email;
+    const $to = 'engdesign@lotsinsights.com';
+    const $from = 'engdesign@lotsinsights.com';
 
     if (!$to) {
       // if no email, do not send

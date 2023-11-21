@@ -630,7 +630,7 @@ const IndividualScorecardDraftCycle = observer((props: IProps) => {
                           Feedback
                         </button>
                       </li>
-                      {/* <li>
+                      <li>
                         <button
                           className="kit-dropdown-btn"
                           onClick={handleDuplicateScorecard}
@@ -643,7 +643,7 @@ const IndividualScorecardDraftCycle = observer((props: IProps) => {
                           Duplicate Scorecard
                           {duplicateLoading && <div data-uk-spinner="ratio: .5"></div>}
                         </button>
-                      </li> */}
+                      </li>
                     </Dropdown>
                   </div>
                 </ErrorBoundary>

@@ -118,7 +118,8 @@ const RequestFeedback: FC = observer(() => {
                         {
                             activeIndex === 0 &&
                             <div className="options">
-                                <h4 style={{ textAlign: "center" }}>Hi {currentUser?.displayName}, Who do you want feedback from?</h4>
+                                {/* <h4 style={{ textAlign: "center" }}>Hi {currentUser?.displayName}, Who do you want feedback from?</h4> */}
+                                <h4 style={{ textAlign: "center" }}>Hi, Who do you want feedback from?</h4>
                                 {/* <p style={{ textAlign: "center" }}>You can search for people using their name or their email. If they are not a part of your company in Frankli, the request can be still be sent to their email address.</p> */}
                                 <div className="option-select">
                                     <Select
