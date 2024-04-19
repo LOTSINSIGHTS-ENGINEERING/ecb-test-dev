@@ -26,6 +26,7 @@ import Modal from "../../shared/components/Modal";
 import MeasureUpdateQ2ActualModal from "../dialogs/measure-update-q2-actual/MeasureUpdateQ2ActualModal";
 import { MAIL_SCORECARD_Q2_SUBMITTED_MANAGER, MAIL_SCORECARD_Q2_SUBMITTED_ME } from "../../shared/functions/mailMessages";
 import ViewObjectiveQ2CommentModal from "../dialogs/objective/ViewObjectiveQ2CommentModal";
+import { useParams } from "react-router-dom";
 
 interface IMoreButtonProps {
   agreement: IScorecardMetadata;
@@ -391,15 +392,30 @@ interface IRatingProps {
 }
 const ScorecardRatings = observer((props: IRatingProps) => {
   const { measures } = props;
+  const { api, store } = useAppContext();
+  const me = store.auth.meJson?.uid || "";
+
   const $measures = measures.map((measure) => measure.asJson);
 
-  const rating1 = semester1EmpRating($measures)
-  const rating2 = semester1SuperRating($measures)
-  const rating3 = semester1FinalRating($measures)
+  const objectives = store.objective.all.filter((obj) => obj.asJson.uid === me).map((obj) => { return obj.asJson });
+  const scorecardMetaData = store.companyScorecardMetadata.all.find((m) => m.asJson.uid === me)?.asJson;
+
+
+  const rating1 = semester1EmpRating($measures, objectives, scorecardMetaData)
+  const rating2 = semester1SuperRating($measures, objectives, scorecardMetaData)
+  const rating3 = semester1FinalRating($measures, objectives, scorecardMetaData)
 
   const q2_e_css = rateColor(rating1, true);
   const q2_s_css = rateColor(rating2, true);
   const q2_f_css = rateColor(rating3, true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      await api.companyScorecardMetadata.getAll();
+    }
+    loadData();
+  }, [])
+
 
   return (
     <ErrorBoundary>

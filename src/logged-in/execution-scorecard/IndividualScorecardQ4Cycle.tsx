@@ -26,6 +26,7 @@ import Rating from "../shared/components/rating/Rating";
 import Modal from "../../shared/components/Modal";
 import MeasureUpdateActualQ4Modal from "../dialogs/measure-update-q4-actual/MeasureUpdateActualQ4Modal";
 import ViewObjectiveQ4CommentModal from "../dialogs/objective/ViewObjectiveQ4CommentModal";
+import { useParams } from "react-router-dom";
 
 
 interface IMoreButtonProps {
@@ -392,15 +393,29 @@ interface IRatingProps {
 }
 const ScorecardRatings = observer((props: IRatingProps) => {
   const { measures } = props;
+  const { store, api } = useAppContext();
+  const me = store.auth.meJson?.uid || "";
+
   const $measures = measures.map((measure) => measure.asJson);
 
-  const rating1 = q4EmpRating($measures)
-  const rating2 = q4SuperRating($measures)
-  const rating3 = q4FinalRating($measures)
+  const objectives = store.objective.all.filter((obj) => obj.asJson.uid === me).map((obj) => { return obj.asJson });
+  const scorecardMetaData = store.companyScorecardMetadata.all.find((m) => m.asJson.uid === me)?.asJson;
+
+  const rating1 = q4EmpRating($measures, objectives, scorecardMetaData)
+  const rating2 = q4SuperRating($measures, objectives, scorecardMetaData)
+  const rating3 = q4FinalRating($measures, objectives, scorecardMetaData)
 
   const q4_e_css = rateColor(rating1, true);
   const q4_s_css = rateColor(rating2, true);
   const q4_f_css = rateColor(rating3, true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      await api.companyScorecardMetadata.getAll();
+    }
+    loadData();
+  }, [])
+
 
   return (
     <ErrorBoundary>

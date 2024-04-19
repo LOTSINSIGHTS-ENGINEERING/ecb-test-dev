@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ErrorBoundary from "../../../shared/components/error-boundary/ErrorBoundary";
 import { useAppContext } from "../../../shared/functions/Context";
 import showModalFromId from "../../../shared/functions/ModalShow";
@@ -154,15 +154,24 @@ const ObjectivesGrid = observer(() => {
 });
 
 const MetricsAnalytics = observer(() => {
-    const { store } = useAppContext();
+    const { store, api } = useAppContext();
 
     const objectives = store.objective.allMe;
     const measures = store.measure.allMe;
     const redMeasures = measures.filter((measure) => (measure.asJson.finalRating || 0) <= 2);
     const $measures = measures.map((measure) => measure.asJson);
+    
 
     const rating = totalQ2MeasureRating($measures);
     const rating2 = totalQ4MeasureRating($measures);
+
+
+    useEffect(() => {
+        const loadData = async () => {
+          await api.companyScorecardMetadata.getAll();
+        }
+        loadData();
+      }, [])
 
     return (
         <div

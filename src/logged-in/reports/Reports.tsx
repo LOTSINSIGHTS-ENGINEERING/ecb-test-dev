@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import useTitle from "../../shared/hooks/useTitle";
-import PeopleTabContent from "./people-tab-content/PeopleTabContent";
+import { PeopleTabContent } from "./people-tab-content/PeopleTabContent";
 import ReportTabs from "./ReportTabs";
 import StrategyTabContent from "./strategy-tab-content/StrategyTabContent";
 import { observer } from "mobx-react-lite";
@@ -12,7 +12,7 @@ import { LoadingEllipsis } from "../../shared/components/loading/Loading";
 import useBackButton from "../../shared/hooks/useBack";
 import ErrorBoundary from "../../shared/components/error-boundary/ErrorBoundary";
 import { DepartmentsTabContent } from "./department-tab-content/DepartmentsTabContent";
-import { totalQ2MeasureRating, totalQ4MeasureRating } from "../shared/functions/Scorecard";
+import { totalQ2MeasureRating, totalQ2MeasureRatingNew, totalQ4MeasureRating, totalQ4MeasureRatingNew } from "../shared/functions/Scorecard";
 import { IScorecardBatch } from "../../shared/models/ScorecardBatch";
 
 const Reports = observer(() => {
@@ -71,10 +71,14 @@ const Reports = observer(() => {
       const $measures = userMeasures(measures, user);
       // get department name from department id
       const departmentName = getDepartmentNameFromId(user.department);
-      // calculate the rating for each user
-      const rating = totalQ2MeasureRating($measures);
 
-      const rating2 = totalQ4MeasureRating($measures);
+      const objectives = store.objective.all.filter((obj) => obj.asJson.uid === user.uid).map((obj) => { return obj.asJson });
+      const scorecardMetaData = store.companyScorecardMetadata.all.find((m) => m.asJson.uid === user.uid)?.asJson;
+
+      // calculate the rating for each user
+      const rating = totalQ2MeasureRatingNew($measures, objectives, scorecardMetaData);
+
+      const rating2 = totalQ4MeasureRatingNew($measures, objectives, scorecardMetaData);
 
       // verify the measures weight per user add up to 100
       const weightValidity = verifyTotalWeight($measures);
@@ -104,6 +108,9 @@ const Reports = observer(() => {
     userPerformanceData();
   }, [userPerformanceData]);
 
+
+
+
   // load users from db
   const loadAll = useCallback(async () => {
     setLoading(true); // start loading
@@ -112,6 +119,8 @@ const Reports = observer(() => {
       await api.department.getAll();
       await api.measure.getAll();
       await api.objective.getAll();
+      await api.companyScorecardMetadata.getAll();
+
       if (fyid) {
         await api.companyMeasure.getAll(fyid);
         await api.companyObjective.getAll(fyid);

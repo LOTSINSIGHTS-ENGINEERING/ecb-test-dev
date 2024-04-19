@@ -126,6 +126,8 @@ interface IProps {
   measures: IMeasure[];
   enableEditing: boolean;
 }
+
+
 const MeasureTable = observer((props: IProps) => {
   const { measures, enableEditing } = props;
 

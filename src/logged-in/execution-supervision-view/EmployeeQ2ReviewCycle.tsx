@@ -25,6 +25,7 @@ import { IUser } from "../../shared/models/User";
 import PerformanceMidtermApprovalModal from "../dialogs/performance-midterm-approval/PerformanceMidtermApprovalModal";
 import PerformanceMidtermRejectionModal from "../dialogs/performance-midterm-rejection/PerformanceMidtermRejectionModal";
 import ObjectiveQ2CommentModal from "../dialogs/objective/ObjectiveQ2CommentModal";
+import { useParams } from "react-router-dom";
 
 interface IMidtermReviewMeasureTableItemProps {
   measure: Measure;
@@ -285,15 +286,29 @@ interface IRatingProps {
 }
 const ScorecardRatings = observer((props: IRatingProps) => {
   const { measures } = props;
+  const { api, store } = useAppContext();
+  const { uid } = useParams();
+
+  const objectives = store.objective.all.filter((obj) => obj.asJson.uid === uid).map((obj) => { return obj.asJson });
+  const scorecardMetaData = store.companyScorecardMetadata.all.find((m) => m.asJson.uid === uid)?.asJson;
+
   const $measures = measures.map((measure) => measure.asJson);
 
-  const rating1 = semester1EmpRating($measures)
-  const rating2 = semester1SuperRating($measures)
-  const rating3 = semester1FinalRating($measures)
+  const rating1 = semester1EmpRating($measures, objectives, scorecardMetaData)
+  const rating2 = semester1SuperRating($measures, objectives, scorecardMetaData)
+  const rating3 = semester1FinalRating($measures, objectives, scorecardMetaData)
 
   const q2_e_css = rateColor(rating1, true);
   const q2_s_css = rateColor(rating2, true);
   const q2_f_css = rateColor(rating3, true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      await api.companyScorecardMetadata.getAll();
+    }
+    loadData();
+  }, [])
+
 
   return (
     <ErrorBoundary>
@@ -389,7 +404,8 @@ const EmployeeQ2ReviewCycle = observer((props: IQ2Props) => {
 
   const isDisabled = useMemo(() => !(agreement.quarter2Review.status === "submitted"), [agreement.quarter2Review.status]);
 
-  const canUpdate = useMemo(() => !(agreement.quarter2Review.status === "submitted"), [agreement]);
+  //negation was placed here
+  const canUpdate = useMemo(() => (agreement.quarter2Review.status === "submitted"), [agreement]);
 
   const incompleteReviewError = measures.some((m) => m.asJson.supervisorRating === null);
 

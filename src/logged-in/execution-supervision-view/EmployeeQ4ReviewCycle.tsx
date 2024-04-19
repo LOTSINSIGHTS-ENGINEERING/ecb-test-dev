@@ -25,6 +25,7 @@ import { IUser } from "../../shared/models/User";
 import PerformanceAssessmentApprovalModal from "../dialogs/performance-assessment-approval/PerformanceAssessmentApprovalModal";
 import PerformanceAssessmentRejectionModal from "../dialogs/performance-assessment-rejection/PerformanceAssessmentRejectionModal";
 import ObjectiveQ4CommentModal from "../dialogs/objective/ObjectiveQ4CommentModal";
+import { useParams } from "react-router-dom";
 
 interface MeasureTableItemProps {
   measure: Measure;
@@ -243,11 +244,21 @@ interface ObjectiveItemProps {
   objective: Objective;
   children?: React.ReactNode;
   handleComments: () => void;
+  objectiveScore?: number;
 }
 const ObjectiveItem = observer((props: ObjectiveItemProps) => {
   const { objective, handleComments, children } = props;
   const { weight, description, perspective } = objective.asJson;
-  const { rate, isUpdated } = objective.q4Rating;
+  const { rate, isUpdated, } = objective.q4Rating;
+
+
+
+
+
+
+
+
+
 
   return (
     <ErrorBoundary>
@@ -271,6 +282,9 @@ const ObjectiveItem = observer((props: ObjectiveItemProps) => {
             ></button>
           </h3>
         </div>
+        <div>
+
+        </div>
         <div className="uk-margin">{children}</div>
       </div>
     </ErrorBoundary>
@@ -280,13 +294,24 @@ const ObjectiveItem = observer((props: ObjectiveItemProps) => {
 interface IRatingProps {
   measures: Measure[];
 }
+
+//flag
 const ScorecardRatings = observer((props: IRatingProps) => {
   const { measures } = props;
+  const { store } = useAppContext();
+  const { uid } = useParams();
   const $measures = measures.map((measure) => measure.asJson);
+  const objectives = store.objective.all.filter((obj) => obj.asJson.uid === uid).map((obj) => { return obj.asJson });
+  const scorecardMetaData = store.companyScorecardMetadata.all.find((m) => m.asJson.uid === uid)?.asJson;
 
-  const rating1 = q4EmpRating($measures)
-  const rating2 = q4SuperRating($measures)
-  const rating3 = q4FinalRating($measures)
+  // const rating1 = q4EmpRating($measures) // wrong
+  // const rating2 = q4SuperRating($measures) //wrong
+  // const rating3 = q4FinalRating($measures) //wrong
+
+  const rating1 = q4EmpRating($measures, objectives, scorecardMetaData) //RIGHT
+  const rating2 = q4SuperRating($measures, objectives, scorecardMetaData) //RIGHT
+  const rating3 = q4FinalRating($measures, objectives, scorecardMetaData) //RIGHT
+
 
   const q2_e_css = rateColor(rating1, true);
   const q2_s_css = rateColor(rating2, true);
@@ -341,6 +366,12 @@ const StrategicList = observer((props: ObjectivesProps) => {
     return tab === ALL_TAB.id ? objectives : objectives.filter((o) => o.asJson.perspective === tab);
   }, [store.objective, tab]);
 
+
+
+
+
+
+
   return (
     <ErrorBoundary>
       <div className="objective-table uk-margin">
@@ -357,6 +388,8 @@ const StrategicList = observer((props: ObjectivesProps) => {
               />
             </ObjectiveItem>
           ))}
+
+
         </ErrorBoundary>
         <ErrorBoundary> {!objectives.length && (<EmptyError errorMessage="No objective found" />)}
         </ErrorBoundary>
@@ -432,6 +465,13 @@ const EmployeeQ4ReviewCycle = observer((props: IQ4Props) => {
   // useEffect(() => {
   //   if (store.objective) store.objective.selectPeriod("assess");
   // }, [store.objective]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      await api.companyScorecardMetadata.getAll();
+    }
+    loadData();
+  }, [])
 
   if (
     agreement.quarter4Review.status === "pending" ||

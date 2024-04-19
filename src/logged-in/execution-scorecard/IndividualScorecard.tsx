@@ -90,6 +90,7 @@ interface IReviewStepProps {
   reviewCycle: IReviewCycleType;
   setReviewCycle: React.Dispatch<React.SetStateAction<IReviewCycleType>>;
 }
+
 const ReviewCycleTabs = observer((props: IReviewStepProps) => {
   const { reviewCycle, setReviewCycle } = props;
   const agreement = useIndividualScorecard();
@@ -157,12 +158,17 @@ const IndividualScorecard = observer(() => {
 
   const objectives = store.objective.allMe;
   const measures = store.measure.allMe;
+
+
+
   const scorecard = store.scorecard.active;
   const currentScorecardId = store.scorecard.currentId;
 
   const strategicObjectives = [...store.companyObjective.all.map((o) => o.asJson),] || [];
   const contributoryObjectives = objectives.map((o) => o.asJson) || [];
   const allMeasures = measures.map((o) => o.asJson) || [];
+
+
 
   const handleExportPDF = async () => {
     if (!scorecard) return;
@@ -197,6 +203,8 @@ const IndividualScorecard = observer(() => {
       });
     }
   };
+
+
 
   const handleObjectives = async () => {
     if (!currentScorecardId || !me) {
@@ -294,6 +302,7 @@ const IndividualScorecard = observer(() => {
 
 
   const handleDuplicateScorecard = async () => {
+    alert("here")
     setDuplicateLoading(true);
     try {
       await handleObjectives()

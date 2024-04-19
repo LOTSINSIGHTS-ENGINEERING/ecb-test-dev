@@ -24,6 +24,7 @@ import { sortByPerspective } from "../shared/utils/utils";
 import CompanyStrategicMap from "./strategic-map/CompanyStrategicMap";
 import ViewObjectiveCompanyDraftCommentModal from "../dialogs/objective-company/ViewObjectiveCompanyDraftCommentModal";
 import Modal from "../../shared/components/Modal";
+import { DuplicationModal } from "./DuplicationModal";
 
 interface IMoreButtonProps {
   agreement: IScorecardMetadata;
@@ -395,6 +396,10 @@ const CompanyScorecardDraftCycle = observer((props: IProps) => {
     store.companyObjective.clearSelected();
     showModalFromId(MODAL_NAMES.EXECUTION.OBJECTIVE_MODAL);
   };
+  const handleDuplicAation = () => {
+    store.companyObjective.clearSelected();
+    showModalFromId(MODAL_NAMES.EXECUTION.DUPLICATION_MODAL);
+  };
 
   return (
     <div className="company-plan-view-page uk-section uk-section-small">
@@ -404,6 +409,13 @@ const CompanyScorecardDraftCycle = observer((props: IProps) => {
             leftControls={<Tabs tab={tab} setTab={setTab} />}
             rightControls={
               <ErrorBoundary>
+                <button
+                  className="btn btn-primary uk-margin-small-right"
+                  onClick={handleDuplicAation}
+                >
+                  <span data-uk-icon="icon: plus-circle; ratio:.8"></span> New
+                  Duplicate Company Scorecard
+                </button>
                 <button
                   className="btn btn-primary uk-margin-small-right"
                   onClick={handleNewObjective}
@@ -503,13 +515,16 @@ const CompanyScorecardDraftCycle = observer((props: IProps) => {
           <div className="uk-margin">
             {tab === MAP_TAB.id && <CompanyStrategicMap />}
             {tab !== MAP_TAB.id && (<StrategicList isEditing={isEditing} hasAccess={hasAccess}
-             objectives={filteredObjectivesByPerspective} />
+              objectives={filteredObjectivesByPerspective} />
             )}
           </div>
         </ErrorBoundary>
         <ErrorBoundary>
           <Modal modalId={MODAL_NAMES.EXECUTION.VIEW_OBJECTIVE_COMPANY_DRAFT_COMMENT_MODAL}>
             <ViewObjectiveCompanyDraftCommentModal />
+          </Modal>
+          <Modal modalId={MODAL_NAMES.EXECUTION.DUPLICATION_MODAL}>
+            <DuplicationModal />
           </Modal>
         </ErrorBoundary>
       </div>

@@ -11,7 +11,7 @@ import { generateReportPDF } from "../../../shared/functions/scorecard-pdf/Gener
 import { useState } from "react";
 import { exportReportExcel } from "../../shared/functions/ReportExcel";
 
-const PeopleTabContent = observer(() => {
+export const PeopleTabContent = observer(() => {
   const { store, ui } = useAppContext();
 
   // analytics on people per rating.
@@ -146,8 +146,6 @@ const PeopleTabContent = observer(() => {
     </div>
   );
 });
-
-export default PeopleTabContent;
 
 
   // const q2Sorted = userData.sort((a, b) => b.asJson.rating - a.asJson.rating);

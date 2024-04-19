@@ -74,12 +74,29 @@ export default class Objective {
   get q4Rating(): IObjectiveRating {
     const measuresUpdated = this.measures.some((m) => m.asJson.isUpdated);
     const rating = totalQ4IndividualObjectiveRating(
-      this.measures.map((o) => o.asJson)
+      this.measures.map((o) => o.asJson), this.objective.id
     );
+
+
 
     return {
       rate: rating,
       isUpdated: measuresUpdated,
     };
   }
+  get weightedObjective(): IObjectiveRating {
+    const measuresUpdated = this.measures.some((m) => m.asJson.isUpdated);
+    const rating = totalQ4IndividualObjectiveRating(
+      this.measures.map((o) => o.asJson), this.objective.id
+    );
+
+
+
+    return {
+      rate: rating,
+      isUpdated: measuresUpdated,
+    };
+  }
+
+
 }

@@ -17,8 +17,8 @@ const useMailer = (): ReturnType => {
 
   const mailSupervisor = async (subject: string, message: string) => {
     if (!me || !supervisor) return;
-    const $to = 'engdesign@lotsinsights.com';
-    const $from = 'engdesign@lotsinsights.com';
+    const $to = supervisor.email;
+    const $from = me.email;
 
     // console.log("Supervisor: ", $to);
     // console.log("Employee: ", $from);
@@ -62,7 +62,7 @@ const useMailer = (): ReturnType => {
 
   const mailMe = async (subject: string, message: string, $cc?: string[]) => {
     if (!me || !supervisor) return;
-    const $to = 'engdesign@lotsinsights.com';
+    const $to = me.email;
     const $from = "e-performance@ecb.org.na";
 
     // console.log("Employee: ", $to);

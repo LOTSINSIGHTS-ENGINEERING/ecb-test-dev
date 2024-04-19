@@ -1,4 +1,4 @@
-import { faBullseye, faChartSimple, faChessBoard, faTrophy, faDatabase, faHomeAlt, faShield, faTrophy } from "@fortawesome/free-solid-svg-icons";
+import { faBullseye, faChartSimple, faChessBoard, faDatabase, faHomeAlt, faShield, faTrophy } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import { NavLink } from "react-router-dom";

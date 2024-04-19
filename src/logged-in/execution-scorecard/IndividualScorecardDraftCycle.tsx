@@ -25,6 +25,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MAIL_SCORECARD_DRAFT_SUBMITTED_MANAGER, MAIL_SCORECARD_DRAFT_SUBMITTED_ME } from "../../shared/functions/mailMessages";
 import Modal from "../../shared/components/Modal";
 import ViewObjectiveDraftCommentModal from "../dialogs/objective/ViewObjectiveDraftCommentModal";
+import { DuplicationIndividualModal } from "./DuplicateIndividualModal";
 
 interface IMoreButtonProps {
   agreement: IScorecardMetadata;
@@ -517,6 +518,11 @@ const IndividualScorecardDraftCycle = observer((props: IProps) => {
     store.objective.clearSelected(); // clear selected objective
     showModalFromId(MODAL_NAMES.EXECUTION.OBJECTIVE_MODAL);
   };
+  const handleDuplicate = () => {
+    store.objective.setPerspective(tab); // set the selected tab in the store.
+    store.objective.clearSelected(); // clear selected objective
+    showModalFromId(MODAL_NAMES.EXECUTION.DUPLICATION_MODAL_I);
+  };
 
   const sortByPerspective = (a: IObjective, b: IObjective) => {
     const order = ["F", "C", "P", "G"];
@@ -544,6 +550,15 @@ const IndividualScorecardDraftCycle = observer((props: IProps) => {
               }
               rightControls={
                 <ErrorBoundary>
+                  <button
+                    className="btn btn-primary uk-margin-small-right"
+                    onClick={handleDuplicate}
+                    disabled={enableEditing()}
+                    title="Add a new objective to your scorecard"
+                  >
+                    <span data-uk-icon="icon: plus-circle; ratio:.8"></span> New
+                    Duplicate Scorecard
+                  </button>
                   <button
                     className="btn btn-primary uk-margin-small-right"
                     onClick={handleNewObjective}
@@ -613,7 +628,7 @@ const IndividualScorecardDraftCycle = observer((props: IProps) => {
                             className="icon uk-margin-small-right"
                           />
                           Export Excel
-                          {exportingExcelFile && <div data-uk-spinner="ratio: .5"></div>}
+                          {exportingExcelFile && <div data-uk-spinner="ratio: .2"></div>}
                         </button>
                       </li>
                       <li>
@@ -662,6 +677,9 @@ const IndividualScorecardDraftCycle = observer((props: IProps) => {
           <ErrorBoundary>
             <Modal modalId={MODAL_NAMES.EXECUTION.VIEW_OBJECTIVE_DRAFT_COMMENT_MODAL}>
               <ViewObjectiveDraftCommentModal />
+            </Modal>
+            <Modal modalId={MODAL_NAMES.EXECUTION.DUPLICATION_MODAL_I}>
+              <DuplicationIndividualModal />
             </Modal>
           </ErrorBoundary>
         </div>

@@ -6,7 +6,7 @@ import Measure, { IMeasure } from "../../../shared/models/Measure";
 import User from "../../../shared/models/User";
 import { LoadingEllipsis } from "../../../shared/components/loading/Loading";
 import BarGraph from "../../../shared/components/graph-components/BarGraph";
-import { totalQ2MeasureRating, totalQ4MeasureRating } from "../../shared/functions/Scorecard";
+import {  totalQ2MeasureRating, totalQ4MeasureRating } from "../../shared/functions/Scorecard";
 
 const MetricsAnalytics = observer(() => {
   const { store } = useAppContext();

@@ -180,7 +180,7 @@ export default class MeasureApi {
       });
       this.store.measure.load([item]);
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
   }
 
@@ -189,15 +189,18 @@ export default class MeasureApi {
   async update(item: IMeasure, fieldsUpdated?: (keyof IMeasure)[]) {
     const path = this.getPath();
     if (!path) return;
+    // alert("here");
 
     let measure: { [k: string]: any } = {};
 
     // fields updated
-    if (fieldsUpdated) {
-      for (const index of fieldsUpdated) measure[index] = item[index];
-    } else {
-      measure = { ...item };
-    }
+    // if (fieldsUpdated) {
+    //   for (const index of fieldsUpdated) measure[index] = item[index];
+    //   alert("fields updated");
+    // } else {
+    measure = { ...item };
+    // alert("fields updated (else)");
+    // }
 
     // update in db
     try {
@@ -208,12 +211,16 @@ export default class MeasureApi {
       // store item
       if (!fieldsUpdated) {
         this.updateMeasureStore(item); // update measure store & audit store
+        // alert("updated")
       } else {
         const currItem = this.store.measure.getItemById(item.id);
         const newItem = currItem ? { ...currItem.asJson, ...measure } : item;
         this.updateMeasureStore(newItem); // update measure store & audit store
       }
-    } catch (error) { }
+    } catch (error) {
+
+      console.log("Error api: ", error);
+    }
   }
 
   private updateMeasureStore(item: IMeasure) {

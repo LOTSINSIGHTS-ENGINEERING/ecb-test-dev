@@ -115,7 +115,11 @@ export default class ObjectiveApi {
     try {
       await setDoc(itemRef, item, { merge: true, });
       this.store.objective.load([item]);
-    } catch (error) { }
+      alert("success")
+      console.log("error: ", item)
+    } catch (error) {
+      console.log("error: ", error)
+    }
   }
 
   // update item
@@ -130,7 +134,9 @@ export default class ObjectiveApi {
       });
       // update in store
       this.store.objective.load([item]);
-    } catch (error) { }
+    } catch (error) {
+      console.log("error api", error);
+    }
   }
 
   // delete objective

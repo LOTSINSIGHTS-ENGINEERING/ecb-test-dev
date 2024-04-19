@@ -4,6 +4,8 @@ const MODAL_NAMES = {
     MAP_OVERVIEW_MODAL: "map-overview-modal",
     COMPANY_MAP_OVERVIEW_MODAL: "company-map-overview-modal",
     OBJECTIVE_MODAL: "objective-modal",
+    DUPLICATION_MODAL: "duplication-modal",
+    DUPLICATION_MODAL_I: "duplication-modal_i",
 
     OBJECTIVE_DRAFT_COMMENT_MODAL: "objective-draft-comment-modal",
     OBJECTIVE_Q2_COMMENT_MODAL: "objective-q2-comment-modal",
@@ -111,7 +113,7 @@ const MODAL_NAMES = {
 
   GENERAL_TASKS: {
     CREATE_GENERAL_TASK: "general-tasks-modal",
-    VIEW_GENERAL_TASKS:"view-general-task-modal"
+    VIEW_GENERAL_TASKS: "view-general-task-modal"
   },
 };
 

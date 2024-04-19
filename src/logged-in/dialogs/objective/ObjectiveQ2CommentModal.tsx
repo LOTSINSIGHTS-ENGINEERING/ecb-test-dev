@@ -11,23 +11,43 @@ const ObjectiveQ2CommentModal = observer(() => {
   const [objective, setObjective] = useState<IObjective>({ ...defaultObjective })
 
 
+  // const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  //   const $objective: IObjective = {
+  //     ...objective,
+  //     midComment: objective.midComment,
+  //   };
+  //   try {
+  //     setLoading(true);
+  //     await api.objective.update($objective);
+  //   } catch (error) { }
+  //   setLoading(false);
+  //   onCancel();
+  // };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    alert("here")
 
     const $objective: IObjective = {
       ...objective,
-      midComment: objective.midComment,
+      assessComment: objective.assessComment,
     };
     try {
       setLoading(true);
       await api.objective.update($objective);
-    } catch (error) { }
-    setLoading(false);
-    onCancel();
+      alert("updated")
+    } catch (error) {
+      console.log("error on saving comment", error)
+    } finally {
+      setLoading(false);
+      onCancel();
+    }
   };
 
   const onCancel = () => {
-    setObjective({...defaultObjective})
+    setObjective({ ...defaultObjective })
     store.objective.clearSelected()
     hideModalFromId(MODAL_NAMES.EXECUTION.OBJECTIVE_Q2_COMMENT_MODAL);
   };
