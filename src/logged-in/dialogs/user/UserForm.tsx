@@ -50,7 +50,7 @@ const UserForm = observer((props: IProps) => {
             type="text"
             placeholder="First name"
             value={user.displayName || `${user.firstName} ${user.lastName}`}
-            onChange={() => {}}
+            onChange={() => { }}
             disabled
           />
         </div>
@@ -67,7 +67,7 @@ const UserForm = observer((props: IProps) => {
             type="email"
             placeholder="Email"
             value={user.email || "no email"}
-            onChange={() => {}}
+            onChange={() => { }}
             disabled
           />
         </div>
@@ -173,7 +173,7 @@ const UserForm = observer((props: IProps) => {
             value={user.role}
             onChange={(e) => setUser({ ...user, role: e.target.value })}
             required
-            // disabled={role === USER_ROLES.ADMIN_USER ? true : false}
+          // disabled={role === USER_ROLES.ADMIN_USER ? true : false}
           >
             <option value={USER_ROLES.ADMIN_USER}>Administrator</option>
             <option value={USER_ROLES.HR_USER}>Human Resource</option>
@@ -183,6 +183,26 @@ const UserForm = observer((props: IProps) => {
             <option value={USER_ROLES.EMPLOYEE_USER}>Employee</option>
             <option value={USER_ROLES.BOARD_MEMBER_USER}>Board Member</option>
             <option value={USER_ROLES.GUEST_USER}>Guest</option>
+          </select>
+        </div>
+      </div>
+      <div className="uk-width-1-1">
+        <label className="uk-form-label" htmlFor="user-role">
+          User Status
+        </label>
+        <div className="uk-form-controls">
+          <select
+            className="uk-select uk-form-small"
+            id="user-role"
+            value={user.userStatus}
+            onChange={(e) => setUser({ ...user, userStatus: e.target.value })}
+            required
+          // disabled={role === USER_ROLES.ADMIN_USER ? true : false}
+          >
+            <option value="Active">Active</option>
+            <option value="In-Active">In-Active</option>
+            <option value="Resigned">Resigned</option>
+            <option value="Terminated">Terminated</option>
           </select>
         </div>
       </div>

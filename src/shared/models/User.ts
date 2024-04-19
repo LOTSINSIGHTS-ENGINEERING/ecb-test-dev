@@ -22,6 +22,7 @@ export const defaultUser: IUser = {
   divisionThree: "",
   supervisor: "none",
   role: "Employee",
+
 };
 
 export interface IUser {
@@ -45,7 +46,10 @@ export interface IUser {
   role: string;
   jobTitle: string | null;
   devUser?: boolean;
+  userStatus?: string;
 }
+
+
 
 // export default class User extends Model<IUser> {
 //   update(): void {}

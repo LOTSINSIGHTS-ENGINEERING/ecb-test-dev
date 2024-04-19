@@ -23,6 +23,8 @@ const UserItem = (props: IProps) => {
     showModalFromId(MODAL_NAMES.ADMIN.USER_MODAL); // show modal
   };
 
+
+
   const handleVerify = async () => {
     if (!window.confirm("Verify user?")) return; // TODO: confirmation dialog
     try {
@@ -46,37 +48,42 @@ const UserItem = (props: IProps) => {
       <div className="uk-grid-small uk-grid-match" data-uk-grid>
         <div className="uk-flex uk-flex-middle uk-width-1-1 uk-width-expand@m">
           <h6 className="name">
-            <span className="span-label">name</span>
+            <span className="span-label uk-margin-bottom">name</span>
+            {user.userStatus === "Active" || !user.userStatus && <span data-uk-tooltip="Active User" style={{ padding: "2px", background: "green", marginRight: "9px" }}></span>}
+            {user.userStatus === "In-Active" && <span data-uk-tooltip="In-Active User" style={{ padding: "2px", background: "grey", marginRight: "9px" }}></span>}
+            {user.userStatus === "Resigned" && <span data-uk-tooltip="Resigned User" style={{ padding: "2px", background: "yellow", marginRight: "9px" }}></span>}
+            {user.userStatus === "Terminated" && <span data-uk-tooltip="Termiated User" style={{ padding: "2px", background: "red", marginRight: "9px" }}></span>}
             {user.displayName}
           </h6>
         </div>
 
         <div className="uk-flex uk-flex-middle uk-width-1-2 uk-width-1-6@m">
           <p className="role">
-            <span className="span-label">User rights</span>
+            <span className="span-label uk-margin-bottom">User rights</span>
             {user.role || "-"}
           </p>
         </div>
 
         <div className="uk-flex uk-flex-middle uk-width-1-2 uk-width-1-6@m">
           <p className="role">
-            <span className="span-label">Position</span>
+            <span className="span-label uk-margin-bottom">Position</span>
             {user.jobTitle || "-"}
           </p>
         </div>
         <div className="uk-flex uk-flex-middle uk-width-1-2 uk-width-1-6@m">
-          <p className="department-name">
-            <span className="span-label">Department</span>
+          <p className="department-name ">
+            <span className="span-label uk-margin-bottom">Department</span>
             {departmentName}
           </p>
         </div>
 
         <div className="uk-flex uk-flex-middle uk-width-1-2 uk-width-1-6@m">
           <p className="department-name">
-            <span className="span-label">Division</span>
+            <span className="span-label uk-margin-bottom">Division</span>
             {divisionName}
           </p>
         </div>
+
 
         <div className="uk-flex uk-flex-middle uk-width-1-1 uk-width-1-6@m uk-text-right">
           <div className="controls">
@@ -85,7 +92,7 @@ const UserItem = (props: IProps) => {
                 className="btn-icon uk-margin-small-right"
                 onClick={handleVerify}
               >
-                <span uk-icon="check"></span>Verify
+                <span uk-icon="check "></span>Verify
               </button>
             )}
             <button className="btn-icon" onClick={handleEdit}>
