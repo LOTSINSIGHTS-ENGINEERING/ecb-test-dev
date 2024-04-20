@@ -39,7 +39,7 @@ const People = observer(() => {
       return {
         id: div.asJson.id,
         division: div.asJson.name,
-        users: users.sort(sortByName).filter((u) => {
+        users: users.filter((u) => !u.asJson.userStatus || u.asJson.userStatus === "Active").sort(sortByName).filter((u) => {
           return (
             u.asJson.division === div.asJson.id ||
             u.asJson.divisionTwo === div.asJson.id
@@ -50,9 +50,11 @@ const People = observer(() => {
     return grouped;
   };
 
-  const options = store.user.all.sort(sortByName).map((user) => {
-    return { label: user.asJson.displayName || "", value: user.asJson.uid };
-  });
+  const options = store.user.all
+    .filter((u) => u.asJson.userStatus === "Active" || !u.asJson.userStatus)
+    .sort(sortByName).map((user) => {
+      return { label: user.asJson.displayName || "", value: user.asJson.uid };
+    });
 
   useEffect(() => {
     // load users from db

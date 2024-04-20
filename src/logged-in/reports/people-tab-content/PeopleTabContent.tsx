@@ -10,9 +10,13 @@ import Toolbar from "../../shared/components/toolbar/Toolbar";
 import { generateReportPDF } from "../../../shared/functions/scorecard-pdf/GeneratePerformaneAgreementPDF";
 import { useState } from "react";
 import { exportReportExcel } from "../../shared/functions/ReportExcel";
+import { PeopleReportTabs } from "./PeoplesReportTab";
+import ErrorBoundary from "../../../shared/components/error-boundary/ErrorBoundary";
 
 export const PeopleTabContent = observer(() => {
   const { store, ui } = useAppContext();
+  const [selectedTab, setselectedTab] = useState("overview");
+
 
   // analytics on people per rating.
   const labels = ["Rating 1", "Rating 2", "Rating 3", "Rating 4", "Rating 5"];
@@ -58,7 +62,7 @@ export const PeopleTabContent = observer(() => {
     } catch (error) {
       setLoading(false)
       console.log(error);
-      
+
     }
     setLoading(false)
   };
@@ -86,7 +90,63 @@ export const PeopleTabContent = observer(() => {
           </div>
         }
       />
-      <div>
+      <>
+        <PeopleReportTabs selectedTab={selectedTab} setselectedTab={setselectedTab} />
+      </>
+
+
+      <ErrorBoundary>
+        {!loading && selectedTab === "overview" &&
+          <div className="uk-grid-small uk-child-width-1-2@l" data-uk-grid>
+            <div>
+              <div
+                className="uk-card uk-card-default uk-card-small uk-card-body"
+                style={{ height: 500 }}
+              >
+                <BarGraph
+                  title="Rating"
+                  ylabel="People"
+                  labels={labels}
+                  data={groupRating}
+                  scales={{ y: { min: 0, max: 100 } }}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="uk-card uk-card-default uk-card-small uk-card-body"
+                style={{ height: 500 }}>
+                <PieChart
+                  title="Rating"
+                  ylabel="People"
+                  labels={labels}
+                  data={groupRating}
+                />
+              </div>
+            </div>
+          </div>
+        }
+        {!loading && selectedTab === "mid-term-best-performers" && (<TopPerformers
+          data={topQ2Performers}
+          departments={store.department.all}
+        />)}
+        {!loading && selectedTab === "mid-term-worst-performers" && (<WorstPerformers
+          data={worstQ2Performers}
+          departments={store.department.all}
+        />)}
+        {!loading && selectedTab === "final-assessment-best-performers" && (<TopQ4Performers
+          data={topQ4Performers}
+          departments={store.department.all}
+        />)}
+        {!loading && selectedTab === "final-assessment-worst-performers" && (<WorstQ4Performers
+          data={worstQ4Performers}
+          departments={store.department.all}
+        />)}
+      </ErrorBoundary>
+
+
+
+
+      {/* <div>
         <div className="uk-grid-small uk-child-width-1-2@l" data-uk-grid>
           <div>
             <TopPerformers
@@ -142,39 +202,39 @@ export const PeopleTabContent = observer(() => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 });
 
 
-  // const q2Sorted = userData.sort((a, b) => b.asJson.rating - a.asJson.rating);
-  // const q4Sorted = userData.sort((a, b) => b.asJson.rating2 - a.asJson.rating2);
+// const q2Sorted = userData.sort((a, b) => b.asJson.rating - a.asJson.rating);
+// const q4Sorted = userData.sort((a, b) => b.asJson.rating2 - a.asJson.rating2);
 
-  // const chartref = useRef<HTMLDivElement>(null)
+// const chartref = useRef<HTMLDivElement>(null)
 
-  // const handleExportPNG = async () => {
-  //   if (chartref.current === null) {
-  //     return
-  //   }
-  //   try {
-  //     setLoading(true)
-  //     await toPng(chartref.current, { cacheBust: true, })
-  //       .then(async (dataUrl) => {
-  //         const link = document.createElement('a')
-  //         link.href = dataUrl
-  //         await generateCompanyDashboardPDF(
-  //           vision,
-  //           mission,
-  //           link
-  //         );
-  //       })
-  //   } catch (error) {
-  //     ui.snackbar.load({
-  //       id: Date.now(),
-  //       message: `Error! Failed to export.`,
-  //       type: "danger",
-  //     });
-  //   }
-  //   setLoading(false)
-  // };
+// const handleExportPNG = async () => {
+//   if (chartref.current === null) {
+//     return
+//   }
+//   try {
+//     setLoading(true)
+//     await toPng(chartref.current, { cacheBust: true, })
+//       .then(async (dataUrl) => {
+//         const link = document.createElement('a')
+//         link.href = dataUrl
+//         await generateCompanyDashboardPDF(
+//           vision,
+//           mission,
+//           link
+//         );
+//       })
+//   } catch (error) {
+//     ui.snackbar.load({
+//       id: Date.now(),
+//       message: `Error! Failed to export.`,
+//       type: "danger",
+//     });
+//   }
+//   setLoading(false)
+// };

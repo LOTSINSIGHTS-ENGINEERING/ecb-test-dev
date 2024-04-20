@@ -49,7 +49,8 @@ const UserItem = (props: IProps) => {
         <div className="uk-flex uk-flex-middle uk-width-1-1 uk-width-expand@m">
           <h6 className="name">
             <span className="span-label uk-margin-bottom">name</span>
-            {user.userStatus === "Active" || !user.userStatus && <span data-uk-tooltip="Active User" style={{ padding: "2px", background: "green", marginRight: "9px" }}></span>}
+            {user.userStatus === "Active" && <span data-uk-tooltip="Active User" style={{ padding: "2px", background: "green", marginRight: "9px" }}></span>}
+            {!user.userStatus && <span data-uk-tooltip="Active User" style={{ padding: "2px", background: "green", marginRight: "9px" }}></span>}
             {user.userStatus === "In-Active" && <span data-uk-tooltip="In-Active User" style={{ padding: "2px", background: "grey", marginRight: "9px" }}></span>}
             {user.userStatus === "Resigned" && <span data-uk-tooltip="Resigned User" style={{ padding: "2px", background: "yellow", marginRight: "9px" }}></span>}
             {user.userStatus === "Terminated" && <span data-uk-tooltip="Termiated User" style={{ padding: "2px", background: "red", marginRight: "9px" }}></span>}

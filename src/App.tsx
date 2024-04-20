@@ -35,6 +35,7 @@ import useNetwork from "./shared/hooks/useNetwork";
 import { MainApp } from "./shared/models/App";
 import routes from "./logged-in/Routes/projectmanagement.route";
 import FeedbackRoutes from "./logged-in/Routes/feedback.route";
+import { BonusReport } from "./logged-in/reports/bonus-report/BonusReporr";
 
 const IndividualScorecard = React.lazy(() => import("./logged-in/execution-scorecard/IndividualScorecard"));
 const People = React.lazy(() => import("./logged-in/execution-team/People"));
@@ -120,6 +121,11 @@ const HR_USER_ROUTES = () => {
           <Route path="reports/kpis" element={<Reports />} />
           <Route path="reports/development-plan" element={<ReportPersonalDevelopmentPlan />} />
           <Route path="admin/settings" element={<AdminSettings />} />
+
+          {/* bonus report */}
+          <Route path="reports/bonus-report" element={<BonusReport />} />
+          {/* bonus report */}
+
           <Route path="*" element={<Navigate to="home/dashboard" />} />
         </Route>
         <Route path="/" element={<LoggedOut />} />
@@ -168,7 +174,12 @@ const EXECUTIVE_USER_ROUTES = () => {
           <Route path="scorecards/reviews" element={<PerformanceReviews />} />
           <Route path="drive" element={<Drive />} />
           <Route path="drive/:id" element={<Drive />} />
+
           <Route path="reports/kpis" element={<Reports />} />
+          {/* bonus report */}
+          <Route path="reports/bonus-report" element={<BonusReport />} />
+          {/* bonus report */}
+
           <Route path="reports/development-plan" element={<ReportPersonalDevelopmentPlan />} />
           <Route path="*" element={<Navigate to="home/dashboard" />} />
         </Route>
@@ -220,6 +231,10 @@ const ADMIN_USER_ROUTES = () => {
           <Route path="drive" element={<Drive />} />
           <Route path="drive/:id" element={<Drive />} />
           <Route path="reports/kpis" element={<Reports />} />
+          {/* bonus report */}
+          <Route path="reports/bonus-report" element={<BonusReport />} />
+          {/* bonus report */}
+
           <Route path="reports/development-plan" element={<ReportPersonalDevelopmentPlan />} />
           <Route path="admin/settings" element={<AdminSettings />} />
           <Route path="*" element={<Navigate to="home/dashboard" />} />
@@ -270,6 +285,10 @@ const GENERAL_MANAGER_USER_ROUTES = () => {
           <Route path="drive" element={<Drive />} />
           <Route path="drive/:id" element={<Drive />} />
           <Route path="reports/kpis" element={<Reports />} />
+          {/* bonus report */}
+          <Route path="reports/bonus-report" element={<BonusReport />} />
+          {/* bonus report */}
+
           <Route path="reports/development-plan" element={<ReportPersonalDevelopmentPlan />} />
           <Route path="*" element={<Navigate to="home/dashboard" />} />
         </Route>
@@ -319,6 +338,10 @@ const MANAGER_USER_ROUTES = () => {
           <Route path="drive" element={<Drive />} />
           <Route path="drive/:id" element={<Drive />} />
           <Route path="reports/kpis" element={<Reports />} />
+          {/* bonus report */}
+          <Route path="reports/bonus-report" element={<BonusReport />} />
+          {/* bonus report */}
+
           <Route path="reports/development-plan" element={<ReportPersonalDevelopmentPlan />} />
           <Route path="*" element={<Navigate to="home/dashboard" />} />
         </Route>
@@ -364,6 +387,10 @@ const EMPLOYEE_USER_ROUTES = () => {
           <Route path="scorecards/my/:id" element={<IndividualScorecardDraftObjective />} />
           <Route path="scorecards/supervision" element={<EmployeeScorecard />} />
           <Route path="scorecards/supervision/:uid" element={<EmployeeScorecardView />} />
+          {/* bonus report */}
+          <Route path="reports/bonus-report" element={<BonusReport />} />
+          {/* bonus report */}
+
           <Route path="drive" element={<Drive />} />
           <Route path="drive/:id" element={<Drive />} />
           <Route path="*" element={<Navigate to="home/dashboard" />} />
@@ -411,6 +438,10 @@ const GUEST_USER_ROUTES = () => {
           <Route path="scorecards/my/:id" element={<IndividualScorecardDraftObjective />} />
           <Route path="scorecards/supervision" element={<EmployeeScorecard />} />
           <Route path="scorecards/supervision/:uid" element={<EmployeeScorecardView />} />
+          {/* bonus report */}
+          <Route path="reports/bonus-report" element={<BonusReport />} />
+          {/* bonus report */}
+
           <Route path="drive" element={<Drive />} />
           <Route path="drive/:id" element={<Drive />} />
           <Route path="*" element={<Navigate to="home/dashboard" />} />
@@ -458,6 +489,10 @@ const BORAD_MEMBER_USER_ROUTES = () => {
           <Route path="drive" element={<Drive />} />
           <Route path="drive/:id" element={<Drive />} />
           <Route path="reports/kpis" element={<Reports />} />
+          {/* bonus report */}
+          <Route path="reports/bonus-report" element={<BonusReport />} />
+          {/* bonus report */}
+
           <Route path="reports/development-plan" element={<ReportPersonalDevelopmentPlan />} />
           <Route path="*" element={<Navigate to="home/dashboard" />} />
         </Route>

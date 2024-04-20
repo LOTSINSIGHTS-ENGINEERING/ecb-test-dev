@@ -27,7 +27,7 @@ const Reports = observer(() => {
 
   const measures = store.measure.all.map((measure) => measure.asJson);
   const departments = store.department.all.map((dep) => dep.asJson);
-  const users = store.user.all.map((user) => user.asJson);
+  const users = store.user.all.filter((user) => user.asJson.userStatus === "Active" || !user.asJson.userStatus).map((user) => user.asJson);
 
   const onSelect = (scorecard: IScorecardBatch) => {
     store.measure.removeAll();

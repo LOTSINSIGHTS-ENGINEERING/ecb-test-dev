@@ -20,7 +20,7 @@ interface IProps {
   selectedTab: string;
   setselectedTab: React.Dispatch<React.SetStateAction<string>>;
 }
-const PeopleTabs = (props: IProps) => {
+export const PeopleReportTabs = (props: IProps) => {
   const { selectedTab, setselectedTab } = props;
 
   const activeTab = (tab: string) => {
@@ -35,14 +35,32 @@ const PeopleTabs = (props: IProps) => {
     <div className="settings-filters uk-margin">
       <ul className="kit-tabs" data-uk-tab>
         <TabItem
-          label="mid-term"
-          name="Mid-Term Assessment"
+          label="overview"
+          name="Overview"
           activeTab={activeTab}
           onClickTab={onClickTab}
         />
         <TabItem
-          label="final-assessment"
-          name="Final Assessment"
+          label="mid-term-best-performers"
+          name="Mid-Term (Best Performers)"
+          activeTab={activeTab}
+          onClickTab={onClickTab}
+        />
+        <TabItem
+          label="mid-term-worst-performers"
+          name="Mid-Term (Worst Performers)"
+          activeTab={activeTab}
+          onClickTab={onClickTab}
+        />
+        <TabItem
+          label="final-assessment-best-performers"
+          name="Final (Best Performers)"
+          activeTab={activeTab}
+          onClickTab={onClickTab}
+        />
+        <TabItem
+          label="final-assessment-worst-performers"
+          name="Final (Worst Performers)"
           activeTab={activeTab}
           onClickTab={onClickTab}
         />
@@ -51,4 +69,3 @@ const PeopleTabs = (props: IProps) => {
   );
 };
 
-export default PeopleTabs;

@@ -10,7 +10,7 @@ interface IProps {
 const WorstQ4Performers = observer((props: IProps) => {
   const { data, departments } = props;
   const [performanceData, setPerformanceData] = useState<UserPerformanceData[]>([]);
-  const [count, setCount] = useState(5);
+  // const [count, setCount] = useState(5);
   const [department, setDepartment] = useState("company");
 
   const sortByRate = (a: UserPerformanceData, b: UserPerformanceData) => {
@@ -19,12 +19,12 @@ const WorstQ4Performers = observer((props: IProps) => {
 
   const filterByDepartment = useCallback(() => {
     if (department === "company") {
-      setPerformanceData(data.slice(0, count));
+      setPerformanceData(data);
     } else {
       const filteredData = data.filter((item) => item.asJson.department === department);
-      setPerformanceData(count === -1 ? filteredData : filteredData.slice(0, count));
+      setPerformanceData(filteredData);
     }
-  }, [count, data, department]);
+  }, [data, department]);
 
   const rateColor = (rating: number): string => {
     if (rating === 5) return "purple";
@@ -62,19 +62,6 @@ const WorstQ4Performers = observer((props: IProps) => {
                 </option>
               ))}
             </optgroup>
-          </select>
-          <select
-            id="count"
-            className="uk-select uk-form-small uk-margin-left"
-            name="count"
-            value={count}
-            onChange={(e) => setCount(parseInt(e.target.value))}
-          >
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={25}>25</option>
-            <option value={50}>50</option>
-            <option value={-1}>All</option>
           </select>
         </div>
 

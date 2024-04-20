@@ -30,7 +30,8 @@ const EmployeeScorecard = observer(() => {
     if (employeeUid === "") {
       initAll();
     } else {
-      const $users = store.user.all.filter((u) => u.asJson.uid === employeeUid);
+      const $users = store.user.all
+        .filter((u) => u.asJson.uid === employeeUid);
       setUsers([...$users]); // users
     }
   };
@@ -45,9 +46,11 @@ const EmployeeScorecard = observer(() => {
     });
 
     setUsers($users); // users
-    const options = $users.map((user) => {
-      return { label: user.asJson.displayName || "", value: user.asJson.uid };
-    });
+    const options = $users
+      .filter((u) => u.asJson.userStatus === "Active" || !u.asJson.userStatus)
+      .map((user) => {
+        return { label: user.asJson.displayName || "", value: user.asJson.uid };
+      });
 
     setOptions(options);
   }, [me, store.user.all]);
@@ -94,7 +97,7 @@ const EmployeeScorecard = observer(() => {
               className="uk-grid-small uk-grid-match uk-child-width-1-2 uk-child-width-1-3@m uk-child-width-1-4@l"
               data-uk-grid
             >
-              {users.map((user) => (
+              {users.filter((u) => u.asJson.userStatus === "Active" || !u.asJson.userStatus).map((user) => (
                 <div key={user.asJson.uid}>
                   <UserItem user={user.asJson} />
                 </div>

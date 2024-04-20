@@ -189,6 +189,11 @@ const HR_USER_DRAWER = () => {
               </NavLink>
             </li>
             <li>
+              <NavLink to={"reports/bonus-report"} className="navlink">
+                Bonus Reports
+              </NavLink>
+            </li>
+            <li>
               <NavLink to={"reports/development-plan"} className="navlink">
                 Development Plan
               </NavLink>

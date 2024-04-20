@@ -50,19 +50,19 @@ const CurrentStage = observer((props: ICurrentStageProps) => {
       role === USER_ROLES.EXECUTIVE_USER ||
       role === USER_ROLES.ADMIN_USER
     )
-      users = store.user.all.sort(sortByName).filter((u) => {
+      users = store.user.all.filter((u) => u.asJson.userStatus === "Active" || !u.asJson.userStatus).sort(sortByName).filter((u) => {
         if (!process.env.NODE_ENV || process.env.NODE_ENV === "development")
           return users;
         else return !u.asJson.devUser;
       });
     else if (role === USER_ROLES.GENERAL_MANAGER)
-      users = store.user.all.filter((u) => {
+      users = store.user.all.filter((u) => u.asJson.userStatus === "Active" || !u.asJson.userStatus).filter((u) => {
         if (!process.env.NODE_ENV || process.env.NODE_ENV === "development")
           return u.asJson.supervisor === meuid;
         else return u.asJson.supervisor === meuid && !u.asJson.devUser; // production code
       });
     else if (role === USER_ROLES.MANAGER_USER)
-      users = store.user.all.filter((u) => {
+      users = store.user.all.filter((u) => u.asJson.userStatus === "Active" || !u.asJson.userStatus).filter((u) => {
         if (!process.env.NODE_ENV || process.env.NODE_ENV === "development")
           return u.asJson.supervisor === meuid;
         else return u.asJson.supervisor === meuid && !u.asJson.devUser; // production code
