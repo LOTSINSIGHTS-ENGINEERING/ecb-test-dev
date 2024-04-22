@@ -1,6 +1,9 @@
 import { observer } from "mobx-react-lite"
 import { useAppContext } from "../../shared/functions/Context"
 import { useEffect, useState } from "react";
+import { hideModalFromId } from "../../shared/functions/ModalShow";
+import MODAL_NAMES from "../dialogs/ModalName";
+import { LoadingEllipsis } from "../../shared/components/loading/Loading";
 
 export const DuplicationModal = observer(() => {
     const { store, api } = useAppContext();
@@ -22,7 +25,8 @@ export const DuplicationModal = observer(() => {
         } catch (error) {
             console.log("Modal error: ", error)
         } finally {
-            setLoading(false)
+            setLoading(false);
+            hideModalFromId(MODAL_NAMES.EXECUTION.DUPLICATION_MODAL);
         }
     }
 
@@ -48,27 +52,33 @@ export const DuplicationModal = observer(() => {
                 data-uk-close
             // onClick={onCancel}
             ></button>
-            <h5>Choose the scorecard that you would like to duplicate from</h5>
             <div>
-                <ul className="uk-list">
-                    {scorecards.map((s) => (
-                        <li key={s.id}>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="score"
-                                    value={s.id}
-                                    checked={selectedScorecardId === s.id}
-                                    onChange={() => handleScoreChange(s.id)}
-                                />
-                                {s.description}
-                            </label>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <div>
-                <button onClick={duplicateCompanyScorecard} className="btn btn-primary">Duplicate Scorecard {loading && <span data-uk-spinner={".5"}></span>}</button>
+                {loading ? <LoadingEllipsis /> :
+                    <div>
+                        <h5>Choose the scorecard that you would like to duplicate from</h5>
+                        <div>
+                            <ul className="uk-list">
+                                {scorecards.map((s) => (
+                                    <li key={s.id}>
+                                        <label>
+                                            <input
+                                                type="radio"
+                                                name="score"
+                                                value={s.id}
+                                                checked={selectedScorecardId === s.id}
+                                                onChange={() => handleScoreChange(s.id)}
+                                            />
+                                            {s.description}
+                                        </label>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                }
+                <div>
+                    <button onClick={duplicateCompanyScorecard} className="btn btn-primary">Duplicate Scorecard {loading && <span data-uk-spinner={".5"}></span>}</button>
+                </div>
             </div>
         </div>
     )

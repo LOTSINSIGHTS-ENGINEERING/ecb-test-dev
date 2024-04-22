@@ -556,7 +556,7 @@ const IndividualScorecardDraftCycle = observer((props: IProps) => {
                     disabled={enableEditing()}
                     title="Add a new objective to your scorecard"
                   >
-                    <span data-uk-icon="icon: plus-circle; ratio:.8"></span> New
+                    <span data-uk-icon="icon: plus-circle; ratio:.8"></span>
                     Duplicate Scorecard
                   </button>
                   <button
@@ -643,20 +643,6 @@ const IndividualScorecardDraftCycle = observer((props: IProps) => {
                             className="icon uk-margin-small-right"
                           />
                           Feedback
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          className="kit-dropdown-btn"
-                          onClick={handleDuplicateScorecard}
-                          title="This will copy all your objectives and measures to the new financial year.">
-                          <FontAwesomeIcon
-                            icon={faCopy}
-                            size="lg"
-                            className="icon uk-margin-small-right"
-                          />
-                          Duplicate Scorecard
-                          {duplicateLoading && <div data-uk-spinner="ratio: .5"></div>}
                         </button>
                       </li>
                     </Dropdown>

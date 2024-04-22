@@ -413,7 +413,7 @@ const CompanyScorecardDraftCycle = observer((props: IProps) => {
                   className="btn btn-primary uk-margin-small-right"
                   onClick={handleDuplicAation}
                 >
-                  <span data-uk-icon="icon: plus-circle; ratio:.8"></span> New
+                  <span data-uk-icon="icon: plus-circle; ratio:.8"></span>
                   Duplicate Company Scorecard
                 </button>
                 <button
