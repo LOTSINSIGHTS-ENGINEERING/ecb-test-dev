@@ -8,7 +8,7 @@ import {
   doc,
   where,
 } from "@firebase/firestore";
-import { Unsubscribe } from "firebase/firestore";
+import { Unsubscribe, getDoc } from "firebase/firestore";
 import { db } from "../config/firebase-config";
 import { IFolder } from "../models/Folder";
 import { IUser } from "../models/User";
@@ -202,6 +202,54 @@ export default class UserApi {
       // console.log(error);
     }
   }
+
+
+ 
+
+  async updateDateRange(uid: string, startDate: string, endDate: string, scorecardId: string) {
+    const path = this.getPath();
+    if (!path) return;
+
+    // Create a reference to the document
+    const docRef = doc(db, path, uid);
+
+    // Get the current user data
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      // Handle case when document doesn't exist
+      return;
+    }
+
+    try {
+      let newData = { ...docSnap.data() };
+      // Ensure arrayField exists and is an array
+      if (!Array.isArray(newData.scorecardPeriod)) {
+        // If arrayField doesn't exist or is not an array, initialize it as an empty array
+        newData.scorecardPeriod = [];
+      }
+
+      // Check if scorecardId already exists in arrayField
+      const isScorecardIdUnique = newData.scorecardPeriod.every((item:any) => item.scorecardId !== scorecardId);
+
+      if (isScorecardIdUnique) {
+        // Update the array field with new start and end dates
+        newData.scorecardPeriod.push({ startDate, endDate, scorecardId });
+
+        // Update document in the database with the latest data
+        await updateDoc(docRef, newData);
+      } else {
+        console.error("Error: scorecardId already exists in arrayField.");
+      }
+
+    } catch (error) {
+      // Handle error
+      console.error("Error updating date range:", error);
+    }
+  }
+
+
+
+
 
   // delete user
   async delete(item: IUser) {

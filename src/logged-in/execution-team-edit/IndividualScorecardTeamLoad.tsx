@@ -19,6 +19,8 @@ import { generateIndividualPerformanceAgreementPDF } from "../../shared/function
 import { exportEmployeeExcelScorecard } from "../shared/functions/Excel";
 import { IScorecardMetadata } from "../../shared/models/ScorecardMetadata";
 import { IScorecardArchive } from "../../shared/models/ScorecardArchive";
+import EmployeeQ2ReviewCycle from "../execution-supervision-view/EmployeeQ2ReviewCycle";
+import EmployeeQ4ReviewCycle from "../execution-supervision-view/EmployeeQ4ReviewCycle";
 
 interface IStepStageProps {
   open?: boolean;
@@ -177,7 +179,9 @@ const IndividualScorecardTeamLoad = observer(() => {
   const [cycle, setCycle] = useState<IReviewCycleType>(SCORECARD_TAB.name);
   const { store, api, ui } = useAppContext();
   const { uid } = useParams();
+  const currentUser = store.auth.meJson;
 
+  const selectedUser = store.user.selected;
   const me = store.auth.meJson;
   const user = store.user.selected;
   const scorecard = store.scorecard.active;
@@ -345,16 +349,30 @@ const IndividualScorecardTeamLoad = observer(() => {
             />
           )}
           {cycle === QUARTER2_TAB.name && (
-            <NoScorecardData
-              title="No data."
-              subtitle="THIS IS FOR LOADING PURPOSES ONLY."
+            <EmployeeQ2ReviewCycle
+              agreement={agreement}
+              selectedUser={selectedUser!}
+              currentUser={currentUser!}
+              measures={measures}
+              objectives={objectives}
             />
+            // <NoScorecardData
+            //   title="No data."
+            //   subtitle="THIS IS FOR LOADING PURPOSES ONLY."
+            // />
           )}
           {cycle === QUARTER4_TAB.name && (
-            <NoScorecardData
-              title="No data."
-              subtitle="THIS IS FOR LOADING PURPOSES ONLY."
+            <EmployeeQ4ReviewCycle
+              agreement={agreement}
+              selectedUser={selectedUser!}
+              currentUser={currentUser!}
+              measures={measures}
+              objectives={objectives}
             />
+            // <NoScorecardData
+            //   title="No data."
+            //   subtitle="THIS IS FOR LOADING PURPOSES ONLY."
+            // />
           )}
         </ErrorBoundary>
       )}

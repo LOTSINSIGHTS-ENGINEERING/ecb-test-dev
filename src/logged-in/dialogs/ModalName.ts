@@ -115,6 +115,9 @@ const MODAL_NAMES = {
     CREATE_GENERAL_TASK: "general-tasks-modal",
     VIEW_GENERAL_TASKS: "view-general-task-modal"
   },
+  BONUS_REPORT: {
+    UPDATE_PERIOD: "update-period",
+  },
 };
 
 export default MODAL_NAMES;

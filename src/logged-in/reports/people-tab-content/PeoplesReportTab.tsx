@@ -42,25 +42,25 @@ export const PeopleReportTabs = (props: IProps) => {
         />
         <TabItem
           label="mid-term-best-performers"
-          name="Mid-Term (Best Performers)"
+          name="Mid-Term (Top Performers)"
           activeTab={activeTab}
           onClickTab={onClickTab}
         />
         <TabItem
           label="mid-term-worst-performers"
-          name="Mid-Term (Worst Performers)"
+          name="Mid-Term"
           activeTab={activeTab}
           onClickTab={onClickTab}
         />
         <TabItem
           label="final-assessment-best-performers"
-          name="Final (Best Performers)"
+          name="Final (Top Performers)"
           activeTab={activeTab}
           onClickTab={onClickTab}
         />
         <TabItem
           label="final-assessment-worst-performers"
-          name="Final (Worst Performers)"
+          name="Final Performers"
           activeTab={activeTab}
           onClickTab={onClickTab}
         />

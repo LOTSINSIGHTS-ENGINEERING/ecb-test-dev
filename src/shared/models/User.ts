@@ -47,6 +47,18 @@ export interface IUser {
   jobTitle: string | null;
   devUser?: boolean;
   userStatus?: string;
+
+
+  //period
+  scorecardPeriod?: IScorecardPeriod[];
+
+}
+
+export interface IScorecardPeriod {
+  //period
+  startDate?: string;
+  endDate?: string;
+  scorecardId: string;
 }
 
 

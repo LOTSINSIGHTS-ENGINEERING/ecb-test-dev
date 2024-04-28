@@ -26,10 +26,8 @@ export function getFinalWeightedScore(user: IUser, measure: IMeasure[], objectiv
 
 
         if (score) {
-            console.log("scores")
             return score
         } else {
-            console.log("no scores")
             return 0;
         }
     }

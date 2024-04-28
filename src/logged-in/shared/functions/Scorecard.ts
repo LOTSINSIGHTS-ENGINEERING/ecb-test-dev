@@ -1172,6 +1172,8 @@ export const q4FinalRating = (
     };
   } = {};
 
+
+
   objectives.forEach(objective => {
     const objectiveId = objective.id;
     const objectiveWeight = objective.weight;
@@ -1249,6 +1251,9 @@ export const q4FinalRating = (
 
   return overallScore;
 };
+
+
+
 
 
 

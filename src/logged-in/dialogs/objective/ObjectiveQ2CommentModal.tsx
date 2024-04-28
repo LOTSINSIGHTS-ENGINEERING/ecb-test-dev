@@ -28,7 +28,7 @@ const ObjectiveQ2CommentModal = observer(() => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert("here")
+
 
     const $objective: IObjective = {
       ...objective,
@@ -37,7 +37,6 @@ const ObjectiveQ2CommentModal = observer(() => {
     try {
       setLoading(true);
       await api.objective.update($objective);
-      alert("updated")
     } catch (error) {
       console.log("error on saving comment", error)
     } finally {
@@ -54,7 +53,7 @@ const ObjectiveQ2CommentModal = observer(() => {
 
   useEffect(() => {
     if (store.objective.selected)
-      setObjective({ ...store.objective.selected });
+      setObjective(store.objective.selected);
     else setObjective({ ...defaultObjective });
   }, [store.objective.selected]);
 

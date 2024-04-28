@@ -36,7 +36,7 @@ const ObjectiveDraftCommentModal = observer(() => {
 
   useEffect(() => {
     if (store.objective.selected)
-      setObjective({ ...store.objective.selected });
+      setObjective(store.objective.selected);
     else setObjective({ ...defaultObjective });
   }, [store.objective.selected]);
 
