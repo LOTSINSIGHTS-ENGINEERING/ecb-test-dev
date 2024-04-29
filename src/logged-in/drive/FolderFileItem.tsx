@@ -75,39 +75,40 @@ const FolderFileItem = ({ file, index, path }: IProps) => {
     <ContextMenu
       options={
         <ErrorBoundary>
-          {disableEdit() && (
-            <>
-              <ContextMenuOption onClick={onOpen}>
-                <span data-uk-icon="icon: expand; ratio: .8"></span> Open
-              </ContextMenuOption>
-              <ContextMenuOption onClick={onRename}>
-                <span data-uk-icon="icon: pencil; ratio: .8"></span> Rename
-              </ContextMenuOption>
-              <ContextMenuOption onClick={onDelete}>
-                <span data-uk-icon="icon: trash; ratio: .8"></span> Delete
-              </ContextMenuOption>
+          {/* {disableEdit() && ( */}
+          <>
+            <ContextMenuOption onClick={onOpen}>
+              <span data-uk-icon="icon: expand; ratio: .8"></span> Open
+            </ContextMenuOption>
+            <ContextMenuOption onClick={onRename}>
+              <span data-uk-icon="icon: pencil; ratio: .8"></span> Rename
+            </ContextMenuOption>
+            <ContextMenuOption onClick={onDelete}>
+              <span data-uk-icon="icon: trash; ratio: .8"></span> Delete
+            </ContextMenuOption>
 
-              <ContextMenuOption
-                onClick={onCopyLink}
-                success={copyLinkBtnText === "Copied"}
-              >
-                <span
-                  data-uk-icon={`icon: ${copyLinkBtnText === "Copied" ? "check" : "link"
-                    }; ratio: .8`}
-                ></span>
-                {copyLinkBtnText}
-              </ContextMenuOption>
-            </>
-          )}
+            <ContextMenuOption
+              onClick={onCopyLink}
+              success={copyLinkBtnText === "Copied"}
+            >
+              <span
+                data-uk-icon={`icon: ${copyLinkBtnText === "Copied" ? "check" : "link"
+                  }; ratio: .8`}
+              ></span>
+              {copyLinkBtnText}
+            </ContextMenuOption>
+          </>
+          {/* )} */}
         </ErrorBoundary>
       }
     >
-      <button className="file-item" style={style} onClick={onOpen}>
-        <div className="file-item__icon">
+      <button data-uk-tooltip="Double click to delete and click file name to view" className="file-item" style={style} onDoubleClick={onDelete} >
+        <div className="file-item__icon"
+        >
           <img src={process.env.PUBLIC_URL + "/icons/file_icon2.png"} alt="" />
         </div>
         <div className="file-item__content">
-          <div className="file-item__content__name">{file.name}</div>
+          <div onClick={onOpen} className="file-item__content__name">{file.name}</div>
         </div>
       </button>
     </ContextMenu>

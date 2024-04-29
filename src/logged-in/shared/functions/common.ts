@@ -11,9 +11,9 @@ export function percentageCalc(score: number) {
         return 10;
     } else if (score >= 3.50 && score <= 3.99) {
         return 12;
-    } else if (score >= 4.00 && score <= 4.59) {
+    } else if (score >= 4.00 && score <= 4.49) {
         return 14;
-    } else if (score >= 4.60 && score <= 5.00) {
+    } else if (score >= 4.50 && score <= 5.00) {
         return 16;
     } else {
         return "-"
@@ -23,6 +23,7 @@ export function percentageCalc(score: number) {
 export function getScorecardPeriod(user: IUser, sid: string) {
     const startMonth = user.scorecardPeriod?.find((s) => s.scorecardId === sid)?.startDate;
     const endMonth = user.scorecardPeriod?.find((s) => s.scorecardId === sid)?.endDate;
+    
 
     // Check if startMonth and endMonth are defined
     if (!startMonth || !endMonth) {

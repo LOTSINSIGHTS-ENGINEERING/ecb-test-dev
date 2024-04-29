@@ -11,6 +11,7 @@ import Modal from "../../../shared/components/Modal";
 import Toolbar from "../../shared/components/toolbar/Toolbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
+import { ExportAsExcel } from "react-export-table";
 
 export const BonusReport = observer(() => {
     const { store, api } = useAppContext();
@@ -18,9 +19,10 @@ export const BonusReport = observer(() => {
     const [uid, setUid] = useState<string>("");
     const [startDate, setStartDate] = useState<string>("");
     const [endDate, setEndDate] = useState<string>("");
-    const [isSaving, setIsSaving] = useState<boolean>(false)
+    const [isSaving, setIsSaving] = useState<boolean>(false);
+    const me = store.auth.meJson;
 
-    const users = store.user.all.map((u) => { return u.asJson });
+    const users = store.user.all.filter((u) => u.asJson.userStatus === "Active" || !u.asJson.userStatus).map((u) => { return u.asJson });
     const metaData = store.companyScorecardMetadata.all.map((m) => { return m.asJson });
     const objectives = store.objective.all.map((o) => { return o.asJson });
     const measures = store.measure.all.map((m) => { return m.asJson });
@@ -67,6 +69,52 @@ export const BonusReport = observer(() => {
         showModalFromId(MODAL_NAMES.BONUS_REPORT.UPDATE_PERIOD);
     }
 
+    const renderExcel = ({ onClick }: { onClick: () => void }) => {
+        return (
+            <button className="btn btn-primary" onClick={onClick}>
+                <FontAwesomeIcon
+                    icon={faFileExcel}
+                    size="lg"
+                    className="icon uk-margin-small-right"
+                />
+                Export Excel
+            </button>
+        )
+    }
+
+
+    const formattedData = users
+        .slice() // Make a copy of the array to avoid mutating the original
+        .sort((a, b) => {
+            const scoreA = getFinalWeightedScore(a, measures, objectives, metaData);
+            const scoreB = getFinalWeightedScore(b, measures, objectives, metaData);
+            // Handling undefined and 0 cases
+            if (!scoreA || scoreA === 0) return 1; // Move scoreA to the end
+            if (!scoreB || scoreB === 0) return -1; // Move scoreB to the end
+            return scoreB - scoreA; // Sort in descending order
+        })
+        .map((user) => {
+            const finalScore = getFinalWeightedScore(user, measures, objectives, metaData)?.toFixed(2);
+            const perecentage = percentageCalc(parseFloat(finalScore || ""));
+            const period = getScorecardPeriod(user, scorecard || "")
+            const bonus = period > 5 ? true : false;
+            const end = getPeriod(user, scorecard || "");
+            const start = getPeriodStart(user, scorecard || "");
+            const department = getDepartment(user, store);
+
+            return (
+                {
+                    EmployeeName: user.displayName,
+                    Department: department,
+                    finalScore: finalScore,
+                    percentage: `${perecentage} %`,
+                    start: start,
+                    end: end,
+                    period: `${period} month(s)`
+                }
+            )
+        })
+
 
 
     return (
@@ -83,14 +131,15 @@ export const BonusReport = observer(() => {
                             }
 
                             rightControls={<>
-                                <button className="btn btn-primary">
-                                    <FontAwesomeIcon
-                                        icon={faFileExcel}
-                                        size="lg"
-                                        className="icon uk-margin-small-right"
-                                    />
-                                    Export Excel
-                                </button>
+
+                                <ExportAsExcel
+                                    fileName="Bonus Report"
+                                    data={formattedData}
+                                    headers={["EmployeeName", "Department", "finalScore", "percentage", "start", "end", "period", "Salary", "Bonus"]}
+                                >{renderExcel}
+
+                                </ExportAsExcel>
+
                             </>}
 
                         />
@@ -107,7 +156,9 @@ export const BonusReport = observer(() => {
                                                 <th>Start Date</th>
                                                 <th>End Date</th>
                                                 <th>Period</th>
-                                                <th>Action</th>
+                                                {me?.role === "HR" &&
+                                                    <th>Action</th>
+                                                }
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -131,20 +182,28 @@ export const BonusReport = observer(() => {
 
                                                     return (
                                                         <tr style={{
-                                                            background: bonus ? "#0097af" : "",
-                                                            color: bonus ? "#fff" : ""
+                                                            background: bonus && parseFloat(finalScore || "") > 3.08 ? "#0097af" : "",
+                                                            color: bonus && parseFloat(finalScore || "") > 3.08 ? "#fff" : ""
 
                                                         }} key={user.uid}>
                                                             <td>{user.displayName}</td>
                                                             <td>{getDepartment(user, store)}</td>
                                                             <td>{finalScore}</td>
                                                             <td>{perecentage} %</td>
-                                                            <td>{getPeriod(user, scorecard || "")}</td>
                                                             <td>{getPeriodStart(user, scorecard || "")}</td>
-                                                            <td>{period}</td>
-                                                            <td>
-                                                                <button className="btn btn-primary" onClick={() => onUpdate(user.uid)}>update period</button>
-                                                            </td>
+                                                            <td>{getPeriod(user, scorecard || "")}</td>
+                                                            <td>{period} Month(s)</td>
+                                                            {me?.role === "HR" &&
+                                                                <td>
+                                                                    <button
+                                                                        style={{
+                                                                            background: bonus && parseFloat(finalScore || "") > 3.08 ? "#fff" : "",
+                                                                            color: bonus && parseFloat(finalScore || "") > 3.08 ? "#0097af" : ""
+
+                                                                        }}
+                                                                        className="btn btn-primary" onClick={() => onUpdate(user.uid)}>Update Period</button>
+                                                                </td>
+                                                            }
                                                         </tr>
                                                     )
                                                 })}

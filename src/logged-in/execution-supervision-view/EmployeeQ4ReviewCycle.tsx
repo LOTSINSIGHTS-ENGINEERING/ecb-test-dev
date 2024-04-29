@@ -26,6 +26,7 @@ import PerformanceAssessmentApprovalModal from "../dialogs/performance-assessmen
 import PerformanceAssessmentRejectionModal from "../dialogs/performance-assessment-rejection/PerformanceAssessmentRejectionModal";
 import ObjectiveQ4CommentModal from "../dialogs/objective/ObjectiveQ4CommentModal";
 import { useParams } from "react-router-dom";
+import MeasureUpdateActualQ4Modal from "../dialogs/measure-update-q4-actual/MeasureUpdateActualQ4Modal";
 
 interface MeasureTableItemProps {
   measure: Measure;
@@ -88,6 +89,16 @@ const MeasureTableItem = observer((props: MeasureTableItemProps) => {
     }
   };
 
+  const handleUpdateProgress = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    store.measure.select(measure); // select measure
+    showModalFromId(MODAL_NAMES.EXECUTION.MEASURE_UPDATE_Q4_ACTUAL_MODAL);
+  };
+
+  const onUploadFile = () => {
+    // uploadEvidence(measure);
+  };
+
   useEffect(() => {
     if (measure.finalRating2) {
       const rateCss = rateColor(Number(measure.finalRating2), measure.isUpdated);
@@ -137,9 +148,22 @@ const MeasureTableItem = observer((props: MeasureTableItemProps) => {
         <td className="no-whitespace">
           {dataFormat(dataType, measure.annualActual, dataSymbol)}
         </td>
+        <td>
+          <div className="controls">
+            <button className="btn-icon" onClick={handleUpdateProgress}>
+              <span data-uk-icon="pencil"></span>
+            </button>
+            <button className="btn-icon" onClick={onUploadFile}>
+              <span uk-icon="upload"></span>
+            </button>
+          </div>
+        </td>
         <td className={`no-whitespace actual-value ${ratingCss}`}>
           {measure.autoRating2}
         </td>
+        {/* {canUpdate && ( */}
+
+        {/* )} */}
         {canUpdate ? (
           <>
             <td className={`actual-value ${ratingCss}`}>
@@ -216,6 +240,7 @@ const MeasureTable = observer((props: ReviewProps) => {
                 <th>Rating 5</th>
                 <th>Target</th>
                 <th>Progress</th>
+                <th>Action</th>
                 <th>E-Rating</th>
                 <th>S-Rating</th>
                 <th>F-Rating</th>
@@ -236,6 +261,9 @@ const MeasureTable = observer((props: ReviewProps) => {
         )}
         {measures.length === 0 && <NoMeasures />}
       </div>
+      <Modal modalId={MODAL_NAMES.EXECUTION.MEASURE_UPDATE_Q4_ACTUAL_MODAL}>
+        <MeasureUpdateActualQ4Modal />
+      </Modal>
     </ErrorBoundary>
   );
 });

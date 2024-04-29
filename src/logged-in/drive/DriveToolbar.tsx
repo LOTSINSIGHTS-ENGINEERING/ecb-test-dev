@@ -43,11 +43,13 @@ const DriveToolbar = observer(({ id, handleNewFolder }: IProps) => {
         title="Portfolio of Evidence"
         rightControls={
           <div className="uk-inline">
-            <button className="btn btn-primary" disabled={!canEdit}>
+            <button className="btn btn-primary" 
+            // disabled={!canEdit}
+            >
               <span data-uk-icon="icon: plus-circle; ratio: .8"></span> More
             </button>
 
-            {canEdit && (
+            {/* {canEdit && ( */}
               <Dropdown pos="bottom-right">
                 <li>
                   <button
@@ -68,7 +70,7 @@ const DriveToolbar = observer(({ id, handleNewFolder }: IProps) => {
                   </li>
                 )}
               </Dropdown>
-            )}
+            {/* )} */}
           </div>
         }
       />

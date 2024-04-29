@@ -6,9 +6,11 @@ import MODAL_NAMES from "../ModalName";
 import MeasureUpdateActualQ4Form from "./MeasureUpdateActualQ4Form";
 import { IMeasure, defaultMeasure } from "../../../shared/models/Measure";
 import { measureQ4Rating } from "../../shared/functions/Scorecard";
+import { useParams } from "react-router-dom";
 
 const MeasureUpdateActualQ4Modal = observer(() => {
   const { api, store, ui } = useAppContext();
+  const { uid } = useParams();
 
   const [measure, setMeasure] = useState<IMeasure>({ ...defaultMeasure });
   const [loading, setLoading] = useState(false);
@@ -23,8 +25,8 @@ const MeasureUpdateActualQ4Modal = observer(() => {
 
     const $measure: IMeasure = {
       ...measure,
-      uid: me.uid,
-      userName: me.displayName || "",
+      uid: uid || "",
+      // userName: me.displayName || "",
       autoRating2: measureQ4Rating(measure),
       supervisorRating2: null,
       finalRating2: null,

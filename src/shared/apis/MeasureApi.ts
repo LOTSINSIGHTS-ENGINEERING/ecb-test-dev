@@ -222,6 +222,42 @@ export default class MeasureApi {
       console.log("Error api: ", error);
     }
   }
+  async updateTemp(item: IMeasure, fieldsUpdated?: (keyof IMeasure)[]) {
+    const path = this.getPath();
+    if (!path) return;
+    // alert("here");
+
+    let measure: { [k: string]: any } = {};
+
+    // fields updated
+    // if (fieldsUpdated) {
+    //   for (const index of fieldsUpdated) measure[index] = item[index];
+    //   alert("fields updated");
+    // } else {
+    measure = { ...item };
+    // alert("fields updated (else)");
+    // }
+
+    // update in db
+    try {
+      await updateDoc(doc(collection(db, path), item.id), {
+        ...measure,
+      });
+
+      // store item
+      if (!fieldsUpdated) {
+        this.updateMeasureStore(item); // update measure store & audit store
+        // alert("updated")
+      } else {
+        const currItem = this.store.measure.getItemById(item.id);
+        const newItem = currItem ? { ...currItem.asJson, ...measure } : item;
+        this.updateMeasureStore(newItem); // update measure store & audit store
+      }
+    } catch (error) {
+
+      console.log("Error api: ", error);
+    }
+  }
 
   private updateMeasureStore(item: IMeasure) {
     this.store.measure.load([item]); // update in store

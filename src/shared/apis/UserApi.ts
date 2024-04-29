@@ -204,7 +204,7 @@ export default class UserApi {
   }
 
 
- 
+
 
   async updateDateRange(uid: string, startDate: string, endDate: string, scorecardId: string) {
     const path = this.getPath();
@@ -228,24 +228,26 @@ export default class UserApi {
         newData.scorecardPeriod = [];
       }
 
-      // Check if scorecardId already exists in arrayField
-      const isScorecardIdUnique = newData.scorecardPeriod.every((item:any) => item.scorecardId !== scorecardId);
+      // Find the index of the existing scorecardId
+      const existingIndex = newData.scorecardPeriod.findIndex((item: any) => item.scorecardId === scorecardId);
 
-      if (isScorecardIdUnique) {
-        // Update the array field with new start and end dates
-        newData.scorecardPeriod.push({ startDate, endDate, scorecardId });
-
-        // Update document in the database with the latest data
-        await updateDoc(docRef, newData);
+      if (existingIndex !== -1) {
+        // If scorecardId exists, override the existing entry
+        newData.scorecardPeriod[existingIndex] = { startDate, endDate, scorecardId };
       } else {
-        console.error("Error: scorecardId already exists in arrayField.");
+        // If scorecardId doesn't exist, push the new entry
+        newData.scorecardPeriod.push({ startDate, endDate, scorecardId });
       }
+
+      // Update document in the database with the latest data
+      await updateDoc(docRef, newData);
 
     } catch (error) {
       // Handle error
       console.error("Error updating date range:", error);
     }
   }
+
 
 
 
