@@ -9,7 +9,7 @@ import { useAppContext } from "../../shared/functions/Context";
 import { dataFormat } from "../../shared/functions/Directives";
 import showModalFromId from "../../shared/functions/ModalShow";
 import { ALL_TAB, fullPerspectiveName, MAP_TAB } from "../../shared/interfaces/IPerspectiveTabs";
-import MeasureCompany from "../../shared/models/MeasureCompany";
+import MeasureCompany, { IMeasureCompany } from "../../shared/models/MeasureCompany";
 import ObjectiveCompany from "../../shared/models/ObjectiveCompany";
 import { IReviewCycleStatus } from "../../shared/models/ScorecardBatch";
 import { IScorecardMetadata } from "../../shared/models/ScorecardMetadata";
@@ -22,10 +22,13 @@ import NoScorecardData from "../shared/components/no-scorecard-data/NoScorecardD
 import Rating from "../shared/components/rating/Rating";
 import Tabs from "../shared/components/tabs/Tabs";
 import Toolbar from "../shared/components/toolbar/Toolbar";
-import { rateColor } from "../shared/functions/Scorecard";
+import { rateColor, totalQ2CompanyObjectiveRatingNew } from "../shared/functions/Scorecard";
 import { sortByPerspective } from "../shared/utils/utils";
 import NoMeasures from "./NoMeasures";
 import CompanyStrategicMap from "./strategic-map/CompanyStrategicMap";
+import Measure from "../../shared/models/Measure";
+import { useParams } from "react-router-dom";
+import { IMeasureAuditCompany } from "../../shared/models/MeasureAuditCompany";
 
 interface IMoreButtonProps {
   agreement: IScorecardMetadata;
@@ -337,6 +340,8 @@ interface IProps {
 
 const CompanyScorecardQCycle = observer((props: IProps) => {
   const [tab, setTab] = useState(ALL_TAB.id);
+  const { store } = useAppContext();
+  const $measures = store.companyMeasure.all.map((m) => { return m.asJson });
 
   const {
     agreement,
@@ -353,6 +358,9 @@ const CompanyScorecardQCycle = observer((props: IProps) => {
 
   const filteredObjectivesByPerspective = useMemo(() => {
     const sorted = objectives.sort(sortByPerspective);
+
+
+
     return tab === ALL_TAB.id ? sorted : sorted.filter((o) => o.asJson.perspective === tab);
   }, [objectives, tab]);
 
@@ -461,6 +469,8 @@ const CompanyScorecardQCycle = observer((props: IProps) => {
                     agreement={agreement}
                     objectives={filteredObjectivesByPerspective}
                   />
+                  {/* <ScorecardRatings measures={$measures} /> */}
+
                 </div>
               )}
             </div>
@@ -482,3 +492,96 @@ const CompanyScorecardQCycle = observer((props: IProps) => {
 });
 
 export default CompanyScorecardQCycle;
+
+
+
+interface IRatingProps {
+  measures: IMeasureCompany[];
+}
+const ScorecardRatings = observer((props: IRatingProps) => {
+  const { measures } = props;
+  const { api, store } = useAppContext();
+  const me = store.auth.meJson?.uid || "";
+  const { fyid } = useParams();
+
+  const $measures = measures.map((measure) => measure);
+
+  const objectives = store.objective.all.filter((obj) => obj.asJson.uid === me).map((obj) => { return obj.asJson });
+  console.log("🚀objectives:", objectives)
+  const scorecardMetaData = store.companyScorecardMetadata.all.find((m) => m.asJson.uid === fyid)?.asJson;
+  console.log("🚀  scorecardMetaData:", scorecardMetaData)
+
+
+  const rating1 = totalQ2CompanyObjectiveRatingNew($measures, objectives, scorecardMetaData)
+  // const rating2 = semester1SuperRating($measures, objectives, scorecardMetaData)
+  // const rating3 = semester1FinalRating($measures, objectives, scorecardMetaData)
+
+  const q2_e_css = rateColor(rating1, true);
+  const q2_s_css = rateColor(4.5, true);
+  const q2_f_css = rateColor(2.3, true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      await api.companyScorecardMetadata.getAll();
+    }
+    loadData();
+  }, [])
+
+
+  const componentStyle: React.CSSProperties = {
+    float: 'right',
+    marginRight: '20px',
+
+  };
+
+  const tableStyle: React.CSSProperties = {
+    borderCollapse: 'collapse',
+
+  };
+
+  const thStyle: React.CSSProperties = {
+    padding: '18px'
+  };
+
+  const tdStyle: React.CSSProperties = {
+    padding: '8px',
+    borderBottom: '1px solid #ddd',
+    borderRight: '1px solid #ddd'
+  };
+
+  const lastTdStyle: React.CSSProperties = {
+    padding: '8px',
+    borderBottom: '1px solid #ddd'
+  };
+
+  return (
+    <ErrorBoundary>
+      <div style={componentStyle}>
+        <div style={tableStyle} className="measure-rating-table">
+          <table>
+            <thead style={{ backgroundColor: '#f2f2f2' }}>
+              <tr>
+                <th style={thStyle}>E-Rating</th>
+                <th style={thStyle}>S-Rating</th>
+                <th style={thStyle}>F-Rating</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="row">
+                <td style={{ padding: "10px" }} className={`value ${q2_e_css}`}>
+                  {rating1}
+                </td>
+                <td style={{ padding: "10px" }} className={`value ${q2_s_css}`}>
+                  {4.5}
+                </td>
+                <td style={{ padding: "10px" }} className={`value ${q2_f_css}`}>
+                  {2.3}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ErrorBoundary>
+  );
+});

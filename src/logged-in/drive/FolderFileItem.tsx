@@ -102,7 +102,9 @@ const FolderFileItem = ({ file, index, path }: IProps) => {
         </ErrorBoundary>
       }
     >
-      <button data-uk-tooltip="Double click to delete and click file name to view" className="file-item" style={style} onDoubleClick={onDelete} >
+      <button data-uk-tooltip="Double click to delete and click file name to view" className="file-item" style={style} 
+      // onDoubleClick={onDelete} 
+      >
         <div className="file-item__icon"
         >
           <img src={process.env.PUBLIC_URL + "/icons/file_icon2.png"} alt="" />

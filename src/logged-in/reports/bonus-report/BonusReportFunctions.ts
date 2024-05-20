@@ -16,21 +16,13 @@ export function getDepartment(user: IUser, store: AppStore): string {
 }
 
 export function getFinalWeightedScore(user: IUser, measure: IMeasure[], objective: IObjective[], metaData: IScorecardMetadata[]) {
-
-
     const $metaData = metaData.find((m) => m.uid === user.uid);
-
-
     if ($metaData) {
         const score = q4FinalRating(measure.filter((m) => m.uid === user.uid), objective.filter((u) => u.uid === user.uid), $metaData);
-
-
         if (score) {
             return score
         } else {
             return 0;
         }
     }
-
-
 }

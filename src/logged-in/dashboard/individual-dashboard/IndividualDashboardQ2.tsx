@@ -7,7 +7,7 @@ import { IMeasure } from "../../../shared/models/Measure";
 import { IObjective } from "../../../shared/models/Objective";
 import MODAL_NAMES from "../../dialogs/ModalName";
 import Rating, { BarRating } from "../../shared/components/rating/Rating";
-import { totalQ2IndividualObjectiveRating, totalQ2MeasureRating, totalQ4MeasureRating } from "../../shared/functions/Scorecard";
+import { totalQ2IndividualObjectiveRating, totalQ2MeasureRating, totalQ2MeasureRatingNew, totalQ4MeasureRating, totalQ4MeasureRatingNew } from "../../shared/functions/Scorecard";
 import { NoData } from "./NoData";
 
 interface IcProps {
@@ -15,6 +15,19 @@ interface IcProps {
 }
 export const MeasureItem = (props: IcProps) => {
     const { measure } = props;
+    const { store, api } = useAppContext();
+
+
+    const $measure = store.measure.all.map((m) => { return m.asJson })
+    const objectives = store.objective.all.map((o) => { return o.asJson })
+    const metaData = store.companyScorecardMetadata.all.find((m) => m.asJson.uid === "")?.asJson;
+
+
+    const ratingMidterm = totalQ2MeasureRatingNew($measure, objectives, metaData)
+
+
+
+
 
     return (
         <li className="red-measure">
@@ -155,14 +168,17 @@ const ObjectivesGrid = observer(() => {
 
 const MetricsAnalytics = observer(() => {
     const { store } = useAppContext();
+    const me = store.auth.meJson;
 
     const objectives = store.objective.allMe;
     const measures = store.measure.allMe;
     const redMeasures = measures.filter((measure) => (measure.asJson.finalRating || 0) <= 2);
     const $measures = measures.map((measure) => measure.asJson);
+    const $objectives = objectives.map((obj) => { return obj.asJson })
+    const $metaData = store.companyScorecardMetadata.all.find((m) => m.asJson.uid === me?.uid)?.asJson;
 
-    const rating = totalQ2MeasureRating($measures);
-    const rating2 = totalQ4MeasureRating($measures);
+    const rating = totalQ2MeasureRatingNew($measures, $objectives, $metaData);
+    const rating2 = totalQ4MeasureRatingNew($measures, $objectives, $metaData);
 
     return (
         <div

@@ -28,6 +28,11 @@ import { MAIL_SCORECARD_Q2_SUBMITTED_MANAGER, MAIL_SCORECARD_Q2_SUBMITTED_ME } f
 import ViewObjectiveQ2CommentModal from "../dialogs/objective/ViewObjectiveQ2CommentModal";
 import { useParams } from "react-router-dom";
 
+
+
+
+
+
 interface IMoreButtonProps {
   agreement: IScorecardMetadata;
 }

@@ -24,7 +24,7 @@ export const BonusReport = observer(() => {
 
     const users = store.user.all.filter((u) => u.asJson.userStatus === "Active" || !u.asJson.userStatus).map((u) => { return u.asJson });
     const metaData = store.companyScorecardMetadata.all.map((m) => { return m.asJson });
-    const objectives = store.objective.all.map((o) => { return o.asJson });
+    const objectives = store.objective.all.filter((o) => o.asJson).map((o) => { return o.asJson });
     const measures = store.measure.all.map((m) => { return m.asJson });
 
     const scorecard = store.scorecard.all.find((s) => s.asJson.current === true)?.asJson.id;
@@ -44,25 +44,7 @@ export const BonusReport = observer(() => {
     }
 
 
-    useEffect(() => {
-        const loadData = async () => {
-            try {
-                setLoading(true);
-                await Promise.all([
-                    api.user.getAll(),
-                    api.companyScorecardMetadata.getAll(),
-                    api.objective.getAll(),
-                    api.scorecard.getAll(),
-                    api.measure.getAll(),
-                    api.department.getAll(),
-                ]);
-            } catch (error) {
-            } finally {
-                setLoading(false);
-            }
-        }
-        loadData()
-    }, []);
+
 
     const onUpdate = (id: string) => {
         setUid(id);
@@ -81,6 +63,11 @@ export const BonusReport = observer(() => {
             </button>
         )
     }
+
+
+    const rojasData = [{
+        EmployeeName:"Rojas Manyame"
+    }]
 
 
     const formattedData = users
@@ -107,41 +94,53 @@ export const BonusReport = observer(() => {
                     EmployeeName: user.displayName,
                     Department: department,
                     finalScore: finalScore,
-                    percentage: `${perecentage} %`,
+                    percentage: `${perecentage}%`,
                     start: start,
                     end: end,
-                    period: `${period} month(s)`
+                    period: period > 1 ? `${period} months` : `${period} month`
                 }
             )
         })
 
 
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                setLoading(true);
+                await Promise.all([
+                    api.user.getAll(),
+                    api.companyScorecardMetadata.getAll(),
+                    api.objective.getAll(),
+                    api.scorecard.getAll(),
+                    api.measure.getAll(),
+                    api.department.getAll(),
+                ]);
+            } catch (error) {
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadData()
+    }, []);
 
     return (
         <ErrorBoundary>
             <div className="reports uk-section">
                 <div className="uk-container uk-container-xlarge">
                     <div className="objectives-card uk-card uk-card-default uk-card-body uk-card-small">
-
                         <Toolbar
                             leftControls={
-                                <>
-                                    <h4 className="title kit-title">Bonus Report</h4>
-                                </>
+                                <button className="btn btn-primary" style={{ cursor: "none" }}>Performance Bonus Report</button>
                             }
-
-                            rightControls={<>
-
+                            rightControls={
                                 <ExportAsExcel
-                                    fileName="Bonus Report"
+                                    fileName="Performance Bonus Report"
+                                    name="Bonus Report"
                                     data={formattedData}
-                                    headers={["EmployeeName", "Department", "finalScore", "percentage", "start", "end", "period", "Salary", "Bonus"]}
+                                    headers={["Employee Name", "Department", "Final Score", "Percentage", "Start", "End", "Period", "Salary", "Bonus"]}
                                 >{renderExcel}
-
                                 </ExportAsExcel>
-
-                            </>}
-
+                            }
                         />
                         {loading ? <LoadingEllipsis /> :
                             <div className="uk-margin">
@@ -209,7 +208,6 @@ export const BonusReport = observer(() => {
                                                 })}
                                         </tbody>
                                     </table>
-
                                 </div>
                             </div>
                         }
@@ -222,7 +220,6 @@ export const BonusReport = observer(() => {
                             type="button"
                             data-uk-close
                         ></button>
-
                         <h3 className="uk-modal-title">Update Period</h3>
                         <div>
                             <label>Start Date</label>
@@ -242,11 +239,6 @@ export const BonusReport = observer(() => {
                                 Save period {isSaving && <span data-uk-spinner={"ratio: .5"}></span>}
                             </button>
                         </div>
-
-
-
-
-
                     </div>
                 </Modal>
             </div>
@@ -254,6 +246,3 @@ export const BonusReport = observer(() => {
     )
 })
 
-
-// name, dep, final score, percentage,
-//

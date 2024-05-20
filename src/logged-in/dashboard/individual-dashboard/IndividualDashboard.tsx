@@ -33,7 +33,7 @@ const Tabs = observer((props: ITabsProps) => {
           {props.loading && <div data-uk-spinner="ratio: .5"></div>}
         </button>
       </div>
-      <div>
+      {/* <div>
         <button className="tab-button uk-button uk-button-default" type="button">Select Semester</button>
         <div data-uk-dropdown>
           <ul className="kit-tabs uk-nav uk-dropdown-nav">
@@ -43,7 +43,7 @@ const Tabs = observer((props: ITabsProps) => {
               onClick={() => props.setTab("Q4")}><a href="#">Semester 2</a></li>
           </ul>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 });
@@ -85,16 +85,16 @@ export const IndividualDashboard = observer(() => {
     <ErrorBoundary>
       <Tabs tab={tab} setTab={setTab} handleExportPDF={handleExportPDF} loading={loading} />
       <div className="individual-dashboard">
-        {tab === "Q2" &&
+        {/* {tab === "Q2" &&
           <div ref={chartref}>
             <IndividualDashboardQ2 />
           </div>
-        }
-        {tab === "Q4" &&
-          <div ref={chartref}>
-            <IndividualDashboardQ4 />
-          </div>
-        }
+        } */}
+        {/* {tab === "Q4" && */}
+        <div ref={chartref}>
+          <IndividualDashboardQ4 />
+        </div>
+        {/* } */}
       </div>
       <ErrorBoundary>
         <Modal modalId={MODAL_NAMES.EXECUTION.MAP_OVERVIEW_MODAL} cssClass="uk-modal-container" >

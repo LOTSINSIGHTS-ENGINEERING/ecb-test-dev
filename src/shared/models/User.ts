@@ -22,7 +22,6 @@ export const defaultUser: IUser = {
   divisionThree: "",
   supervisor: "none",
   role: "Employee",
-
 };
 
 export interface IUser {
@@ -48,10 +47,9 @@ export interface IUser {
   devUser?: boolean;
   userStatus?: string;
 
-
   //period
   scorecardPeriod?: IScorecardPeriod[];
-
+  scorecardId?: string;
 }
 
 export interface IScorecardPeriod {
@@ -60,8 +58,6 @@ export interface IScorecardPeriod {
   endDate?: string;
   scorecardId: string;
 }
-
-
 
 // export default class User extends Model<IUser> {
 //   update(): void {}

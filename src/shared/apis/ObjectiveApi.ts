@@ -1,4 +1,12 @@
-import { query, collection, onSnapshot, setDoc, updateDoc, deleteDoc, doc } from "@firebase/firestore";
+import {
+  query,
+  collection,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+} from "@firebase/firestore";
 import { Unsubscribe, where } from "firebase/firestore";
 import { db } from "../config/firebase-config";
 import { IObjective } from "../models/Objective";
@@ -8,8 +16,7 @@ import AppApi, { apiPathScorecardLevel } from "./AppApi";
 export default class ObjectiveApi {
   // path: string | null = null;
 
-  constructor(private api: AppApi, private store: AppStore) { }
-
+  constructor(private api: AppApi, private store: AppStore) {}
 
   private getPath() {
     if (!this.store.scorecard.activeId) return null;
@@ -32,16 +39,20 @@ export default class ObjectiveApi {
     const $query = query(collection(db, path));
     // new promise
     return await new Promise<Unsubscribe>((resolve, reject) => {
-      const unsubscribe = onSnapshot($query, (querySnapshot) => {
-        const items: IObjective[] = [];
-        querySnapshot.forEach((doc) => {
-          items.push({ id: doc.id, ...doc.data() } as IObjective);
-        });
-        this.store.objective.load(items);
-        resolve(unsubscribe);
-      }, (error) => {
-        reject();
-      });
+      const unsubscribe = onSnapshot(
+        $query,
+        (querySnapshot) => {
+          const items: IObjective[] = [];
+          querySnapshot.forEach((doc) => {
+            items.push({ id: doc.id, ...doc.data() } as IObjective);
+          });
+          this.store.objective.load(items);
+          resolve(unsubscribe);
+        },
+        (error) => {
+          reject();
+        }
+      );
     });
   }
   async getAll(uid?: string) {
@@ -52,7 +63,43 @@ export default class ObjectiveApi {
     this.store.objective.removeAll();
 
     // create the query
-    const $query = uid ? query(collection(db, path), where("uid", "==", uid)) : query(collection(db, path));
+    const $query = uid
+      ? query(collection(db, path), where("uid", "==", uid))
+      : query(collection(db, path));
+    // new promise
+    return await new Promise<Unsubscribe>((resolve, reject) => {
+      // on snapshot
+      const unsubscribe = onSnapshot(
+        $query,
+        // onNext
+        (querySnapshot) => {
+          const items: IObjective[] = [];
+          querySnapshot.forEach((doc) => {
+            items.push({ id: doc.id, ...doc.data() } as IObjective);
+          });
+          this.store.objective.load(items);
+          resolve(unsubscribe);
+        },
+        // onError
+        (error) => {
+          reject();
+        }
+      );
+    });
+  }
+  async getAllScore(sid: string, uid?: string) {
+    // get the db path
+
+    apiPathScorecardLevel(sid, "objectives");
+    const path = this.getPath();
+    if (!path) return;
+
+    this.store.objective.removeAll();
+
+    // create the query
+    const $query = uid
+      ? query(collection(db, path), where("uid", "==", uid))
+      : query(collection(db, path));
     // new promise
     return await new Promise<Unsubscribe>((resolve, reject) => {
       // on snapshot
@@ -97,9 +144,9 @@ export default class ObjectiveApi {
     item.id = itemRef.id;
     // create in db
     try {
-      await setDoc(itemRef, item, { merge: true, });
+      await setDoc(itemRef, item, { merge: true });
       this.store.objective.load([item]);
-    } catch (error) { }
+    } catch (error) {}
   }
 
   // duplicate objective
@@ -113,12 +160,12 @@ export default class ObjectiveApi {
 
     // create in db
     try {
-      await setDoc(itemRef, item, { merge: true, });
+      await setDoc(itemRef, item, { merge: true });
       this.store.objective.load([item]);
-      alert("success")
-      console.log("error: ", item)
+      alert("success");
+      console.log("error: ", item);
     } catch (error) {
-      console.log("error: ", error)
+      console.log("error: ", error);
     }
   }
 
@@ -148,6 +195,6 @@ export default class ObjectiveApi {
       await deleteDoc(doc(db, path, item.id));
       // remove from store
       this.store.objective.remove(item.id);
-    } catch (error) { }
+    } catch (error) {}
   }
 }

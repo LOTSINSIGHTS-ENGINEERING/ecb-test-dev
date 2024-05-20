@@ -92,7 +92,7 @@ const LoggedOut = observer(() => {
             <button className="uk-button uk-margin loggin-button" onClick={redirectSignIn} >
               Login
             </button>
-            {/* <form className="uk-form-stacked" onSubmit={onSignIn}>
+            <form className="uk-form-stacked" onSubmit={onSignIn}>
               <div className="uk-margin">
                 <label className="uk-form-label" htmlFor="user-login-email">
                   Email
@@ -146,7 +146,7 @@ const LoggedOut = observer(() => {
                   )}
                 </button>
               </div>
-            </form> */}
+            </form>
           </div>
           <div
             className=" uk-child-width-1-3@s uk-grid-match uk-text-center"

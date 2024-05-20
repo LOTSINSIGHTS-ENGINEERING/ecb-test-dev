@@ -1,4 +1,4 @@
-import { faCheck, faCommentDots, faFileExcel, faFilePdf, faPaperPlane, faCopy, faArrowRightLong, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faCommentDots, faFileExcel, faFilePdf, faPaperPlane, faCopy } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState } from "react";
@@ -8,10 +8,10 @@ import ErrorBoundary from "../../shared/components/error-boundary/ErrorBoundary"
 import { useAppContext } from "../../shared/functions/Context";
 import { dataFormat } from "../../shared/functions/Directives";
 import showModalFromId from "../../shared/functions/ModalShow";
-import { ALL_TAB, CUSTOMER_TAB, FINANCIAL_TAB, fullPerspectiveName, GROWTH_TAB, MAP_TAB, PROCESS_TAB } from "../../shared/interfaces/IPerspectiveTabs";
+import { ALL_TAB, fullPerspectiveName, MAP_TAB } from "../../shared/interfaces/IPerspectiveTabs";
 import MeasureCompany from "../../shared/models/MeasureCompany";
 import ObjectiveCompany from "../../shared/models/ObjectiveCompany";
-import { IPerspectiveWeights, IScorecardMetadata } from "../../shared/models/ScorecardMetadata";
+import { IScorecardMetadata } from "../../shared/models/ScorecardMetadata";
 import { IScorecardReview } from "../../shared/models/ScorecardReview";
 import EmptyError from "../admin-settings/EmptyError";
 import NoMeasures from "../no-measures/NoMeasures";
@@ -25,8 +25,6 @@ import CompanyStrategicMap from "./strategic-map/CompanyStrategicMap";
 import ViewObjectiveCompanyDraftCommentModal from "../dialogs/objective-company/ViewObjectiveCompanyDraftCommentModal";
 import Modal from "../../shared/components/Modal";
 import { DuplicationModal } from "./DuplicationModal";
-import { IObjective } from "../../shared/models/Objective";
-import { IMeasure } from "../../shared/models/Measure";
 
 interface IMoreButtonProps {
   agreement: IScorecardMetadata;
@@ -92,7 +90,7 @@ const MoreButton = observer((props: IMoreButtonProps) => {
         <button
           className="kit-dropdown-btn"
           onClick={onSubmitScorecardDraftForApproval}
-        // disabled={isDisabled || isEmptyObjectiveError || isWeightError}
+          // disabled={isDisabled || isEmptyObjectiveError || isWeightError}
         >
           <FontAwesomeIcon
             icon={faPaperPlane}
@@ -329,152 +327,28 @@ interface IStrategicListProps {
   isEditing: boolean;
   hasAccess: boolean;
   objectives: ObjectiveCompany[];
-  tab: string;
-  perspectiveWeights: IPerspectiveWeights;
 }
-
 const StrategicList = observer((props: IStrategicListProps) => {
-  const { tab, objectives, perspectiveWeights, isEditing, hasAccess } = props;
-  const { store } = useAppContext();
-
-  const getMeasures = (objective: IObjective): IMeasure[] => {
-    return store.measure.all.filter((measure) => measure.asJson.objective === objective.id)
-      .map((measure) => measure.asJson);
-  };
-
-  const handlePerspectiveWeight = () => {
-    showModalFromId(MODAL_NAMES.TEAM.TEAM_PERSPECTIVE_MODAL);
-  };
-
-  const perspectiveObjectiveGroup = (name: string, filter: string, weight: number | null = 0) => {
-    const perpectiveObjectives = objectives.filter((o) => o.asJson.perspective === filter);
-    const totalWeight = perpectiveObjectives.reduce((acc, curr) => acc + (curr.asJson.weight || 0), 0);
-
-    return (
-      <div className="objective-group">
-        <div className="perspective-weight" style={{ background: "white", color: "#0097af", padding: "4px", }}>
-          <span className="name">{name}</span>
-          <span className="arrow">
-            <FontAwesomeIcon icon={faArrowRightLong} />
-          </span>
-          <span className="weight">Weight: {weight}%</span>
-          {/* <button
-            className="btn-edit btn-primary"
-            title="Edit the weight."
-            onClick={handlePerspectiveWeight}
-          >
-            <FontAwesomeIcon icon={faPencilAlt} />
-          </button> */}
-        </div>
-
-        {perpectiveObjectives.map((objective) => (
-          <ErrorBoundary key={objective.asJson.id}>
-            <ObjectiveItem
-              objective={objective}
-              isEditing={isEditing}
-              hasAccess={hasAccess}
-              totalNoOfMeasures={objective.measures.length}
-            >
-              <MeasureTable measures={objective.measures} />
-            </ObjectiveItem>
-          </ErrorBoundary>
-        ))}
-        {/* Empty */}
-        {!perpectiveObjectives.length && (
-          <div className="uk-margin-small">
-            <EmptyError errorMessage="No objectives found for this perspective " />
-          </div>
-        )}
-
-        {/* Weight Error. */}
-        {perpectiveObjectives.length !== 0 && (
-          <WeightError weightError={totalWeight} pos="relative">
-            The weights of the objectives under {name} don't add up to
-          </WeightError>
-        )}
-      </div>
-    );
-  };
-
-  if (tab === FINANCIAL_TAB.id)
-    return perspectiveObjectiveGroup(
-      FINANCIAL_TAB.name,
-      FINANCIAL_TAB.id,
-      perspectiveWeights.financial
-    );
-  if (tab === CUSTOMER_TAB.id)
-    return perspectiveObjectiveGroup(
-      CUSTOMER_TAB.name,
-      CUSTOMER_TAB.id,
-      perspectiveWeights.customer
-    );
-  if (tab === PROCESS_TAB.id)
-    return perspectiveObjectiveGroup(
-      PROCESS_TAB.name,
-      PROCESS_TAB.id,
-      perspectiveWeights.process
-    );
-  if (tab === GROWTH_TAB.id)
-    return perspectiveObjectiveGroup(
-      GROWTH_TAB.name,
-      GROWTH_TAB.id,
-      perspectiveWeights.growth
-    );
+  const { hasAccess, objectives, isEditing } = props;
 
   return (
-    <>
-      <ErrorBoundary>
-        {perspectiveObjectiveGroup(
-          FINANCIAL_TAB.name,
-          FINANCIAL_TAB.id,
-          perspectiveWeights.financial
-        )}
-      </ErrorBoundary>
-      <ErrorBoundary>
-        {perspectiveObjectiveGroup(
-          CUSTOMER_TAB.name,
-          CUSTOMER_TAB.id,
-          perspectiveWeights.customer
-        )}
-      </ErrorBoundary>
-      <ErrorBoundary>
-        {perspectiveObjectiveGroup(
-          PROCESS_TAB.name,
-          PROCESS_TAB.id,
-          perspectiveWeights.process
-        )}
-      </ErrorBoundary>
-      <ErrorBoundary>
-        {perspectiveObjectiveGroup(
-          GROWTH_TAB.name,
-          GROWTH_TAB.id,
-          perspectiveWeights.growth
-        )}
-      </ErrorBoundary>
-    </>
+    <div className="objective-table uk-margin">
+      {objectives.map((objective) => (
+        <ErrorBoundary key={objective.asJson.id}>
+          <ObjectiveItem
+            objective={objective}
+            isEditing={isEditing}
+            hasAccess={hasAccess}
+            totalNoOfMeasures={objective.measures.length}
+          >
+            <MeasureTable measures={objective.measures} />
+          </ObjectiveItem>
+        </ErrorBoundary>
+      ))}
+      {!objectives.length && <EmptyError errorMessage="No objective found" />}
+    </div>
   );
 });
-// const StrategicList = observer((props: IStrategicListProps) => {
-//   const { hasAccess, objectives, isEditing } = props;
-
-//   return (
-//     <div className="objective-table uk-margin">
-//       {objectives.map((objective) => (
-//         <ErrorBoundary key={objective.asJson.id}>
-//           <ObjectiveItem
-//             objective={objective}
-//             isEditing={isEditing}
-//             hasAccess={hasAccess}
-//             totalNoOfMeasures={objective.measures.length}
-//           >
-//             <MeasureTable measures={objective.measures} />
-//           </ObjectiveItem>
-//         </ErrorBoundary>
-//       ))}
-//       {!objectives.length && <EmptyError errorMessage="No objective found" />}
-//     </div>
-//   );
-// });
 
 interface IProps {
   agreement: IScorecardMetadata;
@@ -644,11 +518,7 @@ const CompanyScorecardDraftCycle = observer((props: IProps) => {
         <ErrorBoundary>
           <div className="uk-margin">
             {tab === MAP_TAB.id && <CompanyStrategicMap />}
-            {tab !== MAP_TAB.id && (<StrategicList
-              isEditing={isEditing}
-              hasAccess={hasAccess}
-              tab={tab}
-              perspectiveWeights={agreement.perspectiveWeights}
+            {tab !== MAP_TAB.id && (<StrategicList isEditing={isEditing} hasAccess={hasAccess}
               objectives={filteredObjectivesByPerspective} />
             )}
           </div>

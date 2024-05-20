@@ -222,6 +222,7 @@ interface IStrategicListProps {
   perspectiveWeights: IPerspectiveWeights;
   uid: string;
 }
+
 const StrategicList = observer((props: IStrategicListProps) => {
   const { tab, objectives, enableEditing, perspectiveWeights, uid } = props;
   const { store } = useAppContext();
@@ -344,6 +345,9 @@ const StrategicList = observer((props: IStrategicListProps) => {
     </>
   );
 });
+
+
+
 interface IUserProps {
   uid: string;
   agreement: IScorecardMetadata;

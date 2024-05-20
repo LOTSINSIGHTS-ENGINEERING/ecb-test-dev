@@ -74,6 +74,7 @@ export interface IMeasure {
 
   targetDate: number | string;
 
+  
   autoRating: number; //employee midterm rating
   supervisorRating: number | null; //supervisor midterm rating
   finalRating: number | null;//midterm final rating

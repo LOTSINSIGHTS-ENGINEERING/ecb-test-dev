@@ -34,15 +34,14 @@ const People = observer(() => {
 
   const groupedByDivision = () => {
     const users = search_access();
-    const divisions = store.division.all;
-    const grouped = divisions.map((div) => {
+    const departments = store.department.all;
+    const grouped = departments.map((div) => {
       return {
         id: div.asJson.id,
         division: div.asJson.name,
         users: users.filter((u) => !u.asJson.userStatus || u.asJson.userStatus === "Active").sort(sortByName).filter((u) => {
           return (
-            u.asJson.division === div.asJson.id ||
-            u.asJson.divisionTwo === div.asJson.id
+            u.asJson
           );
         }),
       };

@@ -4,30 +4,31 @@ import Dropdown from "../../shared/components/dropdown/Dropdown";
 import ErrorBoundary from "../../shared/components/error-boundary/ErrorBoundary";
 import { useAppContext } from "../../shared/functions/Context";
 import showModalFromId from "../../shared/functions/ModalShow";
-import { ALL_TAB, fullPerspectiveName, } from "../../shared/interfaces/IPerspectiveTabs";
+import { ALL_TAB, CUSTOMER_TAB, FINANCIAL_TAB, GROWTH_TAB, PROCESS_TAB, fullPerspectiveName, } from "../../shared/interfaces/IPerspectiveTabs";
 import MODAL_NAMES from "../dialogs/ModalName";
 import Tabs from "../shared/components/tabs/Tabs";
 import Toolbar from "../shared/components/toolbar/Toolbar";
 import NoPerformanceData from "./NoPerformanceData";
-import { faCopy, faFileExcel } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightLong, faCopy, faFileExcel, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dataFormat } from "../../shared/functions/Directives";
-import Measure from "../../shared/models/Measure";
+import Measure, { IMeasure } from "../../shared/models/Measure";
 import Objective, { IObjective } from "../../shared/models/Objective";
 import EmptyError from "../admin-settings/EmptyError";
 import Modal from "../../shared/components/Modal";
-import { IScorecardMetadata } from "../../shared/models/ScorecardMetadata";
+import { IPerspectiveWeights, IScorecardMetadata } from "../../shared/models/ScorecardMetadata";
 import PerformanceAgreementApprovalModal from "../dialogs/performance-agreement-approval/PerformanceAgreementApprovalModal";
 import PerformanceAgreementRejectionModal from "../dialogs/performance-agreement-rejection/PerformanceAgreementRejectionModal";
 import ObjectiveDraftCommentModal from "../dialogs/objective/ObjectiveDraftCommentModal";
+import WeightError from "../shared/components/weight-error/WeightError";
 
 interface IMeasureTableItemProps {
-  measure: Measure;
+  measure: IMeasure;
 }
 
 const MeasureTableItem = observer((props: IMeasureTableItemProps) => {
   const { store } = useAppContext();
-  const measure = props.measure.asJson;
+  const measure = props.measure;
 
   const dataType = measure.dataType;
   const dataSymbol = measure.dataSymbol || "";
@@ -83,7 +84,7 @@ const MeasureTableItem = observer((props: IMeasureTableItemProps) => {
 });
 
 interface IMeasureTableProps {
-  measures: Measure[];
+  measures: IMeasure[];
 }
 const MeasureTable = observer((props: IMeasureTableProps) => {
   const { measures } = props;
@@ -106,7 +107,7 @@ const MeasureTable = observer((props: IMeasureTableProps) => {
           </thead>
           <tbody>
             {measures.map((measure) => (
-              <ErrorBoundary key={measure.asJson.id}>
+              <ErrorBoundary key={measure.id}>
                 <MeasureTableItem measure={measure} />
               </ErrorBoundary>
             ))}
@@ -119,13 +120,13 @@ const MeasureTable = observer((props: IMeasureTableProps) => {
 });
 
 interface IObjectiveItemProps {
-  objective: Objective;
+  objective: IObjective;
   children?: React.ReactNode;
   handleComments: () => void;
 }
 const ObjectiveItem = observer((props: IObjectiveItemProps) => {
   const { objective, children, handleComments } = props;
-  const { perspective, description, weight } = objective.asJson;
+  const { perspective, description, weight } = objective;
 
   return (
     <ErrorBoundary>
@@ -154,42 +155,198 @@ const ObjectiveItem = observer((props: IObjectiveItemProps) => {
 
 interface IStrategicListProps {
   tab: string;
-  objectives: Objective[];
+  objectives: IObjective[];
+  perspectiveWeights: IPerspectiveWeights;
 }
-const StrategicList = observer((props: IStrategicListProps) => {
-  const { store } = useAppContext();
-  const { tab, objectives } = props;
 
+
+const StrategicList = observer((props: IStrategicListProps) => {
+  const { tab, objectives, perspectiveWeights } = props;
+  const { store } = useAppContext();
+
+  const getMeasures = (objective: IObjective): IMeasure[] => {
+    return store.measure.all.filter((measure) => measure.asJson.objective === objective.id)
+      .map((measure) => measure.asJson);
+  };
+
+  
   const handleComments = (objective: IObjective) => {
     store.objective.select(objective);
     showModalFromId(MODAL_NAMES.EXECUTION.OBJECTIVE_DRAFT_COMMENT_MODAL);
   };
 
-  const _objectives = useMemo(() => {
-    return tab === ALL_TAB.id ? objectives : objectives.filter((o) => o.asJson.perspective === tab);
-  }, [tab, objectives]);
+  const handlePerspectiveWeight = () => {
+    showModalFromId(MODAL_NAMES.TEAM.TEAM_PERSPECTIVE_MODAL);
+  };
+
+  const perspectiveObjectiveGroup = (name: string, filter: string, weight: number | null = 0) => {
+    const perpectiveObjectives = objectives.filter((o) => o.perspective === filter);
+    const totalWeight = perpectiveObjectives.reduce((acc, curr) => acc + (curr.weight || 0), 0);
+
+    return (
+      <div className="objective-group">
+        <div className="perspective-weight">
+          <span className="name">{name}</span>
+          <span className="arrow">
+            <FontAwesomeIcon icon={faArrowRightLong} />
+          </span>
+          <span className="weight">Weight: {weight}%</span>
+          {/* <button
+            className="btn-edit btn-primary"
+            title="Edit the weight."
+            onClick={handlePerspectiveWeight}
+          >
+            <FontAwesomeIcon icon={faPencilAlt} />
+          </button> */}
+        </div>
+
+        {perpectiveObjectives.map((objective) => (
+          <ErrorBoundary key={objective.id}>
+            <ObjectiveItem
+              objective={objective}
+              key={objective.id}
+              handleComments={() => handleComments(objective)}
+
+            >
+              <MeasureTable measures={getMeasures(objective)} />
+            </ObjectiveItem>
+          </ErrorBoundary>
+        ))}
+        {/* Empty */}
+        {!perpectiveObjectives.length && (
+          <div className="uk-margin-small">
+            <EmptyError errorMessage="No objectives found for this perspective " />
+          </div>
+        )}
+
+        {/* Weight Error. */}
+        {perpectiveObjectives.length !== 0 && (
+          <WeightError weightError={totalWeight} pos="relative">
+            The weights of the objectives under {name} don't add up to
+          </WeightError>
+        )}
+      </div>
+    );
+  };
+
+  if (tab === FINANCIAL_TAB.id)
+    return perspectiveObjectiveGroup(
+      FINANCIAL_TAB.name,
+      FINANCIAL_TAB.id,
+      perspectiveWeights.financial
+    );
+  if (tab === CUSTOMER_TAB.id)
+    return perspectiveObjectiveGroup(
+      CUSTOMER_TAB.name,
+      CUSTOMER_TAB.id,
+      perspectiveWeights.customer
+    );
+  if (tab === PROCESS_TAB.id)
+    return perspectiveObjectiveGroup(
+      PROCESS_TAB.name,
+      PROCESS_TAB.id,
+      perspectiveWeights.process
+    );
+  if (tab === GROWTH_TAB.id)
+    return perspectiveObjectiveGroup(
+      GROWTH_TAB.name,
+      GROWTH_TAB.id,
+      perspectiveWeights.growth
+    );
 
   return (
-    <ErrorBoundary>
-      <div className="objective-table uk-margin">
-        <ErrorBoundary>
-          {_objectives.map((objective) => (
-            <ObjectiveItem
-              key={objective.asJson.id}
-              objective={objective}
-              handleComments={() => handleComments(objective.asJson)}
-            >
-              <MeasureTable measures={objective.measures} />
-            </ObjectiveItem>
-          ))}
-        </ErrorBoundary>
-        <ErrorBoundary>
-          {objectives.length === 0 && (<EmptyError errorMessage="No objective found" />)}
-        </ErrorBoundary>
-      </div>
-    </ErrorBoundary>
+    <>
+      <ErrorBoundary>
+        {perspectiveObjectiveGroup(
+          FINANCIAL_TAB.name,
+          FINANCIAL_TAB.id,
+          perspectiveWeights.financial
+        )}
+      </ErrorBoundary>
+      <ErrorBoundary>
+        {perspectiveObjectiveGroup(
+          CUSTOMER_TAB.name,
+          CUSTOMER_TAB.id,
+          perspectiveWeights.customer
+        )}
+      </ErrorBoundary>
+      <ErrorBoundary>
+        {perspectiveObjectiveGroup(
+          PROCESS_TAB.name,
+          PROCESS_TAB.id,
+          perspectiveWeights.process
+        )}
+      </ErrorBoundary>
+      <ErrorBoundary>
+        {perspectiveObjectiveGroup(
+          GROWTH_TAB.name,
+          GROWTH_TAB.id,
+          perspectiveWeights.growth
+        )}
+      </ErrorBoundary>
+    </>
   );
 });
+// const StrategicList = observer((props: IStrategicListProps) => {
+//   const { store } = useAppContext();
+//   const { tab, objectives } = props;
+
+//   const handleComments = (objective: IObjective) => {
+//     store.objective.select(objective);
+//     showModalFromId(MODAL_NAMES.EXECUTION.OBJECTIVE_DRAFT_COMMENT_MODAL);
+//   };
+
+//   // const _objectives = useMemo(() => {
+//   //   return tab === ALL_TAB.id ? objectives : objectives.filter((o) => o.asJson.perspective === tab);
+//   // }, [tab, objectives]);
+//   const getMeasures = (objective: IObjective): IMeasure[] => {
+//     return store.measure.all.filter((measure) => measure.asJson.objective === objective.id)
+//       .map((measure) => measure.asJson);
+//   };
+
+
+//   const handlePerspectiveWeight = () => {
+//     showModalFromId(MODAL_NAMES.TEAM.TEAM_PERSPECTIVE_MODAL);
+//   };
+
+//   const perspectiveObjectiveGroup = (name: string, filter: string, weight: number | null = 0) => {
+//     const perpectiveObjectives = objectives.filter((o) => o.perspective === filter);
+//     const totalWeight = perpectiveObjectives.reduce((acc, curr) => acc + (curr.weight || 0), 0);
+//   }
+
+
+//     return (
+//       <ErrorBoundary>
+//         <div className="objective-table uk-margin">
+//           {/* <ErrorBoundary>
+//             {_objectives.map((objective) => (
+//               <ObjectiveItem
+//                 key={objective.asJson.id}
+//                 objective={objective}
+//                 handleComments={() => handleComments(objective.asJson)}
+//               >
+//                 <MeasureTable measures={objective.measures} />
+//               </ObjectiveItem>
+//             ))}
+//           </ErrorBoundary> */}
+//           {perpectiveObjectives.map((objective) => (
+//             <ErrorBoundary key={objective.id}>
+//               <ObjectiveItem
+//                 objective={objective}
+//                 key={objective.id}
+//                 handleComments={() => handleComments(objective)}
+//               >
+//                 <MeasureTable measures={getMeasures(objective)} />
+//               </ObjectiveItem>
+//             </ErrorBoundary>
+//           ))}
+//           <ErrorBoundary>
+//             {objectives.length === 0 && (<EmptyError errorMessage="No objective found" />)}
+//           </ErrorBoundary>
+//         </div>
+//       </ErrorBoundary>
+//     );
+//   });
 
 
 interface IDraftProps {
@@ -236,6 +393,19 @@ const EmployeeDraftCycle = observer((props: IDraftProps) => {
         <NoPerformanceData title="Performance scorecard not submitted." />
       </ErrorBoundary>
     );
+
+  const sortByPerspective = (a: IObjective, b: IObjective) => {
+    const order = ["F", "C", "P", "G"];
+    const aIndex = order.indexOf(a.perspective.charAt(0));
+    const bIndex = order.indexOf(b.perspective.charAt(0));
+    return aIndex - bIndex;
+  };
+
+  const $objectives = useMemo(() => {
+    const sorted = objectives.map((o) => o.asJson).sort(sortByPerspective);
+    const obj = tab === ALL_TAB.id ? sorted : sorted.filter((o) => o.perspective === tab);
+    return obj;
+  }, [objectives, tab]);
 
   return (
     <ErrorBoundary>
@@ -333,7 +503,7 @@ const EmployeeDraftCycle = observer((props: IDraftProps) => {
             />
           </ErrorBoundary>
           <ErrorBoundary>
-            <StrategicList tab={tab} objectives={objectives} />
+            <StrategicList tab={tab} objectives={$objectives} perspectiveWeights={agreement.perspectiveWeights} />
           </ErrorBoundary>
           <ErrorBoundary>
             <Modal modalId={MODAL_NAMES.EXECUTION.PERFORMANCE_AGREEMENT_DRAFT_APPROVAL_MODAL}>

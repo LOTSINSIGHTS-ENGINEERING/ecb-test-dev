@@ -49,7 +49,6 @@ export const rateColor = (rating: number, isUpdated?: boolean): string => {
   else return "red";
 };
 
-
 export const statusClass = (status: string): string => {
   switch (status) {
     case "Upward":
@@ -111,7 +110,9 @@ export const dataTypeSymbol = (dataType: string): ISymobl => {
   };
 };
 
-export const measureQ2Rating = (measure: IMeasure | IMeasureCompany): number => {
+export const measureQ2Rating = (
+  measure: IMeasure | IMeasureCompany
+): number => {
   const actual = measure.quarter2Actual;
   const rating1 = Number(measure.rating1) || 0;
   const rating2 = Number(measure.rating2) || 0;
@@ -151,7 +152,9 @@ export const measureQ2Rating = (measure: IMeasure | IMeasureCompany): number => 
   return 1;
 };
 
-export const measureQ4Rating = (measure: IMeasure | IMeasureCompany): number => {
+export const measureQ4Rating = (
+  measure: IMeasure | IMeasureCompany
+): number => {
   const actual = measure.annualActual;
   const rating1 = Number(measure.rating1) || 0;
   const rating2 = Number(measure.rating2) || 0;
@@ -206,8 +209,8 @@ const calculateIncreasingRating = (
   rating4: number | null,
   rating5: number | null
 ) => {
-  if (actual <= rating1)
-    return 1; // actual greater than rate 1 and less than rate 2
+  if (actual <= rating1) return 1;
+  // actual greater than rate 1 and less than rate 2
   else if (actual > rating1 && actual <= rating2)
     return (actual / rating2) * 2 || 1;
   // actual greater than rate 1 and less than rate 2
@@ -225,139 +228,35 @@ const calculateIncreasingRating = (
 };
 
 // COMPANY RATINGS REDONE TO REMOVE THE WEIGHT
-export const totalQ2CompanyObjectiveRating = (measures: IMeasureCompany[] | IMeasureAuditCompany[]) => {
+export const totalQ2CompanyObjectiveRating = (
+  measures: IMeasureCompany[] | IMeasureAuditCompany[]
+) => {
   const data = measures.map((measure) => ({
     rating: Number(measure.q2FinalRating),
   }));
-  let rating = data.reduce((acc, curr) => {
-    return acc + curr.rating;
-  }, 0) / data.length;
+  let rating =
+    data.reduce((acc, curr) => {
+      return acc + curr.rating;
+    }, 0) / data.length;
 
   // rating = Math.round(rating * 10) / 10;
   return rating;
 };
 
 
-export const totalQ4CompanyObjectiveRating = (measures: IMeasureCompany[] | IMeasureAuditCompany[]) => {
-  const data = measures.map((measure) => ({
-    rating: Number(measure.q4FinalRating),
-  }));
-
-  let rating = data.reduce((acc, curr) => {
-    return acc + curr.rating;
-  }, 0) / data.length;
-
-  // rating = Math.round(rating * 10) / 10;
-  return rating;
-};
-
-// INDIVIDUAL RATINGS REDONE TO REMOVE THE WEIGHTS
-export const totalQ2IndividualObjectiveRating = (measures: IMeasure[] | IMeasureAudit[]) => {
-  const data = measures.map((measure) => ({
-    rating: Number(measure.finalRating || 0),
-  }));
-
-  let rating = data.reduce((acc, curr) => {
-    return acc + curr.rating;
-  }, 0) / data.length;
-
-  // rating = Math.round(rating * 10) / 10;
-  return rating;
-};
-
-
-
-//old function not having weight
-// export const totalQ4IndividualObjectiveRating = (measures: IMeasure[] | IMeasureAudit[]) => {
-//   const data = measures.map((measure) => ({
-//     rating: Number(measure.finalRating2 || 0),
-//   }));
-
-
-//   let rating = data.reduce((acc, curr) => {
-//     return acc + curr.rating;
-//   }, 0) / data.length;
-
-//   rating = Math.round(rating * 10) / 10;
-//   return 3;
-// };
-
-
-//weight added to new function
-export const totalQ4IndividualObjectiveRating = (measures: IMeasure[] | IMeasureAudit[], objective?: string): number => {
-  let totalScore = 0;
-  // Iterate over each measure
-  measures.filter((measure) => measure.objective === objective).forEach((measure) => {
-    // Calculate the score for the current measure
-    const score = (measure.finalRating2 || 0) * ((measure.weight || 0) / 100);
-    // Add the score to the total score
-    totalScore += score;
-  });
-  return totalScore;
-};
-
-//weighted objective total score
-export const totalQ4IndividualObjectiveRatingObjWeighted = (measures: IMeasure[] | IMeasureAudit[], objective: IObjective): number => {
-
-  let totalScore = 0;
-  // Iterate over each measure
-  measures.filter((measure) => measure.objective === objective.id).forEach((measure) => {
-    // Calculate the score for the current measure
-    const score = (measure.finalRating2 || 0) * ((measure.weight || 0) / 100);
-    // Add the score to the total score
-    totalScore += score;
-  });
-
-  return 0;
-};
-
-
-
-// weighted perspective total score
-
-
-
-
-
-export const totalQ2MeasureCompanyRating = (measures: IMeasureCompany[]) => {
-  const rating = measures.reduce((acc, measure) => {
-    return acc + (measure.q2FinalRating || 0);
-  }, 0) / measures.length;
-  // return Math.round((rating) * 10) / 10;
-  return rating || 0
-};
-
-export const totalQ4MeasureCompanyRating = (measures: IMeasureCompany[]) => {
-  const rating = measures.reduce((acc, measure) => {
-    return acc + (measure.q4FinalRating || 0);
-  }, 0) / measures.length;
-  // return Math.round((rating) * 10) / 10;
-  return rating || 0
-};
-
-// molale and john mukoya
-
-export const totalQ2MeasureRating = (measures: IMeasure[]) => {
-  const rating = measures.reduce((acc, measure) => {
-    return acc + (measure.finalRating || 0);
-  }, 0) / measures.length;
-  // return Math.round((rating) * 10) / 10;
-  return rating
-};
-
-export const totalQ2MeasureRatingNew = (
-  measures: IMeasure[],
+//new function
+export const totalQ2CompanyObjectiveRatingNew = (
+  measures: IMeasureCompany[] | IMeasureAuditCompany[],
   objectives: IObjective[],
   metaData?: IScorecardMetadata
 ) => {
-
   //kpis
   const kpiTotalScores: { [objectiveId: string]: number } = {};
 
-  measures.forEach(measure => {
+  measures.forEach((measure) => {
     const objectiveId = measure.objective;
     const measureWeight = measure.weight;
-    const finalRating2 = measure.finalRating;
+    const finalRating2 = measure.rating;
     const totalScore = ((measureWeight || 0) / 100) * (finalRating2 || 0);
 
     if (!kpiTotalScores[objectiveId]) {
@@ -367,7 +266,6 @@ export const totalQ2MeasureRatingNew = (
     kpiTotalScores[objectiveId] += totalScore;
   });
 
-
   //objectives
   const objectiveTotalScores: {
     [objectiveId: string]: {
@@ -376,17 +274,18 @@ export const totalQ2MeasureRatingNew = (
     };
   } = {};
 
-  objectives.forEach(objective => {
+  objectives.forEach((objective) => {
     const objectiveId = objective.id;
     const objectiveWeight = objective.weight;
     const perspective = objective.perspective;
 
     const totalMeasureScore = kpiTotalScores[objectiveId] || 0;
-    const totalObjectiveScore = totalMeasureScore * ((objectiveWeight || 0) / 100);
+    const totalObjectiveScore =
+      totalMeasureScore * ((objectiveWeight || 0) / 100);
 
     objectiveTotalScores[objectiveId] = {
       totalScore: totalObjectiveScore,
-      perspective: perspective || '',
+      perspective: perspective || "",
     };
   });
 
@@ -405,11 +304,227 @@ export const totalQ2MeasureRatingNew = (
     }
   }
 
-  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0;  // financial
-  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0;      // customer
-  const operationPercentage = metaData?.perspectiveWeights.process || 0;        // process
-  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0;     // growth
+  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0; // financial
+  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0; // customer
+  const operationPercentage = metaData?.perspectiveWeights.process || 0; // process
+  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0; // growth
 
+  let totalScoreFinancial = 0;
+  let totalScoreStakeholder = 0;
+  let totalScoreOperation = 0;
+  let totalScoreHumanCapital = 0;
+
+  for (const perspective in totalScoresByPerspective) {
+    if (totalScoresByPerspective.hasOwnProperty(perspective)) {
+      const totalScore = totalScoresByPerspective[perspective];
+
+      switch (perspective) {
+        case "Financial":
+          totalScoreFinancial += totalScore * (financialWeightPercentage / 100);
+          break;
+        case "Customer":
+          totalScoreStakeholder += totalScore * (stakeholderPercentage / 100);
+          break;
+        case "Process":
+          totalScoreOperation += totalScore * (operationPercentage / 100);
+          break;
+        case "Growth":
+          totalScoreHumanCapital += totalScore * (humanCapitalPercentage / 100);
+          break;
+        default:
+          console.log("Unknown perspective:", perspective);
+      }
+    }
+  }
+
+  // Calculate the overall score
+  const overallScore =
+    totalScoreFinancial +
+    totalScoreStakeholder +
+    totalScoreOperation +
+    totalScoreHumanCapital;
+
+  return overallScore;
+};
+
+export const totalQ4CompanyObjectiveRating = (
+  measures: IMeasureCompany[] | IMeasureAuditCompany[]
+) => {
+  const data = measures.map((measure) => ({
+    rating: Number(measure.q4FinalRating),
+  }));
+
+  let rating =
+    data.reduce((acc, curr) => {
+      return acc + curr.rating;
+    }, 0) / data.length;
+
+  // rating = Math.round(rating * 10) / 10;
+  return rating;
+};
+
+// INDIVIDUAL RATINGS REDONE TO REMOVE THE WEIGHTS
+export const totalQ2IndividualObjectiveRating = (
+  measures: IMeasure[] | IMeasureAudit[]
+) => {
+  const data = measures.map((measure) => ({
+    rating: Number(measure.finalRating || 0),
+  }));
+
+  let rating =
+    data.reduce((acc, curr) => {
+      return acc + curr.rating;
+    }, 0) / data.length;
+
+  // rating = Math.round(rating * 10) / 10;
+  return rating;
+};
+
+//old function not having weight
+// export const totalQ4IndividualObjectiveRating = (measures: IMeasure[] | IMeasureAudit[]) => {
+//   const data = measures.map((measure) => ({
+//     rating: Number(measure.finalRating2 || 0),
+//   }));
+
+//   let rating = data.reduce((acc, curr) => {
+//     return acc + curr.rating;
+//   }, 0) / data.length;
+
+//   rating = Math.round(rating * 10) / 10;
+//   return 3;
+// };
+
+//weight added to new function
+export const totalQ4IndividualObjectiveRating = (
+  measures: IMeasure[] | IMeasureAudit[],
+  objective?: string
+): number => {
+  let totalScore = 0;
+  // Iterate over each measure
+  measures
+    .filter((measure) => measure.objective === objective)
+    .forEach((measure) => {
+      // Calculate the score for the current measure
+      const score = (measure.finalRating2 || 0) * ((measure.weight || 0) / 100);
+      // Add the score to the total score
+      totalScore += score;
+    });
+  return totalScore;
+};
+
+//weighted objective total score
+export const totalQ4IndividualObjectiveRatingObjWeighted = (
+  measures: IMeasure[] | IMeasureAudit[],
+  objective: IObjective
+): number => {
+  let totalScore = 0;
+  // Iterate over each measure
+  measures
+    .filter((measure) => measure.objective === objective.id)
+    .forEach((measure) => {
+      // Calculate the score for the current measure
+      const score = (measure.finalRating2 || 0) * ((measure.weight || 0) / 100);
+      // Add the score to the total score
+      totalScore += score;
+    });
+
+  return 0;
+};
+
+// weighted perspective total score
+
+export const totalQ2MeasureCompanyRating = (measures: IMeasureCompany[]) => {
+  const rating =
+    measures.reduce((acc, measure) => {
+      return acc + (measure.q2FinalRating || 0);
+    }, 0) / measures.length;
+  // return Math.round((rating) * 10) / 10;
+  return rating || 0;
+};
+
+export const totalQ4MeasureCompanyRating = (measures: IMeasureCompany[]) => {
+  const rating =
+    measures.reduce((acc, measure) => {
+      return acc + (measure.q4FinalRating || 0);
+    }, 0) / measures.length;
+  // return Math.round((rating) * 10) / 10;
+  return rating || 0;
+};
+
+// molale and john mukoya
+
+export const totalQ2MeasureRating = (measures: IMeasure[]) => {
+  const rating =
+    measures.reduce((acc, measure) => {
+      return acc + (measure.finalRating || 0);
+    }, 0) / measures.length;
+  // return Math.round((rating) * 10) / 10;
+  return rating;
+};
+
+export const totalQ2MeasureRatingNew = (
+  measures: IMeasure[],
+  objectives: IObjective[],
+  metaData?: IScorecardMetadata
+) => {
+  //kpis
+  const kpiTotalScores: { [objectiveId: string]: number } = {};
+
+  measures.forEach((measure) => {
+    const objectiveId = measure.objective;
+    const measureWeight = measure.weight;
+    const finalRating2 = measure.finalRating;
+    const totalScore = ((measureWeight || 0) / 100) * (finalRating2 || 0);
+
+    if (!kpiTotalScores[objectiveId]) {
+      kpiTotalScores[objectiveId] = 0;
+    }
+
+    kpiTotalScores[objectiveId] += totalScore;
+  });
+
+  //objectives
+  const objectiveTotalScores: {
+    [objectiveId: string]: {
+      totalScore: number;
+      perspective: string;
+    };
+  } = {};
+
+  objectives.forEach((objective) => {
+    const objectiveId = objective.id;
+    const objectiveWeight = objective.weight;
+    const perspective = objective.perspective;
+
+    const totalMeasureScore = kpiTotalScores[objectiveId] || 0;
+    const totalObjectiveScore =
+      totalMeasureScore * ((objectiveWeight || 0) / 100);
+
+    objectiveTotalScores[objectiveId] = {
+      totalScore: totalObjectiveScore,
+      perspective: perspective || "",
+    };
+  });
+
+  // Object to store the total scores grouped by perspective
+  const totalScoresByPerspective: { [perspective: string]: number } = {};
+
+  for (const objectiveId in objectiveTotalScores) {
+    if (objectiveTotalScores.hasOwnProperty(objectiveId)) {
+      const { totalScore, perspective } = objectiveTotalScores[objectiveId];
+
+      if (!totalScoresByPerspective.hasOwnProperty(perspective)) {
+        totalScoresByPerspective[perspective] = 0;
+      }
+
+      totalScoresByPerspective[perspective] += totalScore;
+    }
+  }
+
+  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0; // financial
+  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0; // customer
+  const operationPercentage = metaData?.perspectiveWeights.process || 0; // process
+  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0; // growth
 
   let totalScoreFinancial = 0;
   let totalScoreStakeholder = 0;
@@ -450,23 +565,23 @@ export const totalQ2MeasureRatingNew = (
 };
 
 export const totalQ4MeasureRating = (measures: IMeasure[]) => {
-  const rating = measures.reduce((acc, measure) => {
-    return acc + (measure.finalRating2 || 0);
-  }, 0) / measures.length;
+  const rating =
+    measures.reduce((acc, measure) => {
+      return acc + (measure.finalRating2 || 0);
+    }, 0) / measures.length;
   // return Math.round((rating) * 10) / 10;
-  return rating
+  return rating;
 };
 
 export const totalQ4MeasureRatingNew = (
   measures: IMeasure[],
   objectives: IObjective[],
-  metaData?: IScorecardMetadata
+  metaData?: IScorecardMetadata 
 ) => {
-
   //kpis
   const kpiTotalScores: { [objectiveId: string]: number } = {};
 
-  measures.forEach(measure => {
+  measures.forEach((measure) => {
     const objectiveId = measure.objective;
     const measureWeight = measure.weight;
     const finalRating2 = measure.finalRating2;
@@ -479,7 +594,6 @@ export const totalQ4MeasureRatingNew = (
     kpiTotalScores[objectiveId] += totalScore;
   });
 
-
   //objectives
   const objectiveTotalScores: {
     [objectiveId: string]: {
@@ -488,17 +602,18 @@ export const totalQ4MeasureRatingNew = (
     };
   } = {};
 
-  objectives.forEach(objective => {
+  objectives.forEach((objective) => {
     const objectiveId = objective.id;
     const objectiveWeight = objective.weight;
     const perspective = objective.perspective;
 
     const totalMeasureScore = kpiTotalScores[objectiveId] || 0;
-    const totalObjectiveScore = totalMeasureScore * ((objectiveWeight || 0) / 100);
+    const totalObjectiveScore =
+      totalMeasureScore * ((objectiveWeight || 0) / 100);
 
     objectiveTotalScores[objectiveId] = {
       totalScore: totalObjectiveScore,
-      perspective: perspective || '',
+      perspective: perspective || "",
     };
   });
 
@@ -517,11 +632,10 @@ export const totalQ4MeasureRatingNew = (
     }
   }
 
-  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0;  // financial
-  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0;      // customer
-  const operationPercentage = metaData?.perspectiveWeights.process || 0;        // process
-  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0;     // growth
-
+  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0; // financial
+  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0; // customer
+  const operationPercentage = metaData?.perspectiveWeights.process || 0; // process
+  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0; // growth
 
   let totalScoreFinancial = 0;
   let totalScoreStakeholder = 0;
@@ -574,11 +688,10 @@ export const semester1EmpRating = (
   objectives: IObjective[],
   metaData?: IScorecardMetadata
 ) => {
-
   //kpis
   const kpiTotalScores: { [objectiveId: string]: number } = {};
 
-  measures.forEach(measure => {
+  measures.forEach((measure) => {
     const objectiveId = measure.objective;
     const measureWeight = measure.weight;
     const finalRating2 = measure.autoRating;
@@ -591,7 +704,6 @@ export const semester1EmpRating = (
     kpiTotalScores[objectiveId] += totalScore;
   });
 
-
   //objectives
   const objectiveTotalScores: {
     [objectiveId: string]: {
@@ -600,17 +712,18 @@ export const semester1EmpRating = (
     };
   } = {};
 
-  objectives.forEach(objective => {
+  objectives.forEach((objective) => {
     const objectiveId = objective.id;
     const objectiveWeight = objective.weight;
     const perspective = objective.perspective;
 
     const totalMeasureScore = kpiTotalScores[objectiveId] || 0;
-    const totalObjectiveScore = totalMeasureScore * ((objectiveWeight || 0) / 100);
+    const totalObjectiveScore =
+      totalMeasureScore * ((objectiveWeight || 0) / 100);
 
     objectiveTotalScores[objectiveId] = {
       totalScore: totalObjectiveScore,
-      perspective: perspective || '',
+      perspective: perspective || "",
     };
   });
 
@@ -629,11 +742,10 @@ export const semester1EmpRating = (
     }
   }
 
-  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0;  // financial
-  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0;      // customer
-  const operationPercentage = metaData?.perspectiveWeights.process || 0;        // process
-  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0;     // growth
-
+  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0; // financial
+  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0; // customer
+  const operationPercentage = metaData?.perspectiveWeights.process || 0; // process
+  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0; // growth
 
   let totalScoreFinancial = 0;
   let totalScoreStakeholder = 0;
@@ -672,7 +784,6 @@ export const semester1EmpRating = (
 
   return overallScore;
 };
-
 
 // export const semester1SuperRating = (measures: IMeasure[]) => {
 //   const rating = measures.reduce((acc, measure) => {
@@ -687,11 +798,10 @@ export const semester1SuperRating = (
   objectives: IObjective[],
   metaData?: IScorecardMetadata
 ) => {
-
   //kpis
   const kpiTotalScores: { [objectiveId: string]: number } = {};
 
-  measures.forEach(measure => {
+  measures.forEach((measure) => {
     const objectiveId = measure.objective;
     const measureWeight = measure.weight;
     const finalRating2 = measure.supervisorRating;
@@ -704,7 +814,6 @@ export const semester1SuperRating = (
     kpiTotalScores[objectiveId] += totalScore;
   });
 
-
   //objectives
   const objectiveTotalScores: {
     [objectiveId: string]: {
@@ -713,17 +822,18 @@ export const semester1SuperRating = (
     };
   } = {};
 
-  objectives.forEach(objective => {
+  objectives.forEach((objective) => {
     const objectiveId = objective.id;
     const objectiveWeight = objective.weight;
     const perspective = objective.perspective;
 
     const totalMeasureScore = kpiTotalScores[objectiveId] || 0;
-    const totalObjectiveScore = totalMeasureScore * ((objectiveWeight || 0) / 100);
+    const totalObjectiveScore =
+      totalMeasureScore * ((objectiveWeight || 0) / 100);
 
     objectiveTotalScores[objectiveId] = {
       totalScore: totalObjectiveScore,
-      perspective: perspective || '',
+      perspective: perspective || "",
     };
   });
 
@@ -742,11 +852,10 @@ export const semester1SuperRating = (
     }
   }
 
-  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0;  // financial
-  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0;      // customer
-  const operationPercentage = metaData?.perspectiveWeights.process || 0;        // process
-  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0;     // growth
-
+  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0; // financial
+  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0; // customer
+  const operationPercentage = metaData?.perspectiveWeights.process || 0; // process
+  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0; // growth
 
   let totalScoreFinancial = 0;
   let totalScoreStakeholder = 0;
@@ -785,7 +894,6 @@ export const semester1SuperRating = (
 
   return overallScore;
 };
-
 
 // export const semester1FinalRating = (measures: IMeasure[]) => {
 //   const rating = measures.reduce((acc, measure) => {
@@ -800,11 +908,10 @@ export const semester1FinalRating = (
   objectives: IObjective[],
   metaData?: IScorecardMetadata
 ) => {
-
   //kpis
   const kpiTotalScores: { [objectiveId: string]: number } = {};
 
-  measures.forEach(measure => {
+  measures.forEach((measure) => {
     const objectiveId = measure.objective;
     const measureWeight = measure.weight;
     const finalRating2 = measure.finalRating;
@@ -817,7 +924,6 @@ export const semester1FinalRating = (
     kpiTotalScores[objectiveId] += totalScore;
   });
 
-
   //objectives
   const objectiveTotalScores: {
     [objectiveId: string]: {
@@ -826,17 +932,18 @@ export const semester1FinalRating = (
     };
   } = {};
 
-  objectives.forEach(objective => {
+  objectives.forEach((objective) => {
     const objectiveId = objective.id;
     const objectiveWeight = objective.weight;
     const perspective = objective.perspective;
 
     const totalMeasureScore = kpiTotalScores[objectiveId] || 0;
-    const totalObjectiveScore = totalMeasureScore * ((objectiveWeight || 0) / 100);
+    const totalObjectiveScore =
+      totalMeasureScore * ((objectiveWeight || 0) / 100);
 
     objectiveTotalScores[objectiveId] = {
       totalScore: totalObjectiveScore,
-      perspective: perspective || '',
+      perspective: perspective || "",
     };
   });
 
@@ -855,11 +962,10 @@ export const semester1FinalRating = (
     }
   }
 
-  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0;  // financial
-  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0;      // customer
-  const operationPercentage = metaData?.perspectiveWeights.process || 0;        // process
-  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0;     // growth
-
+  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0; // financial
+  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0; // customer
+  const operationPercentage = metaData?.perspectiveWeights.process || 0; // process
+  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0; // growth
 
   let totalScoreFinancial = 0;
   let totalScoreStakeholder = 0;
@@ -899,7 +1005,6 @@ export const semester1FinalRating = (
   return overallScore;
 };
 
-
 // SEMESTER TWO RATINGS
 //wrong
 // export const q4EmpRating = (measures: IMeasure[]) => {
@@ -910,7 +1015,6 @@ export const semester1FinalRating = (
 //   return rating
 // };
 
-
 //wrong
 // export const q4SuperRating = (measures: IMeasure[]) => {
 //   const rating = measures.reduce((acc, measure) => {
@@ -919,7 +1023,6 @@ export const semester1FinalRating = (
 //   // return Math.round((rating) * 10) / 10;
 //   return rating
 // };
-
 
 //wrong
 // export const q4FinalRating = (measures: IMeasure[]) => {
@@ -936,11 +1039,10 @@ export const q4EmpRating = (
   objectives: IObjective[],
   metaData?: IScorecardMetadata
 ) => {
-
   //kpis
   const kpiTotalScores: { [objectiveId: string]: number } = {};
 
-  measures.forEach(measure => {
+  measures.forEach((measure) => {
     const objectiveId = measure.objective;
     const measureWeight = measure.weight;
     const finalRating2 = measure.autoRating2;
@@ -953,7 +1055,6 @@ export const q4EmpRating = (
     kpiTotalScores[objectiveId] += totalScore;
   });
 
-
   //objectives
   const objectiveTotalScores: {
     [objectiveId: string]: {
@@ -962,17 +1063,18 @@ export const q4EmpRating = (
     };
   } = {};
 
-  objectives.forEach(objective => {
+  objectives.forEach((objective) => {
     const objectiveId = objective.id;
     const objectiveWeight = objective.weight;
     const perspective = objective.perspective;
 
     const totalMeasureScore = kpiTotalScores[objectiveId] || 0;
-    const totalObjectiveScore = totalMeasureScore * ((objectiveWeight || 0) / 100);
+    const totalObjectiveScore =
+      totalMeasureScore * ((objectiveWeight || 0) / 100);
 
     objectiveTotalScores[objectiveId] = {
       totalScore: totalObjectiveScore,
-      perspective: perspective || '',
+      perspective: perspective || "",
     };
   });
 
@@ -991,11 +1093,10 @@ export const q4EmpRating = (
     }
   }
 
-  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0;  // financial
-  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0;      // customer
-  const operationPercentage = metaData?.perspectiveWeights.process || 0;        // process
-  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0;     // growth
-
+  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0; // financial
+  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0; // customer
+  const operationPercentage = metaData?.perspectiveWeights.process || 0; // process
+  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0; // growth
 
   let totalScoreFinancial = 0;
   let totalScoreStakeholder = 0;
@@ -1035,7 +1136,6 @@ export const q4EmpRating = (
   return overallScore;
 };
 
-
 export const q4SuperRating = (
   measures: IMeasure[],
   objectives: IObjective[],
@@ -1044,7 +1144,7 @@ export const q4SuperRating = (
   // Step 1: Calculate the total score for each measure (KPI)
   const kpiTotalScores: { [objectiveId: string]: number } = {};
 
-  measures.forEach(measure => {
+  measures.forEach((measure) => {
     const objectiveId = measure.objective;
     const measureWeight = measure.weight;
     const finalRating2 = measure.supervisorRating2;
@@ -1057,7 +1157,6 @@ export const q4SuperRating = (
     kpiTotalScores[objectiveId] += totalScore;
   });
 
-
   const objectiveTotalScores: {
     [objectiveId: string]: {
       totalScore: number;
@@ -1065,18 +1164,19 @@ export const q4SuperRating = (
     };
   } = {};
 
-  objectives.forEach(objective => {
+  objectives.forEach((objective) => {
     const objectiveId = objective.id;
     const objectiveWeight = objective.weight;
     const perspective = objective.perspective;
 
     const totalMeasureScore = kpiTotalScores[objectiveId] || 0;
-    const totalObjectiveScore = totalMeasureScore * ((objectiveWeight || 0) / 100);
+    const totalObjectiveScore =
+      totalMeasureScore * ((objectiveWeight || 0) / 100);
 
     // Assign an object with all properties
     objectiveTotalScores[objectiveId] = {
       totalScore: totalObjectiveScore,
-      perspective: perspective || '', // Providing a default value for perspective
+      perspective: perspective || "", // Providing a default value for perspective
     };
   });
 
@@ -1098,12 +1198,10 @@ export const q4SuperRating = (
     }
   }
 
-
-  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0;  // financial
-  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0;      // customer
-  const operationPercentage = metaData?.perspectiveWeights.process || 0;        // process
-  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0;     // growth
-
+  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0; // financial
+  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0; // customer
+  const operationPercentage = metaData?.perspectiveWeights.process || 0; // process
+  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0; // growth
 
   let totalScoreFinancial = 0;
   let totalScoreStakeholder = 0;
@@ -1131,7 +1229,6 @@ export const q4SuperRating = (
       }
     }
   }
-
 
   // Calculate the overall score
   const overallScore =
@@ -1151,7 +1248,7 @@ export const q4FinalRating = (
   // Step 1: Calculate the total score for each measure (KPI)
   const kpiTotalScores: { [objectiveId: string]: number } = {};
 
-  measures.forEach(measure => {
+  measures.forEach((measure) => {
     const objectiveId = measure.objective;
     const measureWeight = measure.weight;
     const finalRating2 = measure.finalRating2;
@@ -1164,7 +1261,6 @@ export const q4FinalRating = (
     kpiTotalScores[objectiveId] += totalScore;
   });
 
-
   const objectiveTotalScores: {
     [objectiveId: string]: {
       totalScore: number;
@@ -1172,20 +1268,19 @@ export const q4FinalRating = (
     };
   } = {};
 
-
-
-  objectives.forEach(objective => {
+  objectives.forEach((objective) => {
     const objectiveId = objective.id;
     const objectiveWeight = objective.weight;
     const perspective = objective.perspective;
 
     const totalMeasureScore = kpiTotalScores[objectiveId] || 0;
-    const totalObjectiveScore = totalMeasureScore * ((objectiveWeight || 0) / 100);
+    const totalObjectiveScore =
+      totalMeasureScore * ((objectiveWeight || 0) / 100);
 
     // Assign an object with all properties
     objectiveTotalScores[objectiveId] = {
       totalScore: totalObjectiveScore,
-      perspective: perspective || '', // Providing a default value for perspective
+      perspective: perspective || "", // Providing a default value for perspective
     };
   });
 
@@ -1207,11 +1302,10 @@ export const q4FinalRating = (
     }
   }
 
-  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0;  // financial
-  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0;      // customer
-  const operationPercentage = metaData?.perspectiveWeights.process || 0;        // process
-  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0;     // growth
-
+  const financialWeightPercentage = metaData?.perspectiveWeights.financial || 0; // financial
+  const stakeholderPercentage = metaData?.perspectiveWeights.customer || 0; // customer
+  const operationPercentage = metaData?.perspectiveWeights.process || 0; // process
+  const humanCapitalPercentage = metaData?.perspectiveWeights.growth || 0; // growth
 
   let totalScoreFinancial = 0;
   let totalScoreStakeholder = 0;
@@ -1241,7 +1335,6 @@ export const q4FinalRating = (
     }
   }
 
-
   // Calculate the overall score
   const overallScore =
     totalScoreFinancial +
@@ -1252,38 +1345,26 @@ export const q4FinalRating = (
   return overallScore;
 };
 
-
-
-
-
-
-
-
-
 export const q4FinalRatingNewTest = (
   measures: IMeasure[],
   objectives: IObjective[],
   metaData: IScorecardMetadata[],
   uid: string
 ) => {
-
-  const perspectiveWeights = metaData.find((data) => data.uid === uid)?.perspectiveWeights;
+  const perspectiveWeights = metaData.find((data) => data.uid === uid)
+    ?.perspectiveWeights;
 
   //need to calculate the totalscore. need help
 
   //logic
 
-  //we have perspective weights 
-
+  //we have perspective weights
 
   //we have objective weights
 
-
   // we have kpi (measures) weights
 
-
   // the calculation starts from  kpi. so this is what happens
-
 
   // kpi total score
 
@@ -1294,17 +1375,15 @@ export const q4FinalRatingNewTest = (
 
   // objective total score
   // so here each measure is under a specific objective. very important.
-  // now wee need to get the total score 
+  // now wee need to get the total score
   // so we neen to first add up all measure of the same objective and get the total scores of the added measures
   // then I multiple the total measures score of the objective with the objective.weight. than you get the total score of the objective
   // then you add up the total score of the objectives
   // total objective scores found
 
-
   //total perspective score
   //if (objective.financial ===  "financial") then take the total score of the objetives in that perspective multiply it by the perspective.financial
   //to that to the rest of  the perspective and get add them up afterwards and get the overall rating.
-
 
   // expected results
 
@@ -1313,7 +1392,6 @@ export const q4FinalRatingNewTest = (
   // objective name  = score
   // objective++
 
-
   // then perspective
 
   // financial = total score
@@ -1321,12 +1399,8 @@ export const q4FinalRatingNewTest = (
   // grwoth = total score
   // process = total score
 
-
   //overall score = financail+customer+growth+process
-
-
-}
-
+};
 
 //financial - Financial Sustainability
 //Customer  - Stakeholder Value Addition
